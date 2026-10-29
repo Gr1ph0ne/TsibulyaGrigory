@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Inspiration – Grigory Tsibulya</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #1a1a1a; color: #ffffff; }
+
+        /* ── NAV ── */
+        .nav { position: sticky; top: 0; z-index: 100; background: rgba(26,26,26,0.75); backdrop-filter: blur(10px); border-bottom: 1px solid #2e2e2e; padding: 1.2rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+        .nav-name { font-size: 1.1rem; font-weight: 700; background: linear-gradient(135deg, #f5a623, #e67e22); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-decoration: none; }
+        .nav-back { display: inline-block; padding: 0.6rem 1.5rem; background: transparent; border: 2px solid #f5a623; color: #f5a623; text-decoration: none; border-radius: 50px; font-weight: 600; font-size: 0.9rem; transition: transform 0.3s, box-shadow 0.3s, background 0.3s; }
+        .nav-back:hover { background: rgba(245,166,35,0.1); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245,166,35,0.25); }
+
+        /* ── TOP BACKGROUND (colour/pattern per page, fades into the grey) ── */
+        .page-bg { position: absolute; top: 0; left: 0; right: 0; height: 720px; z-index: 0; pointer-events: none;
+                   -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 30%, transparent 100%);
+                           mask-image: linear-gradient(to bottom, #000 0%, #000 30%, transparent 100%); }
+        .page-header, .layout-switcher, .example-note, .content { position: relative; z-index: 1; }
+
+        /* ── HEADER ── */
+        .page-header { padding: 5rem 2rem 2.5rem; text-align: center; }
+        .page-header h1 { font-size: 3.5rem; margin-bottom: 1rem; background: linear-gradient(135deg, #f5a623, #e67e22); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .page-header p { font-size: 1.2rem; color: #cccccc; line-height: 1.8; max-width: 640px; margin: 0 auto; }
+
+        /* ── LAYOUT PREVIEW (temporary) ── */
+        .layout-switcher { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0.5rem; margin: 0 auto 1rem; padding: 0 2rem; }
+        .layout-switcher-label { color: #888888; font-size: 0.9rem; margin-right: 0.5rem; }
+        .layout-btn { background-color: #333333; border: 1px solid #444444; color: #aaaaaa; border-radius: 50px; padding: 0.45rem 1.1rem; font-size: 0.85rem; font-family: inherit; cursor: pointer; transition: all 0.3s; }
+        .layout-btn:hover, .layout-btn.active { background-color: #f5a623; border-color: #f5a623; color: #1a1a1a; font-weight: 600; }
+        .layout-btn:focus-visible, a:focus-visible { outline: 2px solid #f5a623; outline-offset: 3px; }
+        .example-note { text-align: center; color: #777777; font-size: 0.9rem; margin: 0 auto 3rem; padding: 0 2rem; }
+
+        /* ── CONTENT ── */
+        .content { max-width: 1100px; margin: 0 auto; padding: 0 2rem 5rem; }
+        .content h2 { font-size: 1.6rem; color: #f5a623; margin: 0 0 1.25rem; }
+        .cover { background-color: #333333; background-size: cover; background-position: center; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        .content > * { animation: fadeInUp 0.4s ease-out both; }
+
+        /* top background: soft colour blobs over a dotted sketchbook pattern */
+        .page-bg { background:
+            radial-gradient(circle at 10% 30%, rgba(60,140,70,0.55), transparent 26%),
+            radial-gradient(circle at 32% 8%,  rgba(60,90,160,0.55), transparent 28%),
+            radial-gradient(circle at 55% 38%, rgba(190,80,70,0.45), transparent 26%),
+            radial-gradient(circle at 78% 10%, rgba(200,140,60,0.5),  transparent 28%),
+            radial-gradient(circle at 94% 42%, rgba(110,70,190,0.5),  transparent 24%),
+            radial-gradient(rgba(255,255,255,0.12) 1.5px, transparent 1.7px) 0 0 / 22px 22px,
+            #1d1d1d; }
+
+        /* ── shared: inspiration label, covers, quote text ── */
+        .bulb { width: 1.1em; height: 1.1em; stroke: #f5a623; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: -0.18em; flex-shrink: 0; }
+        .insp-label { display: flex; align-items: center; gap: 0.45rem; color: #f5a623; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.03em; }
+        .meta { color: #888888; font-size: 0.85rem; }
+        .big-initial { font-weight: 800; color: rgba(255,255,255,0.14); line-height: 1; }
+        .poster-sm { position: relative; aspect-ratio: 3/4; border-radius: 15px; overflow: hidden; border: 1px solid #333333; }
+        .poster-sm .big-initial { position: absolute; top: 0.75rem; left: 1rem; font-size: 4.5rem; }
+        .row-text .quote { font-size: 1.6rem; line-height: 1.45; color: #ffffff; margin: 0.75rem 0 1rem; }
+        .row-text .who { font-size: 1.05rem; font-weight: 600; color: #dddddd; }
+        .row-text .who .meta { font-weight: 400; margin-left: 0.5rem; }
+        .row-text .studio { color: #aaaaaa; font-size: 0.9rem; margin-top: 0.2rem; }
+
+        /* ── Spotlight: one item featured, shelf below picks which, auto-advances ── */
+        .spot { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 2.5rem; align-items: center; max-width: 1000px; margin: 0 auto 2.5rem; min-height: 347px; }
+        .spot .poster-sm { box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .spot .row-text .quote { font-size: 1.9rem; }
+        .spot.swap > * { animation: fadeInUp 0.35s ease-out both; }
+        .spot-shelf { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 92px)); justify-content: center; gap: 0.75rem; max-width: 1040px; margin: 0 auto; }
+        .spot-pick { position: relative; aspect-ratio: 3/4; border-radius: 12px; overflow: hidden; display: flex; align-items: flex-end; border: 2px solid #333333; padding: 0; cursor: pointer; font-family: inherit; color: #ffffff; text-align: left; background: #252525; transition: transform 0.3s, border-color 0.3s, opacity 0.3s; opacity: 0.65; }
+        .spot-pick:hover { transform: translateY(-4px); opacity: 1; }
+        .spot-pick.active { border-color: #f5a623; opacity: 1; }
+        .spot-pick:focus-visible { outline: 2px solid #f5a623; outline-offset: 3px; }
+        .spot-pick .cover { position: absolute; inset: 0; }
+        .spot-pick .big-initial { position: absolute; top: 0.5rem; left: 0.7rem; font-size: 2.6rem; }
+        .spot-pick .pick-text { position: relative; width: 100%; padding: 2rem 0.6rem 0.8rem; background: linear-gradient(to top, rgba(14,14,14,0.95), rgba(14,14,14,0)); font-size: 0.82rem; font-weight: 600; line-height: 1.25; }
+        .spot-pick .pick-bar { position: absolute; left: 0; bottom: 0; height: 3px; width: 0; background: linear-gradient(90deg, #f5a623, #e67e22); }
+        .spot-controls { display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-top: 1.25rem; color: #777777; font-size: 0.85rem; }
+        .spot-pause { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #444444; background: #2a2a2a; color: #cccccc; cursor: pointer; transition: all 0.3s; }
+        .spot-pause:hover { border-color: #f5a623; color: #f5a623; }
+        .spot-pause svg { width: 14px; height: 14px; fill: currentColor; }
+        .spot-empty { text-align: center; color: #666666; padding: 3rem 0; }
+
+        @media (max-width: 900px) {
+            .spot { grid-template-columns: 140px minmax(0, 1fr); gap: 1.25rem; min-height: 0; }
+            .spot .row-text .quote, .row-text .quote { font-size: 1.25rem; }
+            .spot-shelf { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        .kind-ico { width: 1em; height: 1em; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: -0.12em; }
+
+        /* Layout 0 · spotlight with kind filters */
+        .chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin: 0 auto 2.5rem; }
+        .chip { display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.55rem 1.15rem; border-radius: 50px; border: 1px solid #444444; background-color: #2a2a2a; color: #aaaaaa; font-family: inherit; font-size: 0.9rem; cursor: pointer; transition: all 0.3s; }
+        .chip:hover { border-color: #f5a623; color: #f5a623; }
+        .chip[aria-pressed="true"] { background-color: #f5a623; border-color: #f5a623; color: #1a1a1a; font-weight: 600; }
+
+        /* Layout 1 · inspiration rows, grouped by kind */
+        .kind-group { margin-bottom: 4rem; }
+        .kind-group h2 { display: flex; align-items: center; gap: 0.6rem; max-width: 1000px; margin: 0 auto 2rem; }
+        .insp-rows { display: flex; flex-direction: column; gap: 3rem; max-width: 1000px; margin: 0 auto; }
+        .insp-row { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 2.5rem; align-items: center; }
+        .insp-row:nth-child(even) { grid-template-columns: minmax(0, 1fr) 200px; }
+        .insp-row:nth-child(even) .poster-sm { order: 2; }
+        .insp-row:nth-child(even) .row-text { text-align: right; }
+        .insp-row:nth-child(even) .insp-label { justify-content: flex-end; }
+
+        /* Layout 2 · mood board: pinned covers of mixed shapes, inspiration on hover */
+        .board { column-count: 3; column-gap: 1.25rem; }
+        .pin { position: relative; break-inside: avoid; margin-bottom: 1.25rem; border-radius: 15px; overflow: hidden; border: 1px solid #333333; display: flex; align-items: flex-end; transition: transform 0.3s, box-shadow 0.3s; }
+        .pin:hover { transform: rotate(-0.6deg) translateY(-4px); box-shadow: 0 15px 40px rgba(0,0,0,0.5); }
+        .pin:nth-child(even):hover { transform: rotate(0.6deg) translateY(-4px); }
+        .pin.tall { aspect-ratio: 3/4; } .pin.square { aspect-ratio: 1; } .pin.wide { aspect-ratio: 4/3; }
+        .pin .cover { position: absolute; inset: 0; }
+        .pin .big-initial { position: absolute; top: 0.75rem; left: 1rem; font-size: 4rem; }
+        .pin .kind-tag { position: absolute; top: 0.9rem; right: 0.9rem; display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.25rem 0.7rem; border-radius: 15px; background: rgba(20,20,20,0.75); color: #f5a623; font-size: 0.75rem; font-weight: 600; }
+        .pin-text { position: relative; width: 100%; padding: 3.5rem 1.25rem 1.1rem; background: linear-gradient(to top, rgba(14,14,14,0.95) 0%, rgba(14,14,14,0.75) 60%, rgba(14,14,14,0) 100%); }
+        .pin h3 { font-size: 1.15rem; }
+        .pin .insp { max-height: 0; overflow: hidden; transition: max-height 0.4s; }
+        .pin .insp p { color: #dddddd; font-size: 0.92rem; line-height: 1.5; margin-top: 0.35rem; }
+        .pin .insp .insp-label { margin-top: 0.7rem; }
+        .pin:hover .insp, .pin:focus-within .insp { max-height: 10rem; }
+
+        @media (max-width: 900px) {
+            .board { column-count: 2; }
+            .insp-row, .insp-row:nth-child(even) { grid-template-columns: 120px minmax(0, 1fr); gap: 1.25rem; }
+            .insp-row:nth-child(even) .poster-sm { order: 0; }
+            .insp-row:nth-child(even) .row-text { text-align: left; }
+            .insp-row:nth-child(even) .insp-label { justify-content: flex-start; }
+        }
+        @media (max-width: 520px) {
+            .board { column-count: 1; }
+            .pin .insp { max-height: 10rem; }
+        }
+
+        /* ── MORE ABOUT ME ── */
+        .more-section { text-align: center; padding: 4rem 2rem; background-color: #222222; }
+        .more-section p { color: #aaaaaa; font-size: 1.1rem; margin-bottom: 1.5rem; }
+        .about-link { display: inline-block; padding: 0.85rem 1.75rem; margin: 0.4rem; background-color: #333333; color: #f5a623; text-decoration: none; border: 2px solid #444444; border-radius: 50px; font-weight: 600; transition: all 0.3s; }
+        .about-link:hover { background-color: #f5a623; color: #1a1a1a; border-color: #f5a623; }
+
+        /* ── FOOTER ── */
+        .footer { padding: 2rem; background-color: #1a1a1a; text-align: center; color: #666666; }
+
+        @media (max-width: 768px) {
+            .page-header h1 { font-size: 2.5rem; }
+            .content { padding: 0 1.25rem 4rem; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation: none !important; transition: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-bg" aria-hidden="true"></div>
+
+<nav class="nav">
+    <a href="index.html" class="nav-name">Grigory Tsibulya</a>
+    <a href="index.html#about" class="nav-back">← Portfolio</a>
+</nav>
+
+<header class="page-header">
+    <h1>My Inspiration</h1>
+    <!-- ░░ CHANGE: intro line ░░ -->
+    <p>Films, books, art and places outside of games that shape how I design them.</p>
+
+</header>
+
+<!-- Layout preview switcher: temporary, remove once a layout is chosen -->
+<div class="layout-switcher" role="group" aria-label="Layout preview">
+    <span class="layout-switcher-label">Layout preview</span>
+    <button type="button" class="layout-btn" data-layout="0">0 · Spotlight</button>
+    <button type="button" class="layout-btn" data-layout="1">1 · Inspiration rows</button>
+    <button type="button" class="layout-btn" data-layout="2">2 · Mood board</button>
+</div>
+<p class="example-note">Example entries. Replace them in the list at the top of the script in this file.</p>
+
+<main class="content" id="content"></main>
+
+<section class="more-section">
+    <p>More about me</p>
+    <a href="toolkit.html" class="about-link">My toolkit</a>
+    <a href="favorite-games.html" class="about-link">My favorite games</a>
+</section>
+
+<footer class="footer"><p>&copy; 2026 Grigory Tsibulya. All rights reserved.</p></footer>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════════
+// ░░ CHANGE: your content. Every layout below is drawn from this one list. ░░
+// To use a picture instead of the colour, set image: 'Content/...jpg'
+// ═══════════════════════════════════════════════════════════════════════════
+// Your own pictures: save them in Content/inspiration/ named after the title, e.g. Content/inspiration/spirited-away.jpg
+const COVER_FOLDER = 'Content/inspiration/';
+
+// kind: one of the keys in KINDS below
+// by (optional): author, director, artist
+// shape (mood board only): 'tall', 'square' or 'wide'
+const INSPIRATIONS = [
+    { title: 'Spirited Away',           kind: 'film',   by: 'Hayao Miyazaki',  year: 2001, color: '#2c5f7a', shape: 'tall',   image: '',
+      inspiration: 'A world feels alive when it keeps going about its business, whether or not the hero is looking.' },
+    { title: 'The Art of Game Design',  kind: 'book',   by: 'Jesse Schell',    year: 2008, color: '#8c3b2b', shape: 'square', image: '',
+      inspiration: 'Looking at the same design through many different lenses finds problems a single checklist never would.' },
+    { title: 'Moebius',                 kind: 'art',    by: 'Jean Giraud',     year: '',   color: '#c8913f', shape: 'wide',   image: '',
+      inspiration: 'Clear silhouettes and wide empty spaces can make a small world feel huge.' },
+    { title: 'Jazz jam sessions',       kind: 'music',  by: '',                year: '',   color: '#3a2470', shape: 'square', image: '',
+      inspiration: 'A few shared rules leave lots of room to improvise, and that is what good game systems do too.' },
+    { title: 'Board game cafés',        kind: 'place',  by: '',                year: '',   color: '#2f6b35', shape: 'tall',   image: '',
+      inspiration: 'Watching strangers learn a game in ten minutes is the most honest playtest there is.' },
+    { title: 'Thinking, Fast and Slow', kind: 'book',   by: 'Daniel Kahneman', year: 2011, color: '#2c4170', shape: 'wide',   image: '',
+      inspiration: 'Players decide with their gut first, so design for the quick read and reward the slow one.' },
+    { title: 'Nature documentaries',    kind: 'film',   by: '',                year: '',   color: '#3b6b55', shape: 'tall',   image: '',
+      inspiration: 'Simple survival rules, repeated by many creatures, produce stories nobody scripted.' },
+];
+const KINDS = {
+    film:  { label: 'Films',  icon: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18M3 15h18M8 5v14M16 5v14"/>' },
+    book:  { label: 'Books',  icon: '<path d="M4 4h6a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H4z"/><path d="M20 4h-6a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h6z"/>' },
+    art:   { label: 'Art',    icon: '<path d="M12 3a9 9 0 1 0 0 18c1 0 1.5-.7 1.5-1.5 0-1-.8-1.4-.8-2.3 0-.9.7-1.6 1.6-1.6H17a4 4 0 0 0 4-4C21 6.5 17 3 12 3z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7" r="1"/><circle cx="15" cy="7.5" r="1"/>' },
+    music: { label: 'Music',  icon: '<path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/>' },
+    place: { label: 'Places', icon: '<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>' },
+};
+
+// ── helpers ────────────────────────────────────────────────────────────────
+function esc(str) {
+    return String(str ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+function coverStyle(item) {
+    if (item.image) {
+        const url = String(item.image).replace(/['"\\()]/g, encodeURIComponent);
+        return `background-image:url('${url}');`;
+    }
+    const c = item.color || '#444444';
+    return `background-image:linear-gradient(135deg, rgba(0,0,0,0.55), rgba(0,0,0,0) 70%), linear-gradient(135deg, ${c}, ${c});`;
+}
+
+// ── shared helpers ─────────────────────────────────────────────────────────
+const BULB = '<svg class="bulb" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg>';
+const label = () => `<div class="insp-label">${BULB}Inspiration</div>`;
+const initial = g => g.image ? '' : `<span class="big-initial" aria-hidden="true">${esc(g.title[0])}</span>`;
+
+// ── cover art ──────────────────────────────────────────────────────────────
+// Order tried: a file in COVER_FOLDER named after the title (e.g. Content/games/rimworld.jpg),
+// then the official Steam artwork (steam: <app id>), then imageFallbacks.
+// If nothing loads, the tile keeps its colour. image: '...' always wins.
+let uidCounter = 0;
+const uid = g => g._uid || (g._uid = 'c' + (uidCounter++));
+function steamCandidates(id) {
+    const a = `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${id}/`;
+    const c = `https://cdn.cloudflare.steamstatic.com/steam/apps/${id}/`;
+    return [a + 'library_600x900_2x.jpg', a + 'library_600x900.jpg', c + 'library_600x900.jpg', a + 'header.jpg', c + 'header.jpg'];
+}
+function firstThatLoads(urls) {
+    return new Promise(resolve => {
+        let i = 0;
+        const next = () => {
+            if (i >= urls.length) return resolve(null);
+            const url = urls[i++], img = new Image();
+            img.onload = () => (img.naturalWidth > 1 ? resolve(url) : next());
+            img.onerror = next;
+            img.src = url;
+        };
+        next();
+    });
+}
+const slugify = t => String(t).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+function loadCoverArt(items) {
+    const folder = typeof COVER_FOLDER === 'string' ? COVER_FOLDER : '';
+    items.forEach(g => {
+        if (g.image || g._loading) return;
+        g._loading = true;
+        const local = folder ? ['jpg', 'png', 'webp'].map(ext => `${folder}${slugify(g.title)}.${ext}`) : [];
+        const urls = [...local, ...(g.steam ? steamCandidates(g.steam) : []), ...(g.imageFallbacks || [])];
+        firstThatLoads(urls).then(url => {
+            if (!url) return;
+            g.image = url;
+            document.querySelectorAll(`[data-uid="${uid(g)}"]`).forEach(el => {
+                el.setAttribute('style', coverStyle(g));
+                const letter = el.matches('.poster-sm') ? el.querySelector('.big-initial') : el.parentElement.querySelector('.big-initial');
+                if (letter) letter.remove();
+            });
+        });
+    });
+}
+
+function spotInner(g) {
+    return `
+        <div class="poster-sm cover" data-uid="${uid(g)}" style="${coverStyle(g)}">${initial(g)}</div>
+        <div class="row-text">
+            ${label()}
+            <p class="quote">${esc(g.inspiration)}</p>
+            <div class="who">${esc(g.title)}<span class="meta">${meta(g)}</span></div>
+            ${g.studio ? `<div class="studio">${esc(g.studio)}</div>` : ''}
+        </div>`;
+}
+
+// ── Spotlight ──────────────────────────────────────────────────────────────
+// Featured item changes by itself every SPOT_SECONDS. It pauses while the
+// pointer or keyboard focus is on it, when the tab is hidden, or with the
+// pause button. People who prefer reduced motion start paused.
+const SPOT_SECONDS = 7;
+const PAUSE_SVG = '<svg viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>';
+const PLAY_SVG  = '<svg viewBox="0 0 24 24"><path d="M7 5v14l12-7z"/></svg>';
+let spotTimer = null;
+
+function spotlightHTML(items, hint) {
+    if (!items.length) return `<p class="spot-empty">Nothing here yet.</p>`;
+    return `
+        <div class="spot-block">
+            <div class="spot" aria-live="polite"></div>
+            <div class="spot-shelf">${items.map((g, i) => `
+                <button type="button" class="spot-pick" data-index="${i}" aria-pressed="false">
+                    <span class="cover" data-uid="${uid(g)}" style="${coverStyle(g)}"></span>
+                    ${initial(g)}
+                    <span class="pick-text">${esc(g.title)}</span>
+                    <span class="pick-bar"></span>
+                </button>`).join('')}
+            </div>
+            <div class="spot-controls">
+                <button type="button" class="spot-pause"></button>
+                <span>${esc(hint)}</span>
+            </div>
+        </div>`;
+}
+
+function startSpotlight(block, items) {
+    stopSpotlight();
+    if (!block || !items.length) return;
+    const spot = block.querySelector('.spot');
+    const picks = [...block.querySelectorAll('.spot-pick')];
+    const pauseBtn = block.querySelector('.spot-pause');
+    let index = 0, elapsed = 0, hovering = false;
+    let paused = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function show(i) {
+        index = (i + items.length) % items.length;
+        elapsed = 0;
+        spot.classList.remove('swap');
+        void spot.offsetWidth; // restart the fade
+        spot.innerHTML = spotInner(items[index]);
+        spot.classList.add('swap');
+        picks.forEach((p, k) => {
+            p.classList.toggle('active', k === index);
+            p.setAttribute('aria-pressed', k === index ? 'true' : 'false');
+            p.querySelector('.pick-bar').style.width = '0';
+        });
+    }
+    function updatePauseButton() {
+        pauseBtn.innerHTML = paused ? PLAY_SVG : PAUSE_SVG;
+        pauseBtn.setAttribute('aria-label', paused ? 'Resume auto-play' : 'Pause auto-play');
+        pauseBtn.title = paused ? 'Resume auto-play' : 'Pause auto-play';
+    }
+
+    picks.forEach((p, k) => p.addEventListener('click', () => show(k)));
+    pauseBtn.addEventListener('click', () => { paused = !paused; updatePauseButton(); });
+    block.addEventListener('mouseenter', () => hovering = true);
+    block.addEventListener('mouseleave', () => hovering = false);
+    block.addEventListener('focusin',   () => hovering = true);
+    block.addEventListener('focusout',  () => hovering = false);
+
+    updatePauseButton();
+    show(0);
+    loadCoverArt(items);
+    spotTimer = setInterval(() => {
+        if (paused || hovering || document.hidden || items.length < 2) return;
+        elapsed += 100;
+        picks[index].querySelector('.pick-bar').style.width = Math.min(100, elapsed / (SPOT_SECONDS * 10)) + '%';
+        if (elapsed >= SPOT_SECONDS * 1000) show(index + 1);
+    }, 100);
+}
+function stopSpotlight() { clearInterval(spotTimer); spotTimer = null; }
+function beforeRender() { stopSpotlight(); }
+
+const kindIcon = k => KINDS[k] ? `<svg class="kind-ico" viewBox="0 0 24 24" aria-hidden="true">${KINDS[k].icon}</svg>` : '';
+const kindName = k => KINDS[k] ? KINDS[k].label.replace(/s$/, '') : '';
+const meta = g => [kindName(g.kind), g.by, g.year].filter(Boolean).map(esc).join(' · ');
+const kindsInUse = () => Object.keys(KINDS).filter(k => INSPIRATIONS.some(g => g.kind === k));
+
+const LAYOUTS = [
+    // 0 · Spotlight: featured inspiration, filter by kind
+    () => `
+        <div class="chips" role="group" aria-label="Filter">
+            <button type="button" class="chip" data-kind="all" aria-pressed="true">All</button>
+            ${kindsInUse().map(k => `<button type="button" class="chip" data-kind="${k}" aria-pressed="false">${kindIcon(k)}${esc(KINDS[k].label)}</button>`).join('')}
+        </div>
+        <div id="spot-wrap"></div>`,
+
+    // 1 · Inspiration rows: grouped by kind, sides alternate
+    () => kindsInUse().map(k => `
+        <section class="kind-group">
+            <h2>${kindIcon(k)}${esc(KINDS[k].label)}</h2>
+            <div class="insp-rows">${INSPIRATIONS.filter(g => g.kind === k).map(g => `
+                <article class="insp-row">
+                    <div class="poster-sm cover" data-uid="${uid(g)}" style="${coverStyle(g)}">${initial(g)}</div>
+                    <div class="row-text">
+                        ${label()}
+                        <p class="quote">${esc(g.inspiration)}</p>
+                        <div class="who">${esc(g.title)}<span class="meta">${meta(g)}</span></div>
+                    </div>
+                </article>`).join('')}
+            </div>
+        </section>`).join(''),
+
+    // 2 · Mood board: pinned covers, hover one for the inspiration
+    () => `<div class="board">${INSPIRATIONS.map(g => `
+        <article class="pin ${esc(g.shape || 'square')}" tabindex="0">
+            <div class="cover" data-uid="${uid(g)}" style="${coverStyle(g)}"></div>
+            ${initial(g)}
+            <span class="kind-tag">${kindIcon(g.kind)}${esc(kindName(g.kind))}</span>
+            <div class="pin-text">
+                <h3>${esc(g.title)}</h3>
+                <div class="meta">${[g.by, g.year].filter(Boolean).map(esc).join(' · ')}</div>
+                <div class="insp">${label()}<p>${esc(g.inspiration)}</p></div>
+            </div>
+        </article>`).join('')}</div>`,
+];
+
+function showKind(kind) {
+    document.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', c.dataset.kind === kind ? 'true' : 'false'));
+    const items = kind === 'all' ? INSPIRATIONS : INSPIRATIONS.filter(g => g.kind === kind);
+    const wrap = document.getElementById('spot-wrap');
+    wrap.innerHTML = spotlightHTML(items, 'Pick one to see what I take from it.');
+    startSpotlight(wrap.querySelector('.spot-block'), items);
+}
+
+function afterRender(n) {
+    loadCoverArt(INSPIRATIONS);
+    if (n !== 0) return;
+    document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => showKind(c.dataset.kind)));
+    showKind('all');
+}
+
+// ── layout switching ───────────────────────────────────────────────────────
+const LAYOUT_KEY = 'inspirationLayout';
+function setLayout(n) {
+    if (!LAYOUTS[n]) n = 0;
+    const content = document.getElementById('content');
+    if (typeof beforeRender === 'function') beforeRender();
+    content.className = 'content layout-' + n;
+    content.innerHTML = LAYOUTS[n]();
+    if (typeof afterRender === 'function') afterRender(n);
+    document.querySelectorAll('.layout-btn').forEach(btn => {
+        const on = Number(btn.dataset.layout) === n;
+        btn.classList.toggle('active', on);
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+    try { localStorage.setItem(LAYOUT_KEY, String(n)); } catch (e) {}
+}
+document.querySelectorAll('.layout-btn').forEach(btn => {
+    btn.addEventListener('click', () => setLayout(Number(btn.dataset.layout)));
+});
+(function () {
+    const fromUrl = new URLSearchParams(location.search).get('layout');
+    let saved = null;
+    try { saved = localStorage.getItem(LAYOUT_KEY); } catch (e) {}
+    setLayout(Number(fromUrl ?? saved ?? 0));
+})();
+</script>
+</body>
+</html>

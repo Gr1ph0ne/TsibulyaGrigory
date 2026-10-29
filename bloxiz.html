@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloxiz – Grigory Tsibulya</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #1a1a1a; color: #ffffff; }
+
+        /* ── NAV ── */
+        .nav { position: sticky; top: 0; z-index: 100; background: rgba(26,26,26,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid #2e2e2e; padding: 1.2rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+        .nav-name { font-size: 1.1rem; font-weight: 700; background: linear-gradient(135deg, #f5a623, #e67e22); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-decoration: none; }
+        .nav-back { display: inline-block; padding: 0.6rem 1.5rem; background: transparent; border: 2px solid #f5a623; color: #f5a623; text-decoration: none; border-radius: 50px; font-weight: 600; font-size: 0.9rem; transition: transform 0.3s, box-shadow 0.3s, background 0.3s; }
+        .nav-back:hover { background: rgba(245,166,35,0.1); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245,166,35,0.25); }
+
+        /* ── HERO ── */
+        .hero { min-height: 70vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; padding: 2rem; text-align: center; }
+        .hero-bg { position: absolute; inset: 0; z-index: 1; background: linear-gradient(135deg, #0d1a2e, #1a1a1a); }
+        .hero-bg img { width: 100%; height: 100%; object-fit: cover; filter: blur(10px) brightness(0.35); }
+        .hero-overlay { position: absolute; inset: 0; z-index: 2; background: linear-gradient(135deg, rgba(26,26,26,0.6) 0%, rgba(42,42,42,0.4) 100%); }
+        .hero-content { position: relative; z-index: 3; max-width: 860px; }
+        .hero-status { display: inline-block; background-color: #333333; color: #f5a623; padding: 0.4rem 1.2rem; border-radius: 50px; font-size: 0.85rem; font-weight: 600; margin-bottom: 1.5rem; }
+        .hero h1 { font-size: clamp(3rem, 7vw, 5.5rem); margin-bottom: 1.25rem; background: linear-gradient(135deg, #f5a623, #e67e22); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1.05; }
+        .hero .pitch { font-size: 1.35rem; color: #eeeeee; line-height: 1.7; max-width: 640px; margin: 0 auto 2.5rem; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        .hero-tags { display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center; }
+        .hero-tag { background-color: #333333; padding: 0.4rem 1rem; border-radius: 15px; font-size: 0.85rem; color: #f5a623; border: 1px solid #444444; }
+        .hero-scroll-btn { display: inline-block; padding: 0.9rem 2.5rem; background: linear-gradient(135deg, #f5a623, #e67e22); color: white; border: none; border-radius: 50px; font-weight: 600; font-size: 1rem; font-family: inherit; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; }
+        .hero-scroll-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(245,166,35,0.4); }
+
+        /* ── SHARED SECTION ── */
+        .section { padding: 5rem 2rem; }
+        .section:nth-child(odd)  { background-color: #1a1a1a; }
+        .section:nth-child(even) { background-color: #222222; }
+        .section-inner { max-width: 1100px; margin: 0 auto; }
+        .section h2 { font-size: 2.8rem; margin-bottom: 2.5rem; color: #f5a623; text-align: center; }
+
+        /* ── GALLERY ── */
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; }
+        .gallery-item { border-radius: 12px; overflow: hidden; background-color: #252525; border: 1px solid #333333; aspect-ratio: 16/9; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; position: relative; }
+        .gallery-item:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.5); }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .gallery-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: #555555; font-size: 0.85rem; }
+        .gallery-placeholder span { font-size: 2rem; }
+        .gallery-item.video-item::after { content: '▶'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: rgba(255,255,255,0.85); background: rgba(0,0,0,0.25); transition: background 0.3s; }
+        .gallery-item.video-item:hover::after { background: rgba(0,0,0,0.1); }
+
+        /* Lightbox */
+        .lightbox { display: none; position: fixed; inset: 0; z-index: 500; background: rgba(0,0,0,0.92); align-items: center; justify-content: center; padding: 2rem; }
+        .lightbox.open { display: flex; animation: fadeIn 0.25s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .lightbox-inner { max-width: 1100px; width: 100%; position: relative; }
+        .lightbox-inner img { width: 100%; border-radius: 10px; max-height: 80vh; object-fit: contain; display: block; }
+        .lightbox-close { position: absolute; top: -2.5rem; right: 0; background: none; border: none; color: #aaaaaa; font-size: 1.8rem; cursor: pointer; transition: color 0.2s; line-height: 1; }
+        .lightbox-close:hover { color: #ffffff; }
+        .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.6); border: 1px solid #444; color: #ffffff; border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; transition: background 0.2s; }
+        .lightbox-nav:hover { background: rgba(245,166,35,0.3); border-color: #f5a623; }
+        .lightbox-prev { left: -56px; }
+        .lightbox-next { right: -56px; }
+
+        /* ── ABOUT ── */
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+        .about-text p { font-size: 1.1rem; color: #cccccc; line-height: 1.8; margin-bottom: 1rem; }
+        .about-text h3 { font-size: 1.4rem; color: #f5a623; margin: 1.5rem 0 0.6rem; }
+        .about-text ul { padding-left: 1.5rem; color: #cccccc; line-height: 1.8; }
+        .about-text li { margin-bottom: 0.4rem; }
+        .about-text strong { color: #ffffff; }
+
+        .feature-list { list-style: none; padding: 0; }
+        .feature-list li { padding: 0.9rem 1.2rem; margin-bottom: 0.6rem; background-color: #252525; border: 1px solid #333333; border-radius: 10px; color: #cccccc; font-size: 1rem; line-height: 1.5; display: flex; align-items: flex-start; gap: 0.75rem; }
+        .feature-list li::before { content: '→'; color: #f5a623; flex-shrink: 0; font-weight: 700; }
+
+        /* ── LOOP DIAGRAM ── */
+        .loop-diagram { display: flex; align-items: center; justify-content: center; gap: 0; flex-wrap: wrap; margin: 2rem 0; }
+        .loop-step { background-color: #252525; border: 2px solid #f5a623; border-radius: 12px; padding: 1.25rem 1.75rem; text-align: center; min-width: 160px; }
+        .loop-step .step-label { font-size: 0.75rem; color: #f5a623; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.4rem; }
+        .loop-step .step-title { font-size: 1.2rem; font-weight: 700; color: #ffffff; }
+        .loop-step .step-desc { font-size: 0.85rem; color: #aaaaaa; margin-top: 0.3rem; line-height: 1.4; }
+        .loop-arrow { color: #f5a623; font-size: 1.8rem; padding: 0 0.5rem; }
+
+        /* ── MECHANICS GRID ── */
+        .mechanics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem; }
+        .mechanic-card { background-color: #252525; border: 1px solid #333333; border-radius: 12px; padding: 1.25rem; text-align: center; transition: border-color 0.3s, transform 0.3s; }
+        .mechanic-card:hover { border-color: #f5a623; transform: translateY(-3px); }
+        .mechanic-card .mc-icon { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .mechanic-card h4 { font-size: 1rem; font-weight: 700; color: #ffffff; margin-bottom: 0.4rem; }
+        .mechanic-card p { font-size: 0.85rem; color: #aaaaaa; line-height: 1.5; }
+
+        /* ── STATS ROW ── */
+        .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin: 2rem 0; }
+        .stat-card { background-color: #252525; border: 1px solid #333333; border-radius: 12px; padding: 1.25rem; text-align: center; }
+        .stat-card .stat-value { font-size: 2rem; font-weight: 700; background: linear-gradient(135deg, #f5a623, #e67e22); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .stat-card .stat-label { font-size: 0.8rem; color: #aaaaaa; margin-top: 0.25rem; text-transform: uppercase; letter-spacing: 0.08em; }
+
+        /* ── DEVLOG ── */
+        .devlog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }
+        .devlog-card { background-color: #252525; border: 1px solid #333333; border-radius: 12px; padding: 1.5rem; position: relative; overflow: hidden; transition: border-color 0.3s, transform 0.3s; }
+        .devlog-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(135deg, #f5a623, #e67e22); }
+        .devlog-card:hover { border-color: #444; transform: translateY(-3px); }
+        .devlog-card .devlog-stage { display: inline-block; background-color: #333333; color: #f5a623; padding: 0.2rem 0.8rem; border-radius: 15px; font-size: 0.78rem; font-weight: 600; margin-bottom: 0.75rem; }
+        .devlog-card h3 { font-size: 1.05rem; font-weight: 700; color: #ffffff; margin-bottom: 0.6rem; }
+        .devlog-card p { font-size: 0.9rem; color: #aaaaaa; line-height: 1.6; }
+
+        /* ── DOWNLOAD ── */
+        .download-section { text-align: center; }
+        .download-btn-wrap { margin-bottom: 3rem; }
+        .download-btn { display: inline-flex; align-items: center; gap: 0.75rem; padding: 1.1rem 3rem; background: linear-gradient(135deg, #f5a623, #e67e22); color: white; text-decoration: none; border-radius: 50px; font-weight: 700; font-size: 1.1rem; font-family: inherit; border: none; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; }
+        .download-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(245,166,35,0.45); }
+        .download-btn svg { width: 20px; height: 20px; stroke: currentColor; fill: none; flex-shrink: 0; }
+        .download-unavailable { display: inline-flex; align-items: center; gap: 0.75rem; padding: 1.1rem 3rem; background: transparent; border: 2px solid #444444; color: #666666; border-radius: 50px; font-weight: 700; font-size: 1.1rem; cursor: not-allowed; }
+        .install-card { max-width: 680px; margin: 0 auto; background-color: #252525; border: 1px solid #333333; border-radius: 15px; padding: 2rem; text-align: left; }
+        .install-card h3 { font-size: 1.2rem; color: #f5a623; margin-bottom: 1.2rem; }
+        .install-steps { list-style: none; padding: 0; counter-reset: steps; }
+        .install-steps li { counter-increment: steps; display: flex; gap: 1rem; align-items: flex-start; padding: 0.75rem 0; border-bottom: 1px solid #2e2e2e; color: #cccccc; font-size: 0.95rem; }
+        .install-steps li:last-child { border-bottom: none; padding-bottom: 0; }
+        .install-steps li::before { content: counter(steps); background: linear-gradient(135deg, #f5a623, #e67e22); color: white; border-radius: 50%; width: 26px; height: 26px; min-width: 26px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; }
+
+        /* ── MORE ABOUT ── */
+        .more-section { text-align: center; padding: 5rem 2rem; background-color: #222222; }
+        .more-section p { color: #aaaaaa; font-size: 1.1rem; margin-bottom: 2rem; }
+        .cta-button { display: inline-block; padding: 1rem 2.5rem; background: linear-gradient(135deg, #f5a623, #e67e22); color: white; text-decoration: none; border-radius: 50px; font-weight: 600; transition: transform 0.3s, box-shadow 0.3s; margin: 0.5rem; }
+        .cta-button:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(245,166,35,0.4); }
+        .cta-button.secondary { background: transparent; border: 2px solid #f5a623; color: #f5a623; }
+        .cta-button.secondary:hover { background: rgba(245,166,35,0.1); }
+
+        /* ── FOOTER ── */
+        .footer { padding: 2rem; background-color: #1a1a1a; text-align: center; color: #666666; }
+
+        @media (max-width: 900px) {
+            .about-grid { grid-template-columns: 1fr; }
+            .lightbox-prev { left: 0.5rem; }
+            .lightbox-next { right: 0.5rem; }
+            .loop-arrow { display: none; }
+            .loop-diagram { gap: 0.75rem; }
+        }
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 2.6rem; }
+            .gallery-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="nav">
+    <a href="index.html" class="nav-name">Grigory Tsibulya</a>
+    <a href="index.html#projects" class="nav-back">← Portfolio</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-bg">
+        <!-- ░░ CHANGE: key art (currently the project card image) ░░ -->
+        <img src="Content/games/Bloxiz.png" alt="Bloxiz key art">
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <span class="hero-status">02/2025 – 05/2025</span>
+        <h1>Bloxiz</h1>
+        <!-- ░░ CHANGE: one-sentence pitch ░░ -->
+        <p class="pitch">Description coming soon.</p>
+        <div class="hero-tags">
+            <span class="hero-tag">Unity</span>
+            <span class="hero-tag">Mobile</span>
+            <span class="hero-tag">Strategy</span>
+        </div>
+        <div style="margin-top:2rem;">
+            <button onclick="document.getElementById('download-section').scrollIntoView({behavior:'smooth',block:'start'})" class="hero-scroll-btn">
+                ↓ Download
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- GALLERY -->
+<section class="section">
+    <div class="section-inner">
+        <h2>Gallery</h2>
+        <div class="gallery-grid" id="gallery-grid">
+            <div class="gallery-item" onclick="openLightbox(0)">
+                <div class="gallery-placeholder"><span>🖼</span>Screenshot coming soon</div>
+            </div>
+            <div class="gallery-item" onclick="openLightbox(1)">
+                <div class="gallery-placeholder"><span>🖼</span>Screenshot coming soon</div>
+            </div>
+            <div class="gallery-item video-item" style="cursor:default;">
+                <div class="gallery-placeholder"><span>▶</span>Gameplay video coming soon</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ABOUT -->
+<section class="section">
+    <div class="section-inner">
+        <h2>About the Game</h2>
+        <div class="about-text" style="max-width:720px; margin:0 auto;">
+            <!-- ░░ CHANGE: full description ░░ -->
+            <p>Coming soon.</p>
+        </div>
+    </div>
+</section>
+
+<!-- CURRENT STATE -->
+<section class="section">
+    <div class="section-inner">
+        <h2>Current State</h2>
+        <div class="about-grid">
+            <div class="about-text">
+                <!-- ░░ CHANGE: current state, your role, what you learned ░░ -->
+                <p>Coming soon.</p>
+
+                <!-- ░░ CHANGE: tech list, e.g.
+                <h3>Tech</h3>
+                <ul>
+                    <li>Engine: Unity</li>
+                </ul>
+                ░░ -->
+            </div>
+            <div>
+                <!-- ░░ CHANGE: highlights, one <li> per point ░░ -->
+                <ul class="feature-list"></ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- DOWNLOAD -->
+<section class="section download-section" id="download-section">
+    <div class="section-inner">
+        <h2>Download</h2>
+        <div class="download-btn-wrap">
+            <!-- ░░ CHANGE: path to the build (or a link to the itch.io page) ░░ -->
+            <a href="Content/builds/Bloxiz.zip" class="download-btn" download>
+                <svg viewBox="0 0 24 24" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
+                Download Build
+            </a>
+        </div>
+        <div class="install-card">
+            <h3>How to install (when available)</h3>
+            <!-- ░░ CHANGE: install steps, one <li> per step ░░ -->
+            <ol class="install-steps">
+                <li>Coming soon.</li>
+            </ol>
+        </div>
+    </div>
+</section>
+
+<!-- MORE ABOUT -->
+<section class="more-section">
+    <!-- ░░ CHANGE: closing line ░░ -->
+    <p>Want to read more about how this game was made?</p>
+    <a href="blog.html?tag=Bloxiz" class="cta-button" id="blog-link">More about the game</a>
+    <a href="index.html#projects" class="cta-button secondary">Back to Projects</a>
+</section>
+
+<footer class="footer"><p>&copy; 2026 Grigory Tsibulya. All rights reserved.</p></footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+    <div class="lightbox-inner">
+        <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+        <button class="lightbox-nav lightbox-prev" onclick="shiftLightbox(-1)">‹</button>
+        <button class="lightbox-nav lightbox-next" onclick="shiftLightbox(1)">›</button>
+        <div id="lightbox-content"></div>
+    </div>
+</div>
+
+<script>
+const galleryMedia = [
+    { type: 'image', src: '', alt: 'Bloxiz screenshot 1' },
+    { type: 'image', src: '', alt: 'Bloxiz screenshot 2' },
+];
+let currentMedia = 0;
+
+function openLightbox(index) {
+    const m = galleryMedia[index];
+    if (!m || (!m.src && m.type !== 'youtube')) return;
+    currentMedia = index;
+    renderLightboxContent();
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+    document.getElementById('lightbox-content').innerHTML = '';
+}
+function shiftLightbox(dir) {
+    currentMedia = (currentMedia + dir + galleryMedia.length) % galleryMedia.length;
+    renderLightboxContent();
+}
+function renderLightboxContent() {
+    const m = galleryMedia[currentMedia];
+    const box = document.getElementById('lightbox-content');
+    if (m.type === 'image') {
+        box.innerHTML = `<img src="${m.src}" alt="${m.alt || ''}">`;
+    } else if (m.type === 'youtube') {
+        box.innerHTML = `<div style="position:relative;padding-bottom:56.25%;height:0;"><iframe src="https://www.youtube.com/embed/${m.id}?autoplay=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:10px;"></iframe></div>`;
+    } else if (m.type === 'video') {
+        box.innerHTML = `<video src="${m.src}" controls autoplay style="border-radius:10px;width:100%;"></video>`;
+    }
+}
+document.getElementById('lightbox').addEventListener('click', e => { if (e.target === document.getElementById('lightbox')) closeLightbox(); });
+document.addEventListener('keydown', e => {
+    if (!document.getElementById('lightbox').classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') shiftLightbox(-1);
+    if (e.key === 'ArrowRight') shiftLightbox(1);
+});
+</script>
+</body>
+</html>

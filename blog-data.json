@@ -48,7 +48,43 @@
       "title": "Read Me",
       "status": "Prototyping",
       "description": "Read Me - is a small game built around prediction mechanic. You and your friend are trapped on a tiny battle field with limited amount of actions. Try to outsmart your opponent and build an unforeseen strategy",
-      "pageUrl": "read-me.html"
+      "pageUrl": "read-me.html",
+      "image": ""
+    },
+    {
+      "title": "Unnamed Evolution Board Game",
+      "status": "",
+      "description": "",
+      "pageUrl": "unnamed-evolution-board-game.html",
+      "image": ""
+    },
+    {
+      "title": "Unnamed Strategy Game",
+      "status": "",
+      "description": "",
+      "pageUrl": "unnamed-strategy-game.html",
+      "image": ""
+    },
+    {
+      "title": "Warehouse Manager Simulator",
+      "status": "",
+      "description": "",
+      "pageUrl": "warehouse-manager-simulator.html",
+      "image": ""
+    },
+    {
+      "title": "Gravitational Waves Detector Game",
+      "status": "",
+      "description": "",
+      "pageUrl": "gravitational-waves-detector-game.html",
+      "image": ""
+    },
+    {
+      "title": "Unnamed Social Game",
+      "status": "",
+      "description": "",
+      "pageUrl": "unnamed-social-game.html",
+      "image": ""
     }
   ]
 }

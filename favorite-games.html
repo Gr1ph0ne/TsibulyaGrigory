@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Favorite Games – Grigory Tsibulya</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #1a1a1a; color: #ffffff; }
+
+        /* ── NAV ── */
+        .nav { position: sticky; top: 0; z-index: 100; background: rgba(26,26,26,0.75); backdrop-filter: blur(10px); border-bottom: 1px solid #2e2e2e; padding: 1.2rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+        .nav-name { font-size: 1.1rem; font-weight: 700; background: linear-gradient(135deg, #f5a623, #e67e22); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-decoration: none; }
+        .nav-back { display: inline-block; padding: 0.6rem 1.5rem; background: transparent; border: 2px solid #f5a623; color: #f5a623; text-decoration: none; border-radius: 50px; font-weight: 600; font-size: 0.9rem; transition: transform 0.3s, box-shadow 0.3s, background 0.3s; }
+        .nav-back:hover { background: rgba(245,166,35,0.1); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245,166,35,0.25); }
+
+        /* ── TOP BACKGROUND (colour/pattern per page, fades into the grey) ── */
+        .page-bg { position: absolute; top: 0; left: 0; right: 0; height: 720px; z-index: 0; pointer-events: none;
+                   -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 30%, transparent 100%);
+                           mask-image: linear-gradient(to bottom, #000 0%, #000 30%, transparent 100%); }
+        .page-header, .layout-switcher, .example-note, .content { position: relative; z-index: 1; }
+
+        /* ── HEADER ── */
+        .page-header { padding: 5rem 2rem 2.5rem; text-align: center; }
+        .page-header h1 { font-size: 3.5rem; margin-bottom: 1rem; background: linear-gradient(135deg, #f5a623, #e67e22); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .page-header p { font-size: 1.2rem; color: #cccccc; line-height: 1.8; max-width: 640px; margin: 0 auto; }
+
+        /* ── LAYOUT PREVIEW (temporary) ── */
+        .layout-switcher { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0.5rem; margin: 0 auto 1rem; padding: 0 2rem; }
+        .layout-switcher-label { color: #888888; font-size: 0.9rem; margin-right: 0.5rem; }
+        .layout-btn { background-color: #333333; border: 1px solid #444444; color: #aaaaaa; border-radius: 50px; padding: 0.45rem 1.1rem; font-size: 0.85rem; font-family: inherit; cursor: pointer; transition: all 0.3s; }
+        .layout-btn:hover, .layout-btn.active { background-color: #f5a623; border-color: #f5a623; color: #1a1a1a; font-weight: 600; }
+        .layout-btn:focus-visible, a:focus-visible { outline: 2px solid #f5a623; outline-offset: 3px; }
+        .example-note { text-align: center; color: #777777; font-size: 0.9rem; margin: 0 auto 3rem; padding: 0 2rem; }
+
+        /* ── CONTENT ── */
+        .content { max-width: 1100px; margin: 0 auto; padding: 0 2rem 5rem; }
+        .content h2 { font-size: 1.6rem; color: #f5a623; margin: 0 0 1.25rem; }
+        .cover { background-color: #333333; background-size: cover; background-position: center; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        .content > * { animation: fadeInUp 0.4s ease-out both; }
+
+        /* top background: arcade glow with pixel checker and scanlines */
+        .page-bg { background:
+            repeating-linear-gradient(0deg, rgba(0,0,0,0.22) 0 2px, transparent 2px 4px),
+            repeating-conic-gradient(rgba(255,255,255,0.05) 0 25%, transparent 0 50%) 0 0 / 32px 32px,
+            radial-gradient(ellipse 55% 80% at 18% 0%, rgba(255,60,170,0.45), transparent 70%),
+            radial-gradient(ellipse 55% 80% at 85% 5%, rgba(70,120,255,0.45), transparent 70%),
+            linear-gradient(180deg, #2a1040 0%, #221532 45%, #1a1a1a 100%); }
+
+        /* ── shared: inspiration label, covers, quote text ── */
+        .bulb { width: 1.1em; height: 1.1em; stroke: #f5a623; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: -0.18em; flex-shrink: 0; }
+        .insp-label { display: flex; align-items: center; gap: 0.45rem; color: #f5a623; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.03em; }
+        .meta { color: #888888; font-size: 0.85rem; }
+        .big-initial { font-weight: 800; color: rgba(255,255,255,0.14); line-height: 1; }
+        .poster-sm { position: relative; aspect-ratio: 3/4; border-radius: 15px; overflow: hidden; border: 1px solid #333333; }
+        .poster-sm .big-initial { position: absolute; top: 0.75rem; left: 1rem; font-size: 4.5rem; }
+        .row-text .quote { font-size: 1.6rem; line-height: 1.45; color: #ffffff; margin: 0.75rem 0 1rem; }
+        .row-text .who { font-size: 1.05rem; font-weight: 600; color: #dddddd; }
+        .row-text .who .meta { font-weight: 400; margin-left: 0.5rem; }
+        .row-text .studio { color: #aaaaaa; font-size: 0.9rem; margin-top: 0.2rem; }
+
+        /* ── Spotlight: one item featured, shelf below picks which, auto-advances ── */
+        .spot { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 2.5rem; align-items: center; max-width: 1000px; margin: 0 auto 2.5rem; min-height: 347px; }
+        .spot .poster-sm { box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .spot .row-text .quote { font-size: 1.9rem; }
+        .spot.swap > * { animation: fadeInUp 0.35s ease-out both; }
+        .spot-shelf { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 92px)); justify-content: center; gap: 0.75rem; max-width: 1040px; margin: 0 auto; }
+        .spot-pick { position: relative; aspect-ratio: 3/4; border-radius: 12px; overflow: hidden; display: flex; align-items: flex-end; border: 2px solid #333333; padding: 0; cursor: pointer; font-family: inherit; color: #ffffff; text-align: left; background: #252525; transition: transform 0.3s, border-color 0.3s, opacity 0.3s; opacity: 0.65; }
+        .spot-pick:hover { transform: translateY(-4px); opacity: 1; }
+        .spot-pick.active { border-color: #f5a623; opacity: 1; }
+        .spot-pick:focus-visible { outline: 2px solid #f5a623; outline-offset: 3px; }
+        .spot-pick .cover { position: absolute; inset: 0; }
+        .spot-pick .big-initial { position: absolute; top: 0.5rem; left: 0.7rem; font-size: 2.6rem; }
+        .spot-pick .pick-text { position: relative; width: 100%; padding: 2rem 0.6rem 0.8rem; background: linear-gradient(to top, rgba(14,14,14,0.95), rgba(14,14,14,0)); font-size: 0.82rem; font-weight: 600; line-height: 1.25; }
+        .spot-pick .pick-bar { position: absolute; left: 0; bottom: 0; height: 3px; width: 0; background: linear-gradient(90deg, #f5a623, #e67e22); }
+        .spot-controls { display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-top: 1.25rem; color: #777777; font-size: 0.85rem; }
+        .spot-pause { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #444444; background: #2a2a2a; color: #cccccc; cursor: pointer; transition: all 0.3s; }
+        .spot-pause:hover { border-color: #f5a623; color: #f5a623; }
+        .spot-pause svg { width: 14px; height: 14px; fill: currentColor; }
+        .spot-empty { text-align: center; color: #666666; padding: 3rem 0; }
+
+        @media (max-width: 900px) {
+            .spot { grid-template-columns: 140px minmax(0, 1fr); gap: 1.25rem; min-height: 0; }
+            .spot .row-text .quote, .row-text .quote { font-size: 1.25rem; }
+            .spot-shelf { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        /* tabs */
+        .tabs { display: flex; justify-content: center; gap: 0.5rem; margin: 0 auto 2rem; }
+        .tab { display: inline-flex; align-items: center; gap: 0.6rem; padding: 0.8rem 1.6rem; border-radius: 50px; border: 2px solid #444444; background-color: #2a2a2a; color: #aaaaaa; font-family: inherit; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+        .tab:hover { border-color: #f5a623; color: #f5a623; }
+        .tab[aria-selected="true"] { background: linear-gradient(135deg, #f5a623, #e67e22); border-color: transparent; color: #1a1a1a; }
+        .tab svg, .steam-link svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+        .tab-panel { animation: fadeInUp 0.35s ease-out both; }
+
+        /* Steam link (video games tab only) */
+        .steam-row { text-align: center; margin: -0.5rem 0 2.5rem; }
+        .steam-link { display: inline-flex; align-items: center; gap: 0.6rem; padding: 0.6rem 1.4rem; border-radius: 50px; border: 2px solid #444444; background-color: #252525; color: #f5a623; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: all 0.3s; }
+        .steam-link:hover { border-color: #f5a623; background-color: #f5a623; color: #1a1a1a; transform: translateY(-2px); }
+
+        @media (max-width: 520px) {
+            .tab { padding: 0.7rem 1.1rem; font-size: 0.92rem; }
+        }
+
+        /* ── MORE ABOUT ME ── */
+        .more-section { text-align: center; padding: 4rem 2rem; background-color: #222222; }
+        .more-section p { color: #aaaaaa; font-size: 1.1rem; margin-bottom: 1.5rem; }
+        .about-link { display: inline-block; padding: 0.85rem 1.75rem; margin: 0.4rem; background-color: #333333; color: #f5a623; text-decoration: none; border: 2px solid #444444; border-radius: 50px; font-weight: 600; transition: all 0.3s; }
+        .about-link:hover { background-color: #f5a623; color: #1a1a1a; border-color: #f5a623; }
+
+        /* ── FOOTER ── */
+        .footer { padding: 2rem; background-color: #1a1a1a; text-align: center; color: #666666; }
+
+        @media (max-width: 768px) {
+            .page-header h1 { font-size: 2.5rem; }
+            .content { padding: 0 1.25rem 4rem; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation: none !important; transition: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-bg" aria-hidden="true"></div>
+
+<nav class="nav">
+    <a href="index.html" class="nav-name">Grigory Tsibulya</a>
+    <a href="index.html#about" class="nav-back">← Portfolio</a>
+</nav>
+
+<header class="page-header">
+    <h1>My Favorite Games</h1>
+    <!-- ░░ CHANGE: intro line ░░ -->
+    <p>The games I keep coming back to, and the ideas I take from them into my own designs.</p>
+
+</header>
+
+
+<main class="content" id="content"></main>
+
+<section class="more-section">
+    <p>More about me</p>
+    <a href="toolkit.html" class="about-link">My toolkit</a>
+</section>
+
+<footer class="footer"><p>&copy; 2026 Grigory Tsibulya. All rights reserved.</p></footer>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════════
+// ░░ CHANGE: your content. Every layout below is drawn from this one list. ░░
+// To use a picture instead of the colour, set image: 'Content/...jpg'
+// ═══════════════════════════════════════════════════════════════════════════
+// Your own pictures: save them in Content/favorite-games/ named after the title, e.g. Content/favorite-games/rimworld.jpg
+const COVER_FOLDER = 'Content/favorite-games/';
+
+// ░░ CHANGE: your Steam profile link (leave empty '' to hide the button) ░░
+const STEAM_URL = 'https://steamcommunity.com/id/YOUR-PROFILE/';
+
+// inspiration: what you take from the game into your own designs. Order = order on the page.
+// studio: shown under the game's name
+// steam: the game's Steam app id, used to load its official cover art.
+// image: your own picture, e.g. 'Content/games/minecraft.jpg' (used instead of Steam when set).
+// imageFallbacks: web addresses of box art, tried in order (board games use shop/publisher images).
+// Minecraft isn't on Steam, so it needs an image of its own.
+const GAMES = {
+    video: [
+        { title: 'Civilization VI', studio: 'Firaxis Games',  year: 2016, genre: '4X strategy',           color: '#2c5f7a', steam: 289070, image: '',
+          inspiration: 'Districts turn the map into a puzzle: where you build matters as much as what you build.' },
+        { title: 'Among Us', studio: 'Innersloth',         year: 2018, genre: 'Social deduction',      color: '#a8433f', steam: 945360, image: '',
+          inspiration: 'Hidden information between players can carry a whole game with very little content.' },
+        { title: 'RimWorld', studio: 'Ludeon Studios',         year: 2018, genre: 'Colony sim',            color: '#8a5a2b', steam: 294100, image: '',
+          inspiration: 'A storyteller that paces events turns a simulation into stories players want to retell.' },
+        { title: 'The Finals', studio: 'Embark Studios',       year: 2023, genre: 'Team shooter',          color: '#c2456b', steam: 2073850, image: '',
+          inspiration: 'When the arena can be destroyed, the map itself becomes a tool every team can use.' },
+        { title: 'Lethal Company', studio: 'Zeekerss',   year: 2023, genre: 'Co-op horror',          color: '#4f5a2f', steam: 1966720, image: '',
+          inspiration: 'Proximity voice chat turns simple scares into the funniest moments of the night.' },
+        { title: 'Minecraft', studio: 'Mojang Studios',        year: 2011, genre: 'Sandbox',               color: '#3c7a35', image: '',
+          inspiration: 'A few simple blocks and rules are enough for players to set their own goals.' },
+        { title: 'ARC Raiders', studio: 'Embark Studios',      year: 2025, genre: 'Extraction shooter',    color: '#a85a1f', steam: 1808500, image: '',
+          imageFallbacks: ['https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1808500/04baafaf64a5aa5f46ecda5d71889a4848dc0628/header.jpg'],
+          inspiration: 'Every raid is a risk you choose: what you are willing to lose shapes how you play.' },
+        { title: 'Dead by Daylight', studio: 'Behaviour Interactive', year: 2016, genre: 'Asymmetric horror',     color: '#5e1a1a', steam: 381210, image: '',
+          inspiration: 'One against four, with different rules for each side, keeps both roles tense for different reasons.' },
+        { title: 'Victoria 3', studio: 'Paradox Development Studio',       year: 2022, genre: 'Grand strategy',        color: '#2c4170', steam: 529340, image: '',
+          inspiration: 'Simulating people, markets and politics lets big outcomes grow from many small, readable causes.' },
+        { title: 'Overwatch', studio: 'Blizzard Entertainment', year: 2016, genre: 'Hero shooter', color: '#c8762b', steam: 2357570, image: '',
+          inspiration: 'Each hero is a clear role with a few readable abilities, so a team’s line-up tells you its plan at a glance.' },
+    ],
+    board: [
+        { title: 'Cosmic Encounter', year: 1977, genre: 'Negotiation, sci-fi',     color: '#3a2470', image: '',
+          imageFallbacks: ['https://meeplescorner.co.uk/cdn/shop/files/CosmicEncounterRevisedEdition.jpg?v=1719666281'],
+          inspiration: 'Every alien breaks one rule in its own way, so each game becomes a new puzzle of how those exceptions collide.' },
+        { title: 'Furnace',          year: 2020, genre: 'Auction, engine building', color: '#8c3b2b', image: '',
+          imageFallbacks: ['https://meeplescorner.co.uk/cdn/shop/files/pic5620926_9568db02-aadf-4cf2-b44e-4595a450a12a.jpg?v=1769676887'],
+          inspiration: 'When losing bids still pay out, no move is wasted and every bid becomes a real choice.' },
+        { title: 'Catan',            year: 1995, genre: 'Trading, resource management', color: '#c8913f', steam: 544730, image: '',
+          inspiration: 'Dice decide what is scarce, and scarcity turns every trade into a conversation.' },
+        { title: 'Mycelia',          year: 2024, genre: 'Tactical area control',   color: '#4a5a2b', image: '',
+          imageFallbacks: ['https://images.boardgamematcher.com/unsafe/fit-in/600x700/filters:quality(90)/mycelia.jpg'],
+          inspiration: 'When a mushroom decays it unlocks a new ability, so even an ending pushes your network forward.' },
+        { title: 'Scythe',           year: 2016, genre: 'Engine building, area control', color: '#5a4a2b', steam: 718560, image: '',
+          imageFallbacks: ['https://images.boardgamematcher.com/unsafe/fit-in/600x700/filters:quality(90)/scythe.jpg'],
+          inspiration: 'The threat of mechs on the border often shapes the game more than the fights themselves.' },
+        { title: 'Nemesis',          year: 2018, genre: 'Semi-cooperative horror', color: '#1d1446', image: '',
+          imageFallbacks: ['https://www.boardgamebliss.com/cdn/shop/products/pic3756288.jpg?v=1569322344&width=800'],
+          inspiration: 'Secret personal objectives turn a co-op survival story into one where you never fully trust your crew.' },
+        { title: 'Codenames',        year: 2015, genre: 'Party word game',         color: '#2c4170', image: '',
+          imageFallbacks: ['https://www.boardgamebliss.com/cdn/shop/products/pic2582929_lg.jpg?v=1578609033&width=800'],
+          inspiration: 'One clue, many readings: the conversation it sparks at the table is the real mechanic.' },
+    ],
+};
+const TABS = [
+    { key: 'video', label: 'Video games', icon: '<path d="M6 11h4M8 9v4"/><circle cx="15.5" cy="10.5" r="0.6"/><circle cx="17.5" cy="12.5" r="0.6"/><path d="M7 6h10a5 5 0 0 1 4.9 6l-.8 4a3 3 0 0 1-5.2 1.4L14.5 16h-5l-1.4 1.4A3 3 0 0 1 2.9 16l-.8-4A5 5 0 0 1 7 6z"/>' },
+    { key: 'board', label: 'Board games', icon: '<rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.2"/><circle cx="16" cy="8" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="8" cy="16" r="1.2"/><circle cx="16" cy="16" r="1.2"/>' },
+];
+
+// ── helpers ────────────────────────────────────────────────────────────────
+function esc(str) {
+    return String(str ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+function coverStyle(item) {
+    if (item.image) {
+        const url = String(item.image).replace(/['"\\()]/g, encodeURIComponent);
+        return `background-image:url('${url}');`;
+    }
+    const c = item.color || '#444444';
+    return `background-image:linear-gradient(135deg, rgba(0,0,0,0.55), rgba(0,0,0,0) 70%), linear-gradient(135deg, ${c}, ${c});`;
+}
+
+// ── shared helpers ─────────────────────────────────────────────────────────
+const BULB = '<svg class="bulb" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg>';
+const label = () => `<div class="insp-label">${BULB}Inspiration</div>`;
+const initial = g => g.image ? '' : `<span class="big-initial" aria-hidden="true">${esc(g.title[0])}</span>`;
+
+// ── cover art ──────────────────────────────────────────────────────────────
+// Order tried: a file in COVER_FOLDER named after the title (e.g. Content/games/rimworld.jpg),
+// then the official Steam artwork (steam: <app id>), then imageFallbacks.
+// If nothing loads, the tile keeps its colour. image: '...' always wins.
+let uidCounter = 0;
+const uid = g => g._uid || (g._uid = 'c' + (uidCounter++));
+function steamCandidates(id) {
+    const a = `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${id}/`;
+    const c = `https://cdn.cloudflare.steamstatic.com/steam/apps/${id}/`;
+    return [a + 'library_600x900_2x.jpg', a + 'library_600x900.jpg', c + 'library_600x900.jpg', a + 'header.jpg', c + 'header.jpg'];
+}
+function firstThatLoads(urls) {
+    return new Promise(resolve => {
+        let i = 0;
+        const next = () => {
+            if (i >= urls.length) return resolve(null);
+            const url = urls[i++], img = new Image();
+            img.onload = () => (img.naturalWidth > 1 ? resolve(url) : next());
+            img.onerror = next;
+            img.src = url;
+        };
+        next();
+    });
+}
+const slugify = t => String(t).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+function loadCoverArt(items) {
+    const folder = typeof COVER_FOLDER === 'string' ? COVER_FOLDER : '';
+    items.forEach(g => {
+        if (g.image || g._loading) return;
+        g._loading = true;
+        const local = folder ? ['jpg', 'png', 'webp'].map(ext => `${folder}${slugify(g.title)}.${ext}`) : [];
+        const urls = [...local, ...(g.steam ? steamCandidates(g.steam) : []), ...(g.imageFallbacks || [])];
+        firstThatLoads(urls).then(url => {
+            if (!url) return;
+            g.image = url;
+            document.querySelectorAll(`[data-uid="${uid(g)}"]`).forEach(el => {
+                el.setAttribute('style', coverStyle(g));
+                const letter = el.matches('.poster-sm') ? el.querySelector('.big-initial') : el.parentElement.querySelector('.big-initial');
+                if (letter) letter.remove();
+            });
+        });
+    });
+}
+
+function spotInner(g) {
+    return `
+        <div class="poster-sm cover" data-uid="${uid(g)}" style="${coverStyle(g)}">${initial(g)}</div>
+        <div class="row-text">
+            ${label()}
+            <p class="quote">${esc(g.inspiration)}</p>
+            <div class="who">${esc(g.title)}<span class="meta">${meta(g)}</span></div>
+            ${g.studio ? `<div class="studio">${esc(g.studio)}</div>` : ''}
+        </div>`;
+}
+
+// ── Spotlight ──────────────────────────────────────────────────────────────
+// Featured item changes by itself every SPOT_SECONDS. It pauses while the
+// pointer or keyboard focus is on it, when the tab is hidden, or with the
+// pause button. People who prefer reduced motion start paused.
+const SPOT_SECONDS = 7;
+const PAUSE_SVG = '<svg viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>';
+const PLAY_SVG  = '<svg viewBox="0 0 24 24"><path d="M7 5v14l12-7z"/></svg>';
+let spotTimer = null;
+
+function spotlightHTML(items, hint) {
+    if (!items.length) return `<p class="spot-empty">Nothing here yet.</p>`;
+    return `
+        <div class="spot-block">
+            <div class="spot" aria-live="polite"></div>
+            <div class="spot-shelf">${items.map((g, i) => `
+                <button type="button" class="spot-pick" data-index="${i}" aria-pressed="false">
+                    <span class="cover" data-uid="${uid(g)}" style="${coverStyle(g)}"></span>
+                    ${initial(g)}
+                    <span class="pick-text">${esc(g.title)}</span>
+                    <span class="pick-bar"></span>
+                </button>`).join('')}
+            </div>
+            <div class="spot-controls">
+                <button type="button" class="spot-pause"></button>
+                <span>${esc(hint)}</span>
+            </div>
+        </div>`;
+}
+
+function startSpotlight(block, items) {
+    stopSpotlight();
+    if (!block || !items.length) return;
+    const spot = block.querySelector('.spot');
+    const picks = [...block.querySelectorAll('.spot-pick')];
+    const pauseBtn = block.querySelector('.spot-pause');
+    let index = 0, elapsed = 0, hovering = false;
+    let paused = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function show(i) {
+        index = (i + items.length) % items.length;
+        elapsed = 0;
+        spot.classList.remove('swap');
+        void spot.offsetWidth; // restart the fade
+        spot.innerHTML = spotInner(items[index]);
+        spot.classList.add('swap');
+        picks.forEach((p, k) => {
+            p.classList.toggle('active', k === index);
+            p.setAttribute('aria-pressed', k === index ? 'true' : 'false');
+            p.querySelector('.pick-bar').style.width = '0';
+        });
+    }
+    function updatePauseButton() {
+        pauseBtn.innerHTML = paused ? PLAY_SVG : PAUSE_SVG;
+        pauseBtn.setAttribute('aria-label', paused ? 'Resume auto-play' : 'Pause auto-play');
+        pauseBtn.title = paused ? 'Resume auto-play' : 'Pause auto-play';
+    }
+
+    picks.forEach((p, k) => p.addEventListener('click', () => show(k)));
+    pauseBtn.addEventListener('click', () => { paused = !paused; updatePauseButton(); });
+    block.addEventListener('mouseenter', () => hovering = true);
+    block.addEventListener('mouseleave', () => hovering = false);
+    block.addEventListener('focusin',   () => hovering = true);
+    block.addEventListener('focusout',  () => hovering = false);
+
+    updatePauseButton();
+    show(0);
+    loadCoverArt(items);
+    spotTimer = setInterval(() => {
+        if (paused || hovering || document.hidden || items.length < 2) return;
+        elapsed += 100;
+        picks[index].querySelector('.pick-bar').style.width = Math.min(100, elapsed / (SPOT_SECONDS * 10)) + '%';
+        if (elapsed >= SPOT_SECONDS * 1000) show(index + 1);
+    }, 100);
+}
+function stopSpotlight() { clearInterval(spotTimer); spotTimer = null; }
+function beforeRender() { stopSpotlight(); }
+
+const meta = g => `${esc(g.genre)} · ${esc(g.year)}`;
+const svg = paths => `<svg viewBox="0 0 24 24" aria-hidden="true">${paths}</svg>`;
+
+const LAYOUTS = [
+    () => `
+        <div class="tabs" role="tablist" aria-label="Game type">
+            ${TABS.map(t => `<button type="button" class="tab" role="tab" id="tab-${t.key}" data-tab="${t.key}" aria-controls="tab-panel" aria-selected="false">${svg(t.icon)}${esc(t.label)}</button>`).join('')}
+        </div>
+        <div id="tab-panel" role="tabpanel"></div>`,
+];
+
+function showTab(key) {
+    if (!GAMES[key]) key = TABS[0].key;
+    document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-selected', t.dataset.tab === key ? 'true' : 'false'));
+    const panel = document.getElementById('tab-panel');
+    panel.setAttribute('aria-labelledby', 'tab-' + key);
+    const steam = key === 'video' && STEAM_URL
+        ? `<div class="steam-row"><a class="steam-link" href="${esc(STEAM_URL)}" target="_blank" rel="noopener">${svg(TABS[0].icon)}My Steam profile</a></div>` : '';
+    panel.innerHTML = `<div class="tab-panel">${steam}${spotlightHTML(GAMES[key], 'Pick a game to see what inspires me in it.')}</div>`;
+    startSpotlight(panel.querySelector('.spot-block'), GAMES[key]);
+    try { localStorage.setItem('gamesTab', key); } catch (e) {}
+}
+
+function afterRender() {
+    document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => showTab(t.dataset.tab)));
+    let start = new URLSearchParams(location.search).get('tab');
+    if (!start) { try { start = localStorage.getItem('gamesTab'); } catch (e) {} }
+    showTab(start || 'video');
+}
+
+// ── layout switching ───────────────────────────────────────────────────────
+const LAYOUT_KEY = 'gamesLayout';
+function setLayout(n) {
+    if (!LAYOUTS[n]) n = 0;
+    const content = document.getElementById('content');
+    if (typeof beforeRender === 'function') beforeRender();
+    content.className = 'content layout-' + n;
+    content.innerHTML = LAYOUTS[n]();
+    if (typeof afterRender === 'function') afterRender(n);
+    document.querySelectorAll('.layout-btn').forEach(btn => {
+        const on = Number(btn.dataset.layout) === n;
+        btn.classList.toggle('active', on);
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+    try { localStorage.setItem(LAYOUT_KEY, String(n)); } catch (e) {}
+}
+document.querySelectorAll('.layout-btn').forEach(btn => {
+    btn.addEventListener('click', () => setLayout(Number(btn.dataset.layout)));
+});
+(function () {
+    const fromUrl = new URLSearchParams(location.search).get('layout');
+    let saved = null;
+    try { saved = localStorage.getItem(LAYOUT_KEY); } catch (e) {}
+    setLayout(Number(fromUrl ?? saved ?? 0));
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Toolkit – Grigory Tsibulya</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #1a1a1a; color: #ffffff; }
+
+        /* ── NAV ── */
+        .nav { position: sticky; top: 0; z-index: 100; background: rgba(26,26,26,0.75); backdrop-filter: blur(10px); border-bottom: 1px solid #2e2e2e; padding: 1.2rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+        .nav-name { font-size: 1.1rem; font-weight: 700; background: linear-gradient(135deg, #f5a623, #e67e22); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-decoration: none; }
+        .nav-back { display: inline-block; padding: 0.6rem 1.5rem; background: transparent; border: 2px solid #f5a623; color: #f5a623; text-decoration: none; border-radius: 50px; font-weight: 600; font-size: 0.9rem; transition: transform 0.3s, box-shadow 0.3s, background 0.3s; }
+        .nav-back:hover { background: rgba(245,166,35,0.1); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245,166,35,0.25); }
+
+        /* ── TOP BACKGROUND (colour/pattern per page, fades into the grey) ── */
+        .page-bg { position: absolute; top: 0; left: 0; right: 0; height: 720px; z-index: 0; pointer-events: none;
+                   -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 30%, transparent 100%);
+                           mask-image: linear-gradient(to bottom, #000 0%, #000 30%, transparent 100%); }
+        .page-header, .layout-switcher, .example-note, .content { position: relative; z-index: 1; }
+
+        /* ── HEADER ── */
+        .page-header { padding: 5rem 2rem 2.5rem; text-align: center; }
+        .page-header h1 { font-size: 3.5rem; margin-bottom: 1rem; background: linear-gradient(135deg, #f5a623, #e67e22); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .page-header p { font-size: 1.2rem; color: #cccccc; line-height: 1.8; max-width: 640px; margin: 0 auto; }
+
+        /* ── LAYOUT PREVIEW (temporary) ── */
+        .layout-switcher { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0.5rem; margin: 0 auto 1rem; padding: 0 2rem; }
+        .layout-switcher-label { color: #888888; font-size: 0.9rem; margin-right: 0.5rem; }
+        .layout-btn { background-color: #333333; border: 1px solid #444444; color: #aaaaaa; border-radius: 50px; padding: 0.45rem 1.1rem; font-size: 0.85rem; font-family: inherit; cursor: pointer; transition: all 0.3s; }
+        .layout-btn:hover, .layout-btn.active { background-color: #f5a623; border-color: #f5a623; color: #1a1a1a; font-weight: 600; }
+        .layout-btn:focus-visible, a:focus-visible { outline: 2px solid #f5a623; outline-offset: 3px; }
+        .example-note { text-align: center; color: #777777; font-size: 0.9rem; margin: 0 auto 3rem; padding: 0 2rem; }
+
+        /* ── CONTENT ── */
+        .content { max-width: 1100px; margin: 0 auto; padding: 0 2rem 5rem; }
+        .content h2 { font-size: 1.6rem; color: #f5a623; margin: 0 0 1.25rem; }
+        .cover { background-color: #333333; background-size: cover; background-position: center; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        .content > * { animation: fadeInUp 0.4s ease-out both; }
+
+        /* top background: blueprint grid */
+        .page-bg { background:
+            radial-gradient(ellipse 60% 70% at 50% 0%, rgba(245,166,35,0.16), transparent 70%),
+            repeating-linear-gradient(0deg,  rgba(130,180,255,0.18) 0 1px, transparent 1px 120px),
+            repeating-linear-gradient(90deg, rgba(130,180,255,0.18) 0 1px, transparent 1px 120px),
+            repeating-linear-gradient(0deg,  rgba(130,180,255,0.08) 0 1px, transparent 1px 24px),
+            repeating-linear-gradient(90deg, rgba(130,180,255,0.08) 0 1px, transparent 1px 24px),
+            linear-gradient(180deg, #14305a 0%, #172a45 45%, #1a1a1a 100%); }
+        .mono { display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: 700; color: #ffffff; letter-spacing: 0.02em; }
+        .mono img { display: none; width: 70%; height: 70%; object-fit: contain; }
+        .mono.has-logo { background-color: #262b34 !important; }
+        .mono.has-logo img { display: block; }
+        .mono.has-logo .letters { display: none; }
+        .svg-ico { width: 1em; height: 1em; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: -0.12em; }
+
+        /* Icon wall */
+        .wall-group { margin-bottom: 3rem; }
+        .wall { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 1.5rem 1.25rem; }
+        .wall-item { text-align: center; }
+        .wall-item .tile { position: relative; width: 84px; height: 84px; margin: 0 auto; }
+        .wall-item .mono { width: 84px; height: 84px; font-size: 1.6rem; border-radius: 20px; transition: transform 0.3s; }
+        .wall-item:hover .mono { transform: translateY(-4px) scale(1.04); }
+        .wall-item .cat-ico { position: absolute; right: -6px; bottom: -6px; width: 30px; height: 30px; border-radius: 50%; background-color: #1a1a1a; border: 2px solid #333333; display: flex; align-items: center; justify-content: center; color: #f5a623; font-size: 0.85rem; }
+        .wall-item .name { font-size: 0.9rem; color: #dddddd; margin-top: 0.75rem; line-height: 1.3; }
+
+        /* main tool + a pocket of its sub-tools */
+        .wall-item.has-sub { grid-column: span 2; }
+        .combo { display: flex; align-items: flex-start; justify-content: center; gap: 0.5rem; }
+        .combo .main { width: 100px; flex-shrink: 0; }
+        .combo .plus { color: #6f87ad; font-size: 1.5rem; font-weight: 700; line-height: 84px; }
+        .pocket { display: flex; gap: 0.5rem; margin-top: 4px; padding: 0.55rem 0.6rem 0.45rem; border: 1px dashed #3a5279; border-radius: 16px; background: rgba(143, 186, 255, 0.05); }
+        .sub { width: 54px; text-align: center; }
+        .sub .mono { width: 44px; height: 44px; margin: 0 auto; font-size: 0.75rem; border-radius: 12px; }
+        .sub .sname { font-size: 0.72rem; color: #aaaaaa; margin-top: 0.35rem; line-height: 1.2; }
+        .legend { display: flex; flex-wrap: wrap; gap: 1.25rem; color: #888888; font-size: 0.85rem; }
+        .legend span { display: inline-flex; align-items: center; gap: 0.4rem; }
+        .legend .svg-ico { color: #f5a623; }
+
+        /* ── MORE ABOUT ME ── */
+        .more-section { text-align: center; padding: 4rem 2rem; background-color: #222222; }
+        .more-section p { color: #aaaaaa; font-size: 1.1rem; margin-bottom: 1.5rem; }
+        .about-link { display: inline-block; padding: 0.85rem 1.75rem; margin: 0.4rem; background-color: #333333; color: #f5a623; text-decoration: none; border: 2px solid #444444; border-radius: 50px; font-weight: 600; transition: all 0.3s; }
+        .about-link:hover { background-color: #f5a623; color: #1a1a1a; border-color: #f5a623; }
+
+        /* ── FOOTER ── */
+        .footer { padding: 2rem; background-color: #1a1a1a; text-align: center; color: #666666; }
+
+        @media (max-width: 768px) {
+            .page-header h1 { font-size: 2.5rem; }
+            .content { padding: 0 1.25rem 4rem; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation: none !important; transition: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-bg" aria-hidden="true"></div>
+
+<nav class="nav">
+    <a href="index.html" class="nav-name">Grigory Tsibulya</a>
+    <a href="index.html#about" class="nav-back">← Portfolio</a>
+</nav>
+
+<header class="page-header">
+    <h1>My Toolkit</h1>
+    <!-- ░░ CHANGE: intro line ░░ -->
+    <p>The software I use to take a game from first sketch to playable build.</p>
+
+</header>
+
+
+<main class="content" id="content"></main>
+
+<section class="more-section">
+    <p>More about me</p>
+    <a href="favorite-games.html" class="about-link">My favorite games</a>
+</section>
+
+<footer class="footer"><p>&copy; 2026 Grigory Tsibulya. All rights reserved.</p></footer>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════════
+// ░░ CHANGE: your content. Every layout below is drawn from this one list. ░░
+// To use a picture instead of the colour, set image: 'Content/...jpg'
+// ═══════════════════════════════════════════════════════════════════════════
+// group: one of the keys in GROUPS below
+// logo: file name of the tool's logo in Content/logos/ (.svg or .png), e.g. Content/logos/unity.svg
+//       If the file isn't there, the letters in mono are shown instead.
+// icon (optional): a full path to a logo image, used instead of logo
+const TOOLS = [
+    { name: 'Unity',               category: 'Engine & code',  group: 'proficient', mono: 'U',   color: '#3b4252', logo: 'unity', icon: '',
+      // sub-tools shown in a small "pocket" to the right of the main icon
+      subtools: [
+          { name: 'Shader Graph', mono: 'SG',  color: '#2c5f7a', logo: 'shader-graph', icon: '' },
+          { name: 'VFX Graph',    mono: 'VFX', color: '#6b2f7a', logo: 'vfx-graph', icon: '' },
+      ] },
+    { name: 'Blender',             category: '3D & texturing', group: 'proficient', mono: 'B',   color: '#a85a1f', logo: 'blender', icon: '' },
+    { name: 'Adobe Substance',     category: '3D & texturing', group: 'proficient', mono: 'Su',  color: '#7a2f45', logo: 'substance', icon: '' },
+    { name: 'Adobe Photoshop',     category: '2D & UI',        group: 'proficient', mono: 'Ps',  color: '#1f4f7a', logo: 'photoshop', icon: '' },
+    { name: 'C#',                  category: 'Engine & code',  group: 'proficient', mono: 'C#',  color: '#5b3b8c', logo: 'csharp', icon: '' },
+    { name: 'Python',              category: 'Engine & code',  group: 'proficient', mono: 'Py',  color: '#2f5a7a', logo: 'python', icon: '' },
+    { name: 'Adobe Premiere Pro',  category: 'Video',          group: 'proficient', mono: 'Pr',  color: '#4a2f7a', logo: 'premiere-pro', icon: '' },
+    { name: 'Adobe After Effects', category: 'Video',          group: 'proficient', mono: 'Ae',  color: '#3a3070', logo: 'after-effects', icon: '' },
+    { name: 'Miro',                category: 'Workflow',       group: 'proficient', mono: 'M',   color: '#8a7420', logo: 'miro', icon: '' },
+    { name: 'Claude',              category: 'Workflow',       group: 'proficient', mono: 'Cl',  color: '#a8592f', logo: 'claude', icon: '' },
+    { name: 'Unreal Engine',       category: 'Engine & code',  group: 'learning',   mono: 'UE',  color: '#30343c', logo: 'unreal-engine', icon: '' },
+    { name: 'Maya',                category: '3D & texturing', group: 'learning',   mono: 'Ma',  color: '#2c6a7a', logo: 'maya', icon: '' },
+    { name: 'HLSL',                category: 'Engine & code',  group: 'learning',   mono: 'HL',  color: '#2c4f6a', logo: 'hlsl', icon: '' },
+    { name: 'Figma',               category: '2D & UI',        group: 'learning',   mono: 'F',   color: '#6b3a6b', logo: 'figma', icon: '' },
+];
+// Section headings, in the order shown. Rename freely.
+const GROUPS = {
+    proficient: 'Proficient',
+    learning:   'Learning',
+};
+
+// ── helpers ────────────────────────────────────────────────────────────────
+function esc(str) {
+    return String(str ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+function coverStyle(item) {
+    if (item.image) {
+        const url = String(item.image).replace(/['"\\()]/g, encodeURIComponent);
+        return `background-image:url('${url}');`;
+    }
+    const c = item.color || '#444444';
+    return `background-image:linear-gradient(135deg, rgba(0,0,0,0.55), rgba(0,0,0,0) 70%), linear-gradient(135deg, ${c}, ${c});`;
+}
+
+// small line icons (no brand logos)
+const ICON_PATHS = {
+    code:   '<polyline points="8 6 2 12 8 18"/><polyline points="16 6 22 12 16 18"/>',
+    cube:   '<path d="M12 2 21 7v10l-9 5-9-5V7z"/><path d="M3 7l9 5 9-5"/><path d="M12 12v10"/>',
+    brush:  '<path d="M18 3l3 3-9 9-3-3z"/><path d="M9 12c-3 0-5 2-5 5 0 2-1 3-2 4 4 0 8-1 9-5"/>',
+    wave:   '<path d="M2 12h2M6 8v8M10 5v14M14 9v6M18 7v10M22 12h-2"/>',
+    film:   '<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M10 9.5v5l4-2.5z"/>',
+    branch: '<circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="8" r="2"/><path d="M6 7v10M18 10c0 4-6 4-10 7"/>',
+};
+const CATEGORY_ICON = { 'Engine & code': 'code', '3D & texturing': 'cube', '2D & UI': 'brush', 'Video': 'film', 'Audio': 'wave', 'Workflow': 'branch' };
+function svgIcon(name) {
+    return `<svg class="svg-ico" viewBox="0 0 24 24" aria-hidden="true">${ICON_PATHS[name] || ''}</svg>`;
+}
+function mono(t) {
+    const src = t.icon || (t.logo ? `Content/logos/${t.logo}.svg` : '');
+    const png = t.logo && !t.icon ? `Content/logos/${t.logo}.png` : '';
+    const img = src ? `<img src="${esc(src)}" alt="" onload="this.parentNode.classList.add('has-logo')" onerror="if(this.dataset.png!=='1'&&'${png}'){this.dataset.png='1';this.src='${png}'}else{this.remove()}">` : '';
+    return `<div class="mono" style="background-color:${esc(t.color || '#444')}">${img}<span class="letters">${esc(t.mono || t.name[0])}</span></div>`;
+}
+
+const LAYOUTS = [
+    () => Object.entries(GROUPS).map(([key, title]) => {
+            const list = TOOLS.filter(t => t.group === key);
+            if (!list.length) return '';
+            return `
+            <section class="wall-group ${esc(key)}">
+                <h2>${esc(title)}</h2>
+                <div class="wall">${list.map(t => {
+                    const main = `
+                        <div class="tile">${mono(t)}</div>
+                        <div class="name">${esc(t.name)}</div>`;
+                    if (!t.subtools || !t.subtools.length) return `<div class="wall-item">${main}</div>`;
+                    return `
+                    <div class="wall-item has-sub">
+                        <div class="combo">
+                            <div class="main">${main}</div>
+                            <span class="plus" aria-hidden="true">+</span>
+                            <div class="pocket" aria-label="${esc(t.name)} tools">${t.subtools.map(st => `
+                                <div class="sub">${mono(st)}<div class="sname">${esc(st.name)}</div></div>`).join('')}
+                            </div>
+                        </div>
+                    </div>`;
+                }).join('')}
+                </div>
+            </section>`;
+        }).join(''),
+];
+
+// ── layout switching ───────────────────────────────────────────────────────
+const LAYOUT_KEY = 'toolkitLayout';
+function setLayout(n) {
+    if (!LAYOUTS[n]) n = 0;
+    const content = document.getElementById('content');
+    if (typeof beforeRender === 'function') beforeRender();
+    content.className = 'content layout-' + n;
+    content.innerHTML = LAYOUTS[n]();
+    if (typeof afterRender === 'function') afterRender(n);
+    document.querySelectorAll('.layout-btn').forEach(btn => {
+        const on = Number(btn.dataset.layout) === n;
+        btn.classList.toggle('active', on);
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+    try { localStorage.setItem(LAYOUT_KEY, String(n)); } catch (e) {}
+}
+document.querySelectorAll('.layout-btn').forEach(btn => {
+    btn.addEventListener('click', () => setLayout(Number(btn.dataset.layout)));
+});
+(function () {
+    const fromUrl = new URLSearchParams(location.search).get('layout');
+    let saved = null;
+    try { saved = localStorage.getItem(LAYOUT_KEY); } catch (e) {}
+    setLayout(Number(fromUrl ?? saved ?? 0));
+})();
+</script>
+</body>
+</html>

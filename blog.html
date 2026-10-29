@@ -19,7 +19,7 @@
         .blog-header h1 { font-size: 3.5rem; margin-bottom: 1rem; background: linear-gradient(135deg, #f5a623, #e67e22); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
         .blog-header p { font-size: 1.2rem; color: #cccccc; line-height: 1.8; max-width: 600px; margin: 0 auto; }
 
-        /* ── UPCOMING ── */
+        /* ── CURRENT PROJECTS ── */
         .upcoming { padding: 4rem 2rem; background-color: #222222; }
         .upcoming h2 { text-align: center; font-size: 3rem; margin-bottom: 3rem; color: #f5a623; }
         .upcoming-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
@@ -31,6 +31,88 @@
         .upcoming-status { display: inline-block; background-color: #333333; color: #f5a623; padding: 0.3rem 0.9rem; border-radius: 15px; font-size: 0.8rem; font-weight: 600; margin-bottom: 1rem; }
         .upcoming-card h3 { font-size: 1.4rem; margin-bottom: 0.75rem; color: #ffffff; }
         .upcoming-card p  { color: #aaaaaa; line-height: 1.6; }
+        .upcoming-card p.no-description { color: #666666; font-style: italic; }
+
+        /* ── CURRENT PROJECTS: cover + layout preview ── */
+        .uc-cover { display: none; background-color: var(--cover-color, #333333); background-size: cover; background-position: center; }
+        .uc-body { position: relative; }
+        .upcoming-card h3, .upcoming-card p { overflow-wrap: anywhere; }
+
+        .layout-switcher { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0.5rem; margin: -1.5rem auto 2.5rem; max-width: 1200px; }
+        .layout-switcher-label { color: #888888; font-size: 0.9rem; margin-right: 0.5rem; }
+        .layout-btn { background-color: #333333; border: 1px solid #444444; color: #aaaaaa; border-radius: 50px; padding: 0.45rem 1.1rem; font-size: 0.85rem; font-family: inherit; cursor: pointer; transition: all 0.3s; }
+        .layout-btn:hover, .layout-btn.active { background-color: #f5a623; border-color: #f5a623; color: #1a1a1a; font-weight: 600; }
+        .layout-btn:focus-visible, .upcoming-card:focus-visible { outline: 2px solid #f5a623; outline-offset: 3px; }
+
+        /* layouts 1–4 show the cover instead of the orange top bar */
+        #upcoming-grid:not(.layout-0) .upcoming-card { padding: 0; }
+        #upcoming-grid:not(.layout-0) .upcoming-card::before { display: none; }
+        #upcoming-grid:not(.layout-0) .uc-cover { display: block; }
+
+        /* Layout 1 · banners and Layout 2 · staggered share the banner base */
+        #upcoming-grid.layout-1, #upcoming-grid.layout-2 { grid-template-columns: 1fr; max-width: 1100px; gap: 1.25rem; }
+        #upcoming-grid.layout-1 .upcoming-card, #upcoming-grid.layout-2 .upcoming-card { min-height: 150px; display: flex; }
+        #upcoming-grid.layout-1 .upcoming-card:hover, #upcoming-grid.layout-2 .upcoming-card:hover { transform: translateY(-4px); }
+        #upcoming-grid.layout-1 .uc-cover, #upcoming-grid.layout-2 .uc-cover { position: absolute; inset: 0; transition: transform 0.4s; }
+        #upcoming-grid.layout-1 .upcoming-card:hover .uc-cover, #upcoming-grid.layout-2 .upcoming-card:hover .uc-cover { transform: scale(1.03); }
+        #upcoming-grid.layout-1 .uc-body, #upcoming-grid.layout-2 .uc-body { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 2rem; padding: 1.5rem 2rem; background: linear-gradient(90deg, rgba(18,18,18,0.88) 0%, rgba(18,18,18,0.55) 55%, rgba(18,18,18,0.15) 100%); }
+        #upcoming-grid.layout-1 .uc-text, #upcoming-grid.layout-2 .uc-text { grid-column: 1; grid-row: 1; }
+        #upcoming-grid.layout-1 .upcoming-card p, #upcoming-grid.layout-2 .upcoming-card p { color: #dddddd; max-width: 640px; }
+        #upcoming-grid.layout-1 .click-hint, #upcoming-grid.layout-2 .click-hint { grid-column: 2; grid-row: 1; margin: 0; color: #cccccc; white-space: nowrap; }
+        #upcoming-grid.layout-1 .upcoming-status, #upcoming-grid.layout-2 .upcoming-status { background-color: rgba(20,20,20,0.7); margin-bottom: 0.6rem; }
+        #upcoming-grid.layout-1 h3, #upcoming-grid.layout-2 h3 { font-size: 1.6rem; margin-bottom: 0.35rem; }
+
+        /* Layout 2 · staggered: shorter banners, odd ones on the left, even ones on the right */
+        #upcoming-grid.layout-2 .upcoming-card { width: 80%; }
+        #upcoming-grid.layout-2 .upcoming-card:nth-child(odd) { justify-self: start; }
+        #upcoming-grid.layout-2 .upcoming-card:nth-child(even) { justify-self: end; text-align: right; }
+        #upcoming-grid.layout-2 .upcoming-card:nth-child(even) .uc-body { grid-template-columns: auto minmax(0, 1fr); background: linear-gradient(270deg, rgba(18,18,18,0.88) 0%, rgba(18,18,18,0.55) 55%, rgba(18,18,18,0.15) 100%); }
+        #upcoming-grid.layout-2 .upcoming-card:nth-child(even) .uc-text { grid-column: 2; }
+        #upcoming-grid.layout-2 .upcoming-card:nth-child(even) .click-hint { grid-column: 1; }
+        #upcoming-grid.layout-2 .upcoming-card:nth-child(even) p { margin-left: auto; }
+
+        /* Layout 3 · posters: tall covers, text over the bottom */
+        #upcoming-grid.layout-3 { grid-template-columns: repeat(3, 1fr); max-width: 1000px; gap: 1.5rem; }
+        #upcoming-grid.layout-3 .upcoming-card { aspect-ratio: 3/4; display: flex; align-items: flex-end; }
+        #upcoming-grid.layout-3 .uc-cover { position: absolute; inset: 0; transition: transform 0.4s; }
+        #upcoming-grid.layout-3 .upcoming-card:hover .uc-cover { transform: scale(1.04); }
+        #upcoming-grid.layout-3 .uc-body { width: 100%; padding: 4rem 1.25rem 1.25rem; background: linear-gradient(to top, rgba(14,14,14,0.95) 0%, rgba(14,14,14,0.7) 55%, rgba(14,14,14,0) 100%); }
+        #upcoming-grid.layout-3 .upcoming-status { background-color: rgba(20,20,20,0.75); }
+        #upcoming-grid.layout-3 h3 { font-size: 1.25rem; }
+        #upcoming-grid.layout-3 .upcoming-card p { color: #cccccc; font-size: 0.9rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        #upcoming-grid.layout-3 .click-hint { color: #999999; }
+
+        /* Layout 4 · split zigzag: picture panel with a slanted edge, text beside it; sides alternate.
+           On hover the slanted edge straightens. */
+        #upcoming-grid.layout-4 { grid-template-columns: 1fr; max-width: 1100px; gap: 1.5rem; }
+        #upcoming-grid.layout-4 .upcoming-card { display: grid; grid-template-columns: 2fr 3fr; min-height: 180px; }
+        #upcoming-grid.layout-4 .upcoming-card:hover { transform: translateY(-4px); }
+        #upcoming-grid.layout-4 .uc-cover { grid-column: 1; grid-row: 1; clip-path: polygon(0 0, 100% 0, 82% 100%, 0 100%); transition: clip-path 0.4s ease; }
+        #upcoming-grid.layout-4 .upcoming-card:hover .uc-cover { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+        #upcoming-grid.layout-4 .uc-body { grid-column: 2; grid-row: 1; display: flex; flex-direction: column; justify-content: center; padding: 1.75rem 2.25rem 1.75rem 1rem; }
+        #upcoming-grid.layout-4 h3 { font-size: 1.5rem; }
+        #upcoming-grid.layout-4 .click-hint { margin-top: 0.75rem; }
+        #upcoming-grid.layout-4 .upcoming-card:nth-child(even) { grid-template-columns: 3fr 2fr; text-align: right; }
+        #upcoming-grid.layout-4 .upcoming-card:nth-child(even) .uc-cover { grid-column: 2; clip-path: polygon(18% 0, 100% 0, 100% 100%, 0 100%); }
+        #upcoming-grid.layout-4 .upcoming-card:nth-child(even):hover .uc-cover { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+        #upcoming-grid.layout-4 .upcoming-card:nth-child(even) .uc-body { grid-column: 1; padding: 1.75rem 1rem 1.75rem 2.25rem; }
+
+        @media (max-width: 768px) {
+            #upcoming-grid.layout-1 .uc-body, #upcoming-grid.layout-2 .uc-body, #upcoming-grid.layout-2 .upcoming-card:nth-child(even) .uc-body { grid-template-columns: 1fr; padding: 1.25rem; background: linear-gradient(90deg, rgba(18,18,18,0.88), rgba(18,18,18,0.6)); }
+            #upcoming-grid.layout-1 .uc-text, #upcoming-grid.layout-2 .uc-text, #upcoming-grid.layout-2 .upcoming-card:nth-child(even) .uc-text { grid-column: 1; }
+            #upcoming-grid.layout-1 .click-hint, #upcoming-grid.layout-2 .click-hint, #upcoming-grid.layout-2 .upcoming-card:nth-child(even) .click-hint { grid-column: 1; grid-row: auto; margin-top: 0.75rem; }
+            #upcoming-grid.layout-2 .upcoming-card { width: 92%; }
+            #upcoming-grid.layout-3 { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+            #upcoming-grid.layout-4 .upcoming-card, #upcoming-grid.layout-4 .upcoming-card:nth-child(even) { grid-template-columns: 1fr; text-align: left; }
+            #upcoming-grid.layout-4 .uc-cover, #upcoming-grid.layout-4 .upcoming-card:nth-child(even) .uc-cover { grid-column: 1; grid-row: 1; aspect-ratio: 16/7; clip-path: none; }
+            #upcoming-grid.layout-4 .uc-body, #upcoming-grid.layout-4 .upcoming-card:nth-child(even) .uc-body { grid-column: 1; grid-row: 2; padding: 1.25rem; }
+        }
+        @media (max-width: 480px) {
+            #upcoming-grid.layout-3 { grid-template-columns: 1fr; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .upcoming-card, .uc-cover { transition: none !important; }
+        }
 
         /* ── POSTS ── */
         .posts-section { padding: 6rem 2rem; background-color: #1a1a1a; }
@@ -71,6 +153,8 @@
         .read-more-btn { display: inline-block; padding: 0.6rem 1.5rem; background: transparent; border: 2px solid #444444; color: #aaaaaa; border-radius: 50px; font-size: 0.9rem; font-family: inherit; font-weight: 600; cursor: pointer; transition: all 0.3s; }
         .read-more-btn:hover { border-color: #f5a623; color: #f5a623; }
 
+        .post-count { margin-left: auto; color: #aaaaaa; font-size: 0.95rem; white-space: nowrap; }
+
         .no-results { display: none; text-align: center; padding: 4rem 0; color: #666666; font-size: 1rem; }
 
         /* ── FOOTER ── */
@@ -95,8 +179,17 @@
 </header>
 
 <section class="upcoming">
-    <h2>Upcoming Projects</h2>
-    <div class="upcoming-grid" id="upcoming-grid"></div>
+    <h2>Current Projects</h2>
+    <!-- Layout preview switcher: temporary, remove once a layout is chosen -->
+    <div class="layout-switcher" role="group" aria-label="Current projects layout preview">
+        <span class="layout-switcher-label">Layout preview</span>
+        <button type="button" class="layout-btn" data-layout="0">0 · Current</button>
+        <button type="button" class="layout-btn" data-layout="1">1 · Banners</button>
+        <button type="button" class="layout-btn" data-layout="2">2 · Staggered</button>
+        <button type="button" class="layout-btn" data-layout="3">3 · Posters</button>
+        <button type="button" class="layout-btn" data-layout="4">4 · Split zigzag</button>
+    </div>
+    <div class="upcoming-grid layout-0" id="upcoming-grid"></div>
 </section>
 
 <section class="posts-section" id="posts-section">
@@ -104,6 +197,7 @@
     <div class="filter-bar" id="filter-bar">
         <span class="filter-label">Filter by tag:</span>
         <button class="tag-filter-btn active" data-tag="all">All</button>
+        <span class="post-count" id="post-count" aria-live="polite"></span>
     </div>
     <div class="posts-list" id="posts-list"></div>
     <p class="no-results" id="no-results">No posts with that tag yet.</p>
@@ -153,13 +247,60 @@ function loadUpcoming() {
     return [];
 }
 
-// ── UPCOMING ──────────────────────────────────────────────────────────────────
+// ── CURRENT PROJECTS ──────────────────────────────────────────────────────────────────
 function filterByProject(tag) {
     activeFilter = tag || 'all';
     renderFilters();
     renderPosts();
     document.getElementById('posts-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+
+// Cover visuals per project. Replace with a picture by setting "image" for the
+// project in blog-data.json, e.g. "image": "Content/covers/read-me.jpg".
+const PROJECT_COVERS = {
+    // ink-blue lined page
+    'Read Me': { color: '#2c4170', bg: 'repeating-linear-gradient(0deg, rgba(255,255,255,0.07) 0 1px, transparent 1px 24px), linear-gradient(135deg, #141c33 0%, #2c4170 55%, #4f6fb0 100%)' },
+    // living green with cell-like dots
+    'Unnamed Evolution Board Game': { color: '#2f6b35', bg: 'radial-gradient(circle at 20% 30%, rgba(190,230,120,0.35) 0 6%, transparent 7%), radial-gradient(circle at 75% 65%, rgba(190,230,120,0.25) 0 9%, transparent 10%), radial-gradient(circle at 55% 20%, rgba(190,230,120,0.2) 0 4%, transparent 5%), linear-gradient(135deg, #12301a 0%, #2f6b35 55%, #79a83a 100%)' },
+    // war-room crimson with a map grid
+    'Unnamed Strategy Game': { color: '#7a1f24', bg: 'repeating-linear-gradient(0deg, rgba(255,210,170,0.08) 0 1px, transparent 1px 32px), repeating-linear-gradient(90deg, rgba(255,210,170,0.08) 0 1px, transparent 1px 32px), linear-gradient(135deg, #2a0b0d 0%, #7a1f24 60%, #b5452f 100%)' },
+    // cardboard brown with faint hazard stripes
+    'Warehouse Manager Simulator': { color: '#8a5a2b', bg: 'repeating-linear-gradient(45deg, rgba(245,190,40,0.14) 0 14px, transparent 14px 28px), linear-gradient(135deg, #3b2716 0%, #8a5a2b 55%, #c8913f 100%)' },
+    // deep space with ripple rings
+    'Gravitational Waves Detector Game': { color: '#3a2470', bg: 'repeating-radial-gradient(circle at 70% 50%, rgba(120,220,255,0.16) 0 2px, transparent 2px 22px), radial-gradient(circle at 70% 50%, rgba(140,110,255,0.45) 0%, transparent 45%), linear-gradient(135deg, #07071c 0%, #1d1446 55%, #3a2470 100%)' },
+    // warm coral with overlapping bubbles
+    'Unnamed Social Game': { color: '#c2456b', bg: 'radial-gradient(circle at 30% 45%, rgba(255,255,255,0.18) 0 18%, transparent 19%), radial-gradient(circle at 48% 55%, rgba(255,230,200,0.16) 0 18%, transparent 19%), radial-gradient(circle at 66% 45%, rgba(255,255,255,0.12) 0 18%, transparent 19%), linear-gradient(135deg, #5e1735 0%, #c2456b 55%, #f08a5d 100%)' },
+};
+
+function coverFor(p) {
+    if (p.image) {
+        const url = String(p.image).replace(/['"\\()]/g, encodeURIComponent);
+        return { color: '#333333', bg: `url('${url}') center / cover no-repeat` };
+    }
+    if (PROJECT_COVERS[p.title]) return PROJECT_COVERS[p.title];
+    // unknown project: steady colour from its title
+    let h = 0;
+    for (const ch of p.title || '') h = (h * 31 + ch.charCodeAt(0)) % 360;
+    return { color: `hsl(${h},45%,35%)`, bg: `linear-gradient(135deg, hsl(${h},45%,18%), hsl(${(h + 30) % 360},50%,42%))` };
+}
+
+const PROJECT_LAYOUTS = [0, 1, 2, 3, 4];
+let projectsLayout = 0;
+
+function applyProjectsLayout(layout) {
+    projectsLayout = PROJECT_LAYOUTS.includes(layout) ? layout : 0;
+    document.getElementById('upcoming-grid').className = 'upcoming-grid layout-' + projectsLayout;
+    document.querySelectorAll('.layout-btn').forEach(btn => {
+        const isActive = Number(btn.dataset.layout) === projectsLayout;
+        btn.classList.toggle('active', isActive);
+        btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
+    try { localStorage.setItem('projectsLayout', String(projectsLayout)); } catch (e) {}
+}
+
+document.querySelectorAll('.layout-btn').forEach(btn => {
+    btn.addEventListener('click', () => applyProjectsLayout(Number(btn.dataset.layout)));
+});
 
 function renderUpcoming() {
     const list    = loadUpcoming();
@@ -181,12 +322,18 @@ function renderUpcoming() {
             hint    = `<p class="click-hint">↓ Browse all posts</p>`;
         }
 
+        const cover = coverFor(p);
         return `
-        <div class="upcoming-card" onclick="${onclick}">
-            <span class="upcoming-status">${p.status}</span>
-            <h3>${p.title}</h3>
-            <p>${p.description}</p>
-            ${hint}
+        <div class="upcoming-card" role="link" tabindex="0" onclick="${onclick}" onkeydown="if(event.key==='Enter'){${onclick}}">
+            <div class="uc-cover" style="--cover-color:${cover.color}; background:${cover.bg};"></div>
+            <div class="uc-body">
+                <div class="uc-text">
+                    ${p.status ? `<span class="upcoming-status">${p.status}</span>` : ''}
+                    <h3>${p.title}</h3>
+                    ${p.description ? `<p>${p.description}</p>` : `<p class="no-description">Description coming soon.</p>`}
+                </div>
+                ${hint}
+            </div>
         </div>`;
     }).join('');
 }
@@ -208,6 +355,7 @@ function renderFilters() {
         btn.textContent = tag;
         bar.appendChild(btn);
     });
+    bar.appendChild(document.getElementById('post-count')); // keep the count after the last filter
     bar.querySelector('[data-tag="all"]').classList.toggle('active', activeFilter === 'all');
 }
 
@@ -234,6 +382,7 @@ function renderPosts() {
     const list      = document.getElementById('posts-list');
     const noResults = document.getElementById('no-results');
     const filtered  = activeFilter === 'all' ? posts : posts.filter(p => p.tags.includes(activeFilter));
+    document.getElementById('post-count').textContent = `${filtered.length} ${filtered.length === 1 ? 'post' : 'posts'}`;
 
     if (filtered.length === 0) { list.innerHTML = ''; noResults.style.display = 'block'; return; }
     noResults.style.display = 'none';
@@ -272,6 +421,11 @@ function toggleBody(id, btn) {
 (async () => {
     const _urlTag = new URLSearchParams(window.location.search).get('tag');
     if (_urlTag) activeFilter = _urlTag;
+
+    const _urlLayout = new URLSearchParams(window.location.search).get('projectsLayout');
+    let _savedLayout = null;
+    try { _savedLayout = localStorage.getItem('projectsLayout'); } catch (e) {}
+    applyProjectsLayout(Number(_urlLayout ?? _savedLayout ?? 0));
 
     await loadData();
 

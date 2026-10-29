@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Hobbies – Grigory Tsibulya</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #1a1a1a; color: #ffffff; }
+
+        /* ── NAV ── */
+        .nav { position: sticky; top: 0; z-index: 100; background: rgba(26,26,26,0.75); backdrop-filter: blur(10px); border-bottom: 1px solid #2e2e2e; padding: 1.2rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+        .nav-name { font-size: 1.1rem; font-weight: 700; background: linear-gradient(135deg, #f5a623, #e67e22); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-decoration: none; }
+        .nav-back { display: inline-block; padding: 0.6rem 1.5rem; background: transparent; border: 2px solid #f5a623; color: #f5a623; text-decoration: none; border-radius: 50px; font-weight: 600; font-size: 0.9rem; transition: transform 0.3s, box-shadow 0.3s, background 0.3s; }
+        .nav-back:hover { background: rgba(245,166,35,0.1); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245,166,35,0.25); }
+
+        /* ── TOP BACKGROUND (colour/pattern per page, fades into the grey) ── */
+        .page-bg { position: absolute; top: 0; left: 0; right: 0; height: 720px; z-index: 0; pointer-events: none;
+                   -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 30%, transparent 100%);
+                           mask-image: linear-gradient(to bottom, #000 0%, #000 30%, transparent 100%); }
+        .page-header, .layout-switcher, .example-note, .content { position: relative; z-index: 1; }
+
+        /* ── HEADER ── */
+        .page-header { padding: 5rem 2rem 2.5rem; text-align: center; }
+        .page-header h1 { font-size: 3.5rem; margin-bottom: 1rem; background: linear-gradient(135deg, #f5a623, #e67e22); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .page-header p { font-size: 1.2rem; color: #cccccc; line-height: 1.8; max-width: 640px; margin: 0 auto; }
+
+        /* ── LAYOUT PREVIEW (temporary) ── */
+        .layout-switcher { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0.5rem; margin: 0 auto 1rem; padding: 0 2rem; }
+        .layout-switcher-label { color: #888888; font-size: 0.9rem; margin-right: 0.5rem; }
+        .layout-btn { background-color: #333333; border: 1px solid #444444; color: #aaaaaa; border-radius: 50px; padding: 0.45rem 1.1rem; font-size: 0.85rem; font-family: inherit; cursor: pointer; transition: all 0.3s; }
+        .layout-btn:hover, .layout-btn.active { background-color: #f5a623; border-color: #f5a623; color: #1a1a1a; font-weight: 600; }
+        .layout-btn:focus-visible, a:focus-visible { outline: 2px solid #f5a623; outline-offset: 3px; }
+        .example-note { text-align: center; color: #777777; font-size: 0.9rem; margin: 0 auto 3rem; padding: 0 2rem; }
+
+        /* ── CONTENT ── */
+        .content { max-width: 1100px; margin: 0 auto; padding: 0 2rem 5rem; }
+        .content h2 { font-size: 1.6rem; color: #f5a623; margin: 0 0 1.25rem; }
+        .cover { background-color: #333333; background-size: cover; background-position: center; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        .content > * { animation: fadeInUp 0.4s ease-out both; }
+
+        /* top background: soft colour blobs, one per interest, over a dotted sketchbook pattern */
+        .page-bg { background:
+            radial-gradient(circle at 10% 30%, rgba(60,140,70,0.55), transparent 26%),
+            radial-gradient(circle at 32% 8%,  rgba(60,90,160,0.55), transparent 28%),
+            radial-gradient(circle at 55% 38%, rgba(190,80,70,0.45), transparent 26%),
+            radial-gradient(circle at 78% 10%, rgba(200,140,60,0.5),  transparent 28%),
+            radial-gradient(circle at 94% 42%, rgba(110,70,190,0.5),  transparent 24%),
+            radial-gradient(rgba(255,255,255,0.12) 1.5px, transparent 1.7px) 0 0 / 22px 22px,
+            #1d1d1d; }
+        .emoji { line-height: 1; }
+
+        /* Layout 0 · stories: alternating picture and text */
+        .story { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; margin-bottom: 4rem; }
+        .story:nth-child(even) .story-pic { order: 2; }
+        .story-pic { aspect-ratio: 4/3; border-radius: 15px; display: flex; align-items: center; justify-content: center; border: 1px solid #333333; }
+        .story-pic .emoji { font-size: 5rem; filter: drop-shadow(0 6px 18px rgba(0,0,0,0.4)); }
+        .story-pic.has-image .emoji { display: none; }
+        .story h3 { font-size: 2rem; color: #ffffff; margin-bottom: 0.5rem; }
+        .story .tagline { color: #f5a623; font-weight: 600; margin-bottom: 1rem; }
+        .story p { color: #cccccc; font-size: 1.05rem; line-height: 1.8; }
+        .story .link { display: inline-block; margin-top: 1.25rem; color: #f5a623; font-weight: 600; text-decoration: none; }
+        .story .link:hover { text-decoration: underline; }
+
+        /* Layout 1 · cards */
+        .hobby-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+        .hobby-card { background-color: #252525; border: 1px solid #333333; border-radius: 15px; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; }
+        .hobby-card:hover { transform: translateY(-6px); box-shadow: 0 15px 40px rgba(0,0,0,0.5); }
+        .hobby-card .card-top { height: 120px; display: flex; align-items: flex-end; padding: 1rem 1.25rem; }
+        .hobby-card .icon { width: 64px; height: 64px; border-radius: 50%; background-color: #1a1a1a; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin-bottom: -2.6rem; border: 3px solid #252525; }
+        .hobby-card .card-body { padding: 2.75rem 1.25rem 1.5rem; }
+        .hobby-card h3 { font-size: 1.3rem; margin-bottom: 0.3rem; }
+        .hobby-card .tagline { color: #f5a623; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.75rem; }
+        .hobby-card p { color: #aaaaaa; font-size: 0.92rem; line-height: 1.6; }
+
+        /* Layout 2 · mosaic: photo-wall tiles of different sizes */
+        .mosaic { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 200px; grid-auto-flow: dense; gap: 1rem; }
+        .tile { position: relative; border-radius: 15px; overflow: hidden; display: flex; align-items: flex-end; border: 1px solid #333333; }
+        .tile.big  { grid-column: span 2; grid-row: span 2; }
+        .tile.wide { grid-column: span 2; }
+        .tile.tall { grid-row: span 2; }
+        .tile .cover { position: absolute; inset: 0; transition: transform 0.4s; }
+        .tile:hover .cover { transform: scale(1.05); }
+        .tile .emoji { position: absolute; top: 1rem; right: 1rem; font-size: 2.2rem; }
+        .tile.big .emoji { font-size: 4rem; top: 1.5rem; right: 1.5rem; }
+        .tile .tile-text { position: relative; width: 100%; padding: 3rem 1.25rem 1.1rem; background: linear-gradient(to top, rgba(14,14,14,0.92), rgba(14,14,14,0)); }
+        .tile h3 { font-size: 1.15rem; }
+        .tile.big h3 { font-size: 1.8rem; }
+        .tile .tagline { color: #dddddd; font-size: 0.85rem; margin-top: 0.2rem; }
+        .tile .more { color: #cccccc; font-size: 0.9rem; line-height: 1.5; margin-top: 0.6rem; max-height: 0; overflow: hidden; transition: max-height 0.4s; }
+        .tile:hover .more, .tile:focus-within .more, .tile.big .more { max-height: 8rem; }
+
+        @media (max-width: 900px) {
+            .story { grid-template-columns: 1fr; gap: 1.5rem; margin-bottom: 3rem; }
+            .story:nth-child(even) .story-pic { order: 0; }
+            .mosaic { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 180px; }
+        }
+        @media (max-width: 520px) {
+            .mosaic { grid-template-columns: 1fr; grid-auto-rows: minmax(200px, auto); }
+            .tile.big, .tile.wide, .tile.tall { grid-column: auto; grid-row: span 1; }
+            .tile .more { max-height: 8rem; }
+        }
+
+        /* ── MORE ABOUT ME ── */
+        .more-section { text-align: center; padding: 4rem 2rem; background-color: #222222; }
+        .more-section p { color: #aaaaaa; font-size: 1.1rem; margin-bottom: 1.5rem; }
+        .about-link { display: inline-block; padding: 0.85rem 1.75rem; margin: 0.4rem; background-color: #333333; color: #f5a623; text-decoration: none; border: 2px solid #444444; border-radius: 50px; font-weight: 600; transition: all 0.3s; }
+        .about-link:hover { background-color: #f5a623; color: #1a1a1a; border-color: #f5a623; }
+
+        /* ── FOOTER ── */
+        .footer { padding: 2rem; background-color: #1a1a1a; text-align: center; color: #666666; }
+
+        @media (max-width: 768px) {
+            .page-header h1 { font-size: 2.5rem; }
+            .content { padding: 0 1.25rem 4rem; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation: none !important; transition: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-bg" aria-hidden="true"></div>
+
+<nav class="nav">
+    <a href="index.html" class="nav-name">Grigory Tsibulya</a>
+    <a href="index.html#about" class="nav-back">← Portfolio</a>
+</nav>
+
+<header class="page-header">
+    <h1>My Hobbies</h1>
+    <!-- ░░ CHANGE: intro line ░░ -->
+    <p>What I do when I’m not making games, and how it finds its way back into them anyway.</p>
+</header>
+
+<!-- Layout preview switcher: temporary, remove once a layout is chosen -->
+<div class="layout-switcher" role="group" aria-label="Layout preview">
+    <span class="layout-switcher-label">Layout preview</span>
+    <button type="button" class="layout-btn" data-layout="0">0 · Stories</button>
+    <button type="button" class="layout-btn" data-layout="1">1 · Cards</button>
+    <button type="button" class="layout-btn" data-layout="2">2 · Mosaic</button>
+</div>
+<p class="example-note">Example entries. Replace them in the list at the top of the script in this file.</p>
+
+<main class="content" id="content"></main>
+
+<section class="more-section">
+    <p>More about me</p>
+    <a href="toolkit.html" class="about-link">My toolkit</a>
+    <a href="favorite-games.html" class="about-link">My favorite games</a>
+</section>
+
+<footer class="footer"><p>&copy; 2026 Grigory Tsibulya. All rights reserved.</p></footer>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════════
+// ░░ CHANGE: your content. Every layout below is drawn from this one list. ░░
+// To use a picture instead of the colour, set image: 'Content/...jpg'
+// ═══════════════════════════════════════════════════════════════════════════
+// size (mosaic layout only): 'big', 'wide', 'tall' or '' for a normal tile
+// link (optional): e.g. a project page this hobby inspired
+const HOBBIES = [
+    { title: 'Board games', emoji: '🎲', color: '#2f6b35', size: 'big',  image: '', link: '', linkText: '',
+      tagline: 'Weekly game nights with friends',
+      text: 'Example text. Board games are where I first noticed how much a single rule can change the way people talk to each other at the table. A lot of my design ideas start as a pen-and-paper test.' },
+    { title: 'Drawing',     emoji: '✏️', color: '#2c4170', size: 'tall', image: '', link: '', linkText: '',
+      tagline: 'Sketchbooks and quick concepts',
+      text: 'Example text. Quick sketches help me find the shape of a character or level before I open Blender.' },
+    { title: 'Hiking',      emoji: '🥾', color: '#8a5a2b', size: '',     image: '', link: '', linkText: '',
+      tagline: 'Long walks, no screens',
+      text: 'Example text. Being outside is where I untangle design problems I got stuck on during the week.' },
+    { title: 'Music',       emoji: '🎧', color: '#3a2470', size: '',     image: '', link: '', linkText: '',
+      tagline: 'Listening and messing with sounds',
+      text: 'Example text. Collecting sounds and playlists that end up setting the mood for prototypes.' },
+    { title: 'Cooking',     emoji: '🍳', color: '#a8433f', size: 'wide', image: '', link: '', linkText: '',
+      tagline: 'Recipes from everywhere',
+      text: 'Example text. Cooking for friends is the same feeling as a good co-op game: everyone has a job and it all comes together at the end.' },
+    { title: 'Photography', emoji: '📷', color: '#2f5a6b', size: 'wide', image: '', link: '', linkText: '',
+      tagline: 'Collecting references',
+      text: 'Example text. Photos of textures, light and places that later turn into level and material references.' },
+];
+
+// ── helpers ────────────────────────────────────────────────────────────────
+function esc(str) {
+    return String(str ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+function coverStyle(item) {
+    if (item.image) {
+        const url = String(item.image).replace(/['"\\()]/g, encodeURIComponent);
+        return `background-image:url('${url}');`;
+    }
+    const c = item.color || '#444444';
+    return `background-image:linear-gradient(135deg, rgba(0,0,0,0.55), rgba(0,0,0,0) 70%), linear-gradient(135deg, ${c}, ${c});`;
+}
+
+const LAYOUTS = [
+    // 0 · Stories: one hobby per row, picture and text alternate sides
+    () => HOBBIES.map(h => `
+        <article class="story">
+            <div class="story-pic cover ${h.image ? 'has-image' : ''}" style="${coverStyle(h)}">
+                <span class="emoji" aria-hidden="true">${esc(h.emoji)}</span>
+            </div>
+            <div>
+                <h3>${esc(h.title)}</h3>
+                <div class="tagline">${esc(h.tagline)}</div>
+                <p>${esc(h.text)}</p>
+                ${h.link ? `<a class="link" href="${esc(h.link)}">${esc(h.linkText || 'Read more')}</a>` : ''}
+            </div>
+        </article>`).join(''),
+
+    // 1 · Cards: quick overview, everything visible at once
+    () => `<div class="hobby-grid">${HOBBIES.map(h => `
+        <article class="hobby-card">
+            <div class="card-top cover" style="${coverStyle(h)}">
+                <div class="icon" aria-hidden="true">${esc(h.emoji)}</div>
+            </div>
+            <div class="card-body">
+                <h3>${esc(h.title)}</h3>
+                <div class="tagline">${esc(h.tagline)}</div>
+                <p>${esc(h.text)}</p>
+            </div>
+        </article>`).join('')}</div>`,
+
+    // 2 · Mosaic: photo wall, best with real pictures; hover a tile to read more
+    () => `<div class="mosaic">${HOBBIES.map(h => `
+        <article class="tile ${esc(h.size || '')}" tabindex="0">
+            <div class="cover" style="${coverStyle(h)}"></div>
+            ${h.image ? '' : `<span class="emoji" aria-hidden="true">${esc(h.emoji)}</span>`}
+            <div class="tile-text">
+                <h3>${esc(h.title)}</h3>
+                <div class="tagline">${esc(h.tagline)}</div>
+                <div class="more">${esc(h.text)}</div>
+            </div>
+        </article>`).join('')}</div>`,
+];
+
+// ── layout switching ───────────────────────────────────────────────────────
+const LAYOUT_KEY = 'hobbiesLayout';
+function setLayout(n) {
+    if (!LAYOUTS[n]) n = 0;
+    const content = document.getElementById('content');
+    content.className = 'content layout-' + n;
+    content.innerHTML = LAYOUTS[n]();
+    document.querySelectorAll('.layout-btn').forEach(btn => {
+        const on = Number(btn.dataset.layout) === n;
+        btn.classList.toggle('active', on);
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+    try { localStorage.setItem(LAYOUT_KEY, String(n)); } catch (e) {}
+}
+document.querySelectorAll('.layout-btn').forEach(btn => {
+    btn.addEventListener('click', () => setLayout(Number(btn.dataset.layout)));
+});
+(function () {
+    const fromUrl = new URLSearchParams(location.search).get('layout');
+    let saved = null;
+    try { saved = localStorage.getItem(LAYOUT_KEY); } catch (e) {}
+    setLayout(Number(fromUrl ?? saved ?? 0));
+})();
+</script>
+</body>
+</html>

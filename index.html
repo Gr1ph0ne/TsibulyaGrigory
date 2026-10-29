@@ -258,20 +258,124 @@
             line-height: 1.7;
         }
 
-        .skills {
+        .about-links {
             display: flex;
             flex-wrap: wrap;
-            gap: 1rem;
+            gap: 1.25rem;
             margin-top: 2rem;
         }
 
-        .skill-tag {
-            background-color: #333333;
-            padding: 0.75rem 1.5rem;
-            border-radius: 25px;
-            color: #f5a623;
-            font-weight: 500;
-            border: 1px solid #444444;
+        /* About Me buttons: each takes the colour of the page behind it */
+        .about-link {
+            --c: #f5a623;          /* text, border on hover, icons */
+            --bg: #333333;
+            --bg-hover: #3a3a3a;
+            --line: #444444;
+            position: relative;
+            isolation: isolate;
+            display: inline-block;
+            padding: 0.85rem 1.75rem;
+            background-color: var(--bg);
+            color: var(--c);
+            text-decoration: none;
+            border: 2px solid var(--line);
+            border-radius: 50px;
+            font-weight: 600;
+            transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+            .about-link.toolkit {
+                --c: #8fbaff; --bg: #172a45; --bg-hover: #1d3559; --line: #2c4a75;
+                background-image: linear-gradient(rgba(143,186,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(143,186,255,0.08) 1px, transparent 1px);
+                background-size: 12px 12px;
+            }
+
+            .about-link.inspiration {
+                --c: #9ad672; --bg: #1c3021; --bg-hover: #233c29; --line: #355a3b;
+            }
+
+            .about-link.games {
+                --c: #ff7fc8; --bg: #2a1340; --bg-hover: #34184f; --line: #5a2a6e;
+                background-image: radial-gradient(ellipse at 15% 0%, rgba(255,60,170,0.25), transparent 60%), radial-gradient(ellipse at 90% 100%, rgba(70,120,255,0.25), transparent 60%);
+            }
+
+            .about-link:hover,
+            .about-link:focus-visible {
+                background-color: var(--bg-hover);
+                border-color: var(--c);
+                transform: translateY(-2px);
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            }
+
+            .about-link:focus-visible {
+                outline: 2px solid var(--c);
+                outline-offset: 3px;
+            }
+
+            /* icons tucked under the button that peek out on hover */
+        .about-item {
+            position: relative;
+            display: inline-block;
+        }
+
+            .about-item .about-link {
+                position: relative;
+                z-index: 1;               /* the button covers the icons */
+            }
+
+        .about-item .halo {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .about-item .peek {
+            position: absolute;
+            left: var(--left);
+            top: var(--top);
+            width: 26px;
+            height: 26px;
+            margin: -13px 0 0 -13px;
+            color: var(--c);
+            opacity: 0;
+            transform: translate(0, 0) rotate(0deg);
+            transition: opacity 0.3s ease, transform 0.4s cubic-bezier(.2, .8, .3, 1.3);
+        }
+
+            .about-item .peek svg {
+                width: 100%;
+                height: 100%;
+                stroke: currentColor;
+                fill: none;
+                stroke-width: 1.8;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+            }
+
+            /* a logo file, once added, replaces the placeholder icon */
+            .about-item .peek img { display: none; width: 100%; height: 100%; object-fit: contain; filter: grayscale(1) brightness(1.8); }
+            .about-item .peek.logo img { display: block; }
+            .about-item .peek.logo svg { display: none; }
+
+        .about-item:hover .peek,
+        .about-item:focus-within .peek {
+            opacity: 0.35;
+            transform: translate(var(--x), var(--y)) rotate(var(--r));
+        }
+
+        .about-item .peek:nth-child(2) { transition-delay: 0.03s; }
+        .about-item .peek:nth-child(3) { transition-delay: 0.06s; }
+        .about-item .peek:nth-child(4) { transition-delay: 0.09s; }
+        .about-item .peek:nth-child(5) { transition-delay: 0.12s; }
+
+        .about-item.toolkit .peek { --c: #8fbaff; }
+        .about-item.inspiration .peek { --c: #9ad672; }
+        .about-item.games .peek { --c: #ff7fc8; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .about-link, .about-item .peek { transition: opacity 0.3s ease; }
+            .about-link:hover, .about-link:focus-visible { transform: none; }
         }
 
         /* Projects Section */
@@ -373,7 +477,49 @@
             }
         }
 
+        .project-card {
+            position: relative;
+        }
+
+        /* the whole card opens the project page */
+        .card-link {
+            color: inherit;
+            text-decoration: none;
+        }
+
+            .card-link::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+                z-index: 2;
+            }
+
+            .card-link:focus-visible {
+                outline: none;
+            }
+
+        .project-card:has(.card-link:focus-visible) {
+            outline: 2px solid #f5a623;
+            outline-offset: 3px;
+        }
+
+        .jam-badge {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            z-index: 1;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #f5a623, #e67e22);
+            color: #1a1a1a;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+        }
+
         .project-image {
+            position: relative;
             width: 100%;
             aspect-ratio: 16/9;
             background: linear-gradient(135deg, #3a3a3a, #2a2a2a);
@@ -429,6 +575,190 @@
             background-color: #222222;
         }
 
+        /* ── Art Gallery layout preview ── */
+        .layout-switcher {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin: -1.5rem auto 2.5rem;
+            max-width: 1400px;
+        }
+
+        .layout-switcher-label {
+            color: #888888;
+            font-size: 0.9rem;
+            margin-right: 0.5rem;
+        }
+
+        .layout-btn {
+            background-color: #333333;
+            border: 1px solid #444444;
+            color: #aaaaaa;
+            border-radius: 50px;
+            padding: 0.45rem 1.1rem;
+            font-size: 0.85rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+            .layout-btn:hover,
+            .layout-btn.active {
+                background-color: #f5a623;
+                border-color: #f5a623;
+                color: #1a1a1a;
+                font-weight: 600;
+            }
+
+            .layout-btn:focus-visible {
+                outline: 2px solid #f5a623;
+                outline-offset: 2px;
+            }
+
+        /* keeps "More" working in every layout */
+        #art-grid.art-grid .project-card.hidden {
+            display: none;
+        }
+
+        /* Layout 1 · two per row */
+        #art-grid.layout-1 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        /* Layout 2 · showcase: one large piece per row, text beside it, sides alternate */
+        #art-grid.layout-2 {
+            grid-template-columns: 1fr;
+            max-width: 1200px;
+        }
+
+            #art-grid.layout-2 .project-card {
+                display: grid;
+                grid-template-columns: 3fr 1fr;
+                align-items: center;
+            }
+
+                #art-grid.layout-2 .project-card:hover {
+                    transform: translateY(-5px);
+                }
+
+                #art-grid.layout-2 .project-card:nth-child(even) {
+                    grid-template-columns: 1fr 3fr;
+                }
+
+                    #art-grid.layout-2 .project-card:nth-child(even) .project-image {
+                        order: 2;
+                    }
+
+            #art-grid.layout-2 .project-info {
+                padding: 2rem;
+            }
+
+                #art-grid.layout-2 .project-info h3 {
+                    font-size: 1.8rem;
+                }
+
+        /* Layout 3 · featured: every third piece spans the full width */
+        #art-grid.layout-3 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+            #art-grid.layout-3 .project-card:nth-child(3n+1) {
+                grid-column: 1 / -1;
+            }
+
+                #art-grid.layout-3 .project-card:nth-child(3n+1) .project-image {
+                    aspect-ratio: 21/9;
+                }
+
+        /* Layout 4 · gallery wall: uncropped images, captions over the image */
+        #art-grid.layout-4 {
+            display: block;
+            column-count: 2;
+            column-gap: 2rem;
+        }
+
+            #art-grid.layout-4 .project-card {
+                display: block;
+                position: relative;
+                break-inside: avoid;
+                margin-bottom: 2rem;
+            }
+
+                #art-grid.layout-4 .project-card:hover {
+                    transform: none;
+                }
+
+            #art-grid.layout-4 .project-image {
+                aspect-ratio: auto;
+                display: block;
+            }
+
+                #art-grid.layout-4 .project-image img {
+                    height: auto;
+                    display: block;
+                }
+
+            #art-grid.layout-4 .project-info {
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                padding: 3rem 1.5rem 1.25rem;
+                background: linear-gradient(to top, rgba(10, 10, 10, 0.92), rgba(10, 10, 10, 0));
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+
+                #art-grid.layout-4 .project-info p {
+                    color: #dddddd;
+                }
+
+            #art-grid.layout-4 .project-card:hover .project-info,
+            #art-grid.layout-4 .project-card:focus-within .project-info {
+                opacity: 1;
+            }
+
+        @media (hover: none) {
+            #art-grid.layout-4 .project-info {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            #art-grid.layout-1,
+            #art-grid.layout-3 {
+                grid-template-columns: 1fr;
+            }
+
+            #art-grid.layout-3 .project-card:nth-child(3n+1) .project-image {
+                aspect-ratio: 16/9;
+            }
+
+            #art-grid.layout-2 .project-card,
+            #art-grid.layout-2 .project-card:nth-child(even) {
+                grid-template-columns: 1fr;
+            }
+
+                #art-grid.layout-2 .project-card:nth-child(even) .project-image {
+                    order: 0;
+                }
+
+            #art-grid.layout-4 {
+                column-count: 1;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            #art-grid .project-card,
+            #art-grid .project-card.reveal,
+            #art-grid .project-card.fade-out {
+                animation: none;
+                transition: none;
+            }
+        }
+
         /* Contact Section */
         .contact {
             padding: 6rem 2rem;
@@ -476,6 +806,73 @@
                 background-color: #f5a623;
                 color: #1a1a1a;
                 border-color: #f5a623;
+            }
+
+        /* Email + copy button */
+        .email-group {
+            display: inline-flex;
+            align-items: stretch;
+        }
+
+            .email-group .contact-link {
+                border-radius: 50px 0 0 50px;
+                border-right-width: 1px;
+            }
+
+        .copy-email-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 1.1rem;
+            background-color: #333333;
+            color: #f5a623;
+            border: 2px solid #444444;
+            border-left-width: 1px;
+            border-radius: 0 50px 50px 0;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+            .copy-email-btn svg {
+                width: 18px;
+                height: 18px;
+                stroke: currentColor;
+                fill: none;
+            }
+
+            .copy-email-btn:hover {
+                background-color: #f5a623;
+                color: #1a1a1a;
+                border-color: #f5a623;
+            }
+
+            .copy-email-btn:focus-visible {
+                outline: 2px solid #f5a623;
+                outline-offset: 2px;
+            }
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 2rem;
+            transform: translate(-50%, 1rem);
+            background-color: #252525;
+            color: #ffffff;
+            border: 1px solid #f5a623;
+            border-radius: 50px;
+            padding: 0.85rem 1.75rem;
+            font-size: 0.95rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 1000;
+        }
+
+            .toast.show {
+                opacity: 1;
+                transform: translate(-50%, 0);
             }
 
         /* Footer */
@@ -547,9 +944,9 @@
             <h1>Grigory Tsibulya</h1>
             <h2>Game Developer & Designer</h2>
             <p>
-                Creating immersive gaming experiences through innovative gameplay mechanics,
-                stunning visuals, and compelling storytelling. Specializing in Unity development,
-                shader programming, and 3D design.
+                My job is to create what doesn’t yet exist within what already does.
+                I build worlds players want to inhabit and share, using inventive mechanics
+                and eye-catching models and shaders.
             </p>
             <div>
                 <a href="#projects" class="cta-button">View Projects</a>
@@ -573,16 +970,12 @@
                         <span class="download-icon">⬇</span>
                         Download CV
                     </a>
-                    <a href="Content/files/Grigory_Tsibulya_Motivation_Letter.pdf" download class="download-btn">
-                        <span class="download-icon">⬇</span>
-                        Motivation Letter
-                    </a>
                 </div>
                 <p class="intro">Hello,</p>
                 <p class="intro">I am a student of</p>
                 <p class="program">
                     <span class="grad-icon">🎓</span>
-                    <a href="https://www.digitalartsandentertainment.be/page/139/Independent+Game+Production" target="_blank"
+                    <a href="https://www.digitalartsandentertainment.be/page/139/Independent+Game+Production" target="_blank">
                     <span>Digital Art and Entertainment.<br>Independent Game Production</span></a>
                 </p>
                 <p>
@@ -594,13 +987,12 @@
                 <p class="highlight-text">
                     That's, I believe, what i should aim for.
                 </p>
-                <div class="skills">
-                    <span class="skill-tag">Unity</span>
-                    <span class="skill-tag">C# Programming</span>
-                    <span class="skill-tag">Shader Graph</span>
-                    <span class="skill-tag">Blender 3D</span>
-                    <span class="skill-tag">Game Design</span>
-                    <span class="skill-tag">Substance Painter 3D</span>
+                <div class="about-links">
+                    <!-- Logos: save files as Content/logos/<name>.svg (or .png):
+                         unity, blender, photoshop, premiere-pro, substance, paradox, embark, firaxis, blizzard, valve.
+                         Until a file exists, a simple placeholder icon is shown instead. -->
+                    <span class="about-item toolkit"><span class="halo" aria-hidden="true"><span class="peek" style="--left:12%;--top:30%;--x:-6px;--y:-17px;--r:-14deg"><img src="Content/logos/unity.svg" alt="" onload="this.parentNode.classList.add('logo')" onerror="if(!this.dataset.png){this.dataset.png=1;this.src='Content/logos/unity.png'}else{this.remove()}"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5 5L3 18l3 3 6.7-6.7a4 4 0 0 0 5-5l-2.5 2.5-2.5-.5-.5-2.5z"/></svg></span><span class="peek" style="--left:50%;--top:28%;--x:2px;--y:-19px;--r:8deg"><img src="Content/logos/blender.svg" alt="" onload="this.parentNode.classList.add('logo')" onerror="if(!this.dataset.png){this.dataset.png=1;this.src='Content/logos/blender.png'}else{this.remove()}"><svg viewBox="0 0 24 24"><path d="M12 2 21 7v10l-9 5-9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg></span><span class="peek" style="--left:92%;--top:45%;--x:17px;--y:-8px;--r:12deg"><img src="Content/logos/photoshop.svg" alt="" onload="this.parentNode.classList.add('logo')" onerror="if(!this.dataset.png){this.dataset.png=1;this.src='Content/logos/photoshop.png'}else{this.remove()}"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg></span><span class="peek" style="--left:30%;--top:72%;--x:-5px;--y:18px;--r:-10deg"><img src="Content/logos/premiere-pro.svg" alt="" onload="this.parentNode.classList.add('logo')" onerror="if(!this.dataset.png){this.dataset.png=1;this.src='Content/logos/premiere-pro.png'}else{this.remove()}"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M10 9.5v5l4-2.5z"/></svg></span><span class="peek" style="--left:74%;--top:72%;--x:6px;--y:18px;--r:10deg"><img src="Content/logos/substance.svg" alt="" onload="this.parentNode.classList.add('logo')" onerror="if(!this.dataset.png){this.dataset.png=1;this.src='Content/logos/substance.png'}else{this.remove()}"><svg viewBox="0 0 24 24"><path d="M18 3l3 3-9 9-3-3z"/><path d="M9 12c-3 0-5 2-5 5 0 2-1 3-2 4 4 0 8-1 9-5"/></svg></span></span><a href="toolkit.html" class="about-link toolkit">My toolkit</a></span>
+                    <span class="about-item games"><span class="halo" aria-hidden="true"><span class="peek" style="--left:12%;--top:30%;--x:-6px;--y:-17px;--r:-14deg"><img src="Content/logos/paradox.svg" alt="" onload="this.parentNode.classList.add('logo')" onerror="if(!this.dataset.png){this.dataset.png=1;this.src='Content/logos/paradox.png'}else{this.remove()}"><svg viewBox="0 0 24 24"><path d="M6 11h4M8 9v4"/><circle cx="15.5" cy="10.5" r="0.6"/><circle cx="17.5" cy="12.5" r="0.6"/><path d="M7 6h10a5 5 0 0 1 4.9 6l-.8 4a3 3 0 0 1-5.2 1.4L14.5 16h-5l-1.4 1.4A3 3 0 0 1 2.9 16l-.8-4A5 5 0 0 1 7 6z"/></svg></span><span class="peek" style="--left:50%;--top:28%;--x:2px;--y:-19px;--r:8deg"><img src="Content/logos/embark.svg" alt="" onload="this.parentNode.classList.add('logo')" onerror="if(!this.dataset.png){this.dataset.png=1;this.src='Content/logos/embark.png'}else{this.remove()}"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.2"/><circle cx="16" cy="8" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="8" cy="16" r="1.2"/><circle cx="16" cy="16" r="1.2"/></svg></span><span class="peek" style="--left:92%;--top:45%;--x:17px;--y:-8px;--r:12deg"><img src="Content/logos/firaxis.svg" alt="" onload="this.parentNode.classList.add('logo')" onerror="if(!this.dataset.png){this.dataset.png=1;this.src='Content/logos/firaxis.png'}else{this.remove()}"><svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg></span><span class="peek" style="--left:30%;--top:72%;--x:-5px;--y:18px;--r:-10deg"><img src="Content/logos/blizzard.svg" alt="" onload="this.parentNode.classList.add('logo')" onerror="if(!this.dataset.png){this.dataset.png=1;this.src='Content/logos/blizzard.png'}else{this.remove()}"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></span><span class="peek" style="--left:74%;--top:72%;--x:6px;--y:18px;--r:10deg"><img src="Content/logos/valve.svg" alt="" onload="this.parentNode.classList.add('logo')" onerror="if(!this.dataset.png){this.dataset.png=1;this.src='Content/logos/valve.png'}else{this.remove()}"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 2v5M12 17v5M2 12h5M17 12h5"/></svg></span></span><a href="favorite-games.html" class="about-link games">My favorite games</a></span>
                 </div>
             </div>
         </div>
@@ -613,10 +1005,11 @@
             <!-- Project 1 -->
             <div class="project-card">
                 <div class="project-image">
+                    <span class="jam-badge">Game Jam</span>
                     <img src="Content/games/MonsterMines.png" alt="Asymmetric Horror Prototype">
                 </div>
                 <div class="project-info">
-                    <h3>Monster Mines</h3>
+                    <h3><a href="monster-mines.html" class="card-link">Monster Mines</a></h3>
                     <p>
                         Game Jam 04/2026 <br>
                         Horror-puzzle game where players navigate a haunted mine, solving environmental puzzles while avoiding a relentless monster. <br>
@@ -634,10 +1027,11 @@
             <!-- Project 2 -->
             <div class="project-card">
                 <div class="project-image">
+                    <span class="jam-badge">Game Jam</span>
                     <img src="Content/games/PBantJ.png" alt="Asymmetric Horror Prototype">
                 </div>
                 <div class="project-info">
-                    <h3>PB ant J</h3>
+                    <h3><a href="pb-ant-j.html" class="card-link">PB ant J</a></h3>
                     <p>
                         Game Jam 04/2025 <br>
                         A chaotic co-op game where one plays jam and the other peanut butter, racing together to cover the bread before the ants devour you. <br>
@@ -658,7 +1052,7 @@
                     <img src="Content/games/Bloxiz.png" alt="Asymmetric Horror Prototype">
                 </div>
                 <div class="project-info">
-                    <h3>Bloxiz</h3>
+                    <h3><a href="bloxiz.html" class="card-link">Bloxiz</a></h3>
                     <p>
                         02/2025 - 05/2025<br>
                         Mobile creature collection game<br>
@@ -678,7 +1072,7 @@
                     <img src="Content/games/RetailRampage.png" alt="Asymmetric Horror Prototype">
                 </div>
                 <div class="project-info">
-                    <h3>Retail Rampage</h3>
+                    <h3><a href="retail-rampage.html" class="card-link">Retail Rampage</a></h3>
                     <p>
                         04/2024 - 05/2024<br>
                         Monopoly-like party game<br>
@@ -696,10 +1090,11 @@
             <!-- Project 5 -->
             <div class="project-card hidden">
                 <div class="project-image">
+                    <span class="jam-badge">Game Jam</span>
                     <img src="Content/games/HaveYourCake.png" alt="Asymmetric Horror Prototype">
                 </div>
                 <div class="project-info">
-                    <h3>Have Your Cake</h3>
+                    <h3><a href="have-your-cake.html" class="card-link">Have Your Cake</a></h3>
                     <p>
                         Game Jam 09/2025<br>
                         An object-finding game with parkour elements set in an ever-evolving procedurally generated world.<br>
@@ -724,7 +1119,16 @@
     <!-- Art Gallery Section -->
     <section class="projects art-gallery" id="art-gallery">
         <h2>Art Gallery</h2>
-        <div class="projects-grid">
+        <!-- Layout preview switcher: temporary, remove once a layout is chosen -->
+        <div class="layout-switcher" role="group" aria-label="Art gallery layout preview">
+            <span class="layout-switcher-label">Layout preview</span>
+            <button type="button" class="layout-btn" data-layout="0">0 · Current</button>
+            <button type="button" class="layout-btn" data-layout="1">1 · Two per row</button>
+            <button type="button" class="layout-btn" data-layout="2">2 · Showcase</button>
+            <button type="button" class="layout-btn" data-layout="3">3 · Featured</button>
+            <button type="button" class="layout-btn" data-layout="4">4 · Gallery wall</button>
+        </div>
+        <div class="projects-grid art-grid layout-0" id="art-grid">
             <!-- Art 1 -->
             <div class="project-card">
                 <div class="project-image">
@@ -765,7 +1169,7 @@
                 </div>
             </div>
             <!-- Art 4 -->
-            <div class="project-card hidden">
+            <div class="project-card">
                 <div class="project-image">
                     <img src="Content/art/ArtisansDesk.png" alt="Artisans Desk">
                 </div>
@@ -778,7 +1182,7 @@
                 </div>
             </div>
             <!-- Art 5 -->
-            <div class="project-card hidden">
+            <div class="project-card">
                 <div class="project-image">
                     <img src="Content/art/SimpleScene.png" alt="Simple Scene">
                 </div>
@@ -791,38 +1195,12 @@
                 </div>
             </div>
             <!-- Art 6 -->
-            <div class="project-card hidden">
+            <div class="project-card">
                 <div class="project-image">
                     <img src="Content/art/StylizedLevel.png" alt="Stylized Level">
                 </div>
                 <div class="project-info">
                     <h3>Stylized Level</h3>
-                    <p>Technical demo showcasing advanced shader techniques...</p>
-                    <div class="project-tags">
-                        <span class="project-tag">Shader Graph</span>
-                    </div>
-                </div>
-            </div>
-            <!-- Art 7 -->
-            <div class="project-card hidden">
-                <div class="project-image">
-                    <img src="Content/art/Diorama.png" alt="Diorama">
-                </div>
-                <div class="project-info">
-                    <h3>Diorama</h3>
-                    <p>Technical demo showcasing advanced shader techniques...</p>
-                    <div class="project-tags">
-                        <span class="project-tag">Shader Graph</span>
-                    </div>
-                </div>
-            </div>
-            <!-- Art 8 -->
-            <div class="project-card hidden">
-                <div class="project-image">
-                    <img src="Content/art/Castle.png" alt="Castle">
-                </div>
-                <div class="project-info">
-                    <h3>Castle</h3>
                     <p>Technical demo showcasing advanced shader techniques...</p>
                     <div class="project-tags">
                         <span class="project-tag">Shader Graph</span>
@@ -847,13 +1225,19 @@
                 Feel free to reach out through any of the platforms below!
             </p>
             <div class="contact-links">
-                <a href="mailto:your.email@example.com" class="contact-link">Email</a>
-                <a href="https://linkedin.com" class="contact-link" target="_blank">LinkedIn</a>
-                <a href="https://github.com" class="contact-link" target="_blank">GitHub</a>
-                <a href="https://itch.io" class="contact-link" target="_blank">Itch.io</a>
+                <span class="email-group">
+                    <a href="mailto:grigory.tsibulya@gmail.com" class="contact-link">Email</a>
+                    <button type="button" class="copy-email-btn" id="copy-email-btn" data-email="grigory.tsibulya@gmail.com" title="Copy email address" aria-label="Copy email address">
+                        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
+                    </button>
+                </span>
+                <a href="https://www.linkedin.com/in/grigory-tsibulya-1a35203b0" class="contact-link" target="_blank">LinkedIn</a>
+                <a href="https://itch.io/profile/gr1ph0ne" class="contact-link" target="_blank">Itch.io</a>
             </div>
         </div>
     </section>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
     <!-- Footer -->
     <footer class="footer">
@@ -942,57 +1326,147 @@
             });
         }
 
+        // ── Copy email ──
+        let toastTimer;
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+
+        function copyText(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                return navigator.clipboard.writeText(text);
+            }
+            // fallback for older browsers / non-secure contexts
+            return new Promise((resolve, reject) => {
+                const area = document.createElement('textarea');
+                area.value = text;
+                area.setAttribute('readonly', '');
+                area.style.position = 'fixed';
+                area.style.opacity = '0';
+                document.body.appendChild(area);
+                area.select();
+                const ok = document.execCommand('copy');
+                document.body.removeChild(area);
+                ok ? resolve() : reject();
+            });
+        }
+
+        const copyEmailBtn = document.getElementById('copy-email-btn');
+        if (copyEmailBtn) {
+            copyEmailBtn.addEventListener('click', () => {
+                const email = copyEmailBtn.dataset.email;
+                copyText(email)
+                    .then(() => showToast('Email copied: ' + email))
+                    .catch(() => showToast('Couldn’t copy. Email: ' + email));
+            });
+        }
+
+        // ── Art Gallery: layout preview + "More/Less" ──
+        // Layouts: 0 current, 1 two per row, 2 showcase, 3 featured, 4 gallery wall.
+        // Preview a layout directly with index.html?artLayout=2
+        const artGrid = document.getElementById('art-grid');
         const toggleArtBtn = document.getElementById('toggle-art');
+        const artVisibleCount = { 0: 3, 1: 4, 2: 2, 3: 3, 4: 4 }; // pieces shown before "More"
         let artExpanded = false;
-        
+        let artLayoutRun = 0; // cancels pending animations when the layout changes
+
+        function applyArtLayout(layout) {
+            if (!(layout in artVisibleCount)) layout = 0;
+            artLayoutRun++;
+            artExpanded = false;
+            artGrid.className = 'projects-grid art-grid layout-' + layout;
+
+            const cards = artGrid.querySelectorAll('.project-card');
+            const visible = artVisibleCount[layout];
+            cards.forEach((card, i) => {
+                card.classList.remove('reveal', 'fade-out');
+                card.classList.toggle('hidden', i >= visible);
+            });
+
+            if (toggleArtBtn) {
+                toggleArtBtn.querySelector('.show-text').classList.remove('hidden');
+                toggleArtBtn.querySelector('.hide-text').classList.add('hidden');
+                toggleArtBtn.parentElement.style.display = cards.length > visible ? '' : 'none';
+            }
+
+            document.querySelectorAll('.layout-btn').forEach(btn => {
+                const isActive = Number(btn.dataset.layout) === layout;
+                btn.classList.toggle('active', isActive);
+                btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+            });
+
+            try { localStorage.setItem('artLayout', String(layout)); } catch (e) {}
+        }
+
+        document.querySelectorAll('.layout-btn').forEach(btn => {
+            btn.addEventListener('click', () => applyArtLayout(Number(btn.dataset.layout)));
+        });
+
+        (function initArtLayout() {
+            let layout = 0;
+            const fromUrl = new URLSearchParams(window.location.search).get('artLayout');
+            let saved = null;
+            try { saved = localStorage.getItem('artLayout'); } catch (e) {}
+            if (fromUrl !== null) layout = Number(fromUrl);
+            else if (saved !== null) layout = Number(saved);
+            applyArtLayout(layout);
+        })();
+
         if (toggleArtBtn) {
-            toggleArtBtn.addEventListener('click', function() {
-                const hiddenCards = document.querySelectorAll('#art-gallery .project-card.hidden');
-                const visibleExtraCards = document.querySelectorAll('#art-gallery .project-card.reveal');
+            toggleArtBtn.addEventListener('click', function () {
+                const run = artLayoutRun;
+                const hiddenCards = artGrid.querySelectorAll('.project-card.hidden');
+                const visibleExtraCards = artGrid.querySelectorAll('.project-card.reveal');
                 const showText = this.querySelector('.show-text');
                 const hideText = this.querySelector('.hide-text');
-                
+
                 if (!artExpanded) {
                     // EXPAND - Show hidden cards
                     hiddenCards.forEach((card, index) => {
                         setTimeout(() => {
+                            if (run !== artLayoutRun) return;
                             card.classList.remove('hidden');
                             card.classList.add('reveal');
                         }, index * 150);
                     });
-                    
-                    // Update button text
+
                     setTimeout(() => {
+                        if (run !== artLayoutRun) return;
                         showText.classList.add('hidden');
                         hideText.classList.remove('hidden');
                         artExpanded = true;
                     }, hiddenCards.length * 150);
-                    
+
                 } else {
                     // COLLAPSE - Hide extra cards
                     const cardsArray = Array.from(visibleExtraCards);
                     cardsArray.reverse().forEach((card, index) => {
                         setTimeout(() => {
+                            if (run !== artLayoutRun) return;
                             card.classList.add('fade-out');
                             setTimeout(() => {
+                                if (run !== artLayoutRun) return;
                                 card.classList.remove('reveal', 'fade-out');
                                 card.classList.add('hidden');
                             }, 400);
                         }, index * 100);
                     });
-                    
-                    // Update button text
+
                     setTimeout(() => {
+                        if (run !== artLayoutRun) return;
                         showText.classList.remove('hidden');
                         hideText.classList.add('hidden');
                         artExpanded = false;
                     }, cardsArray.length * 100);
-                    
-                    // Smooth scroll to section
+
                     setTimeout(() => {
-                        document.getElementById('art-gallery').scrollIntoView({ 
-                            behavior: 'smooth', 
-                            block: 'start' 
+                        document.getElementById('art-gallery').scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
                         });
                     }, 200);
                 }
@@ -1000,5 +1474,5 @@
         }
     </script>
 </body>
-</html>'''
+</html>
 
