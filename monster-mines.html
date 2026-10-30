@@ -24,6 +24,11 @@
         .hero h1 { font-size: clamp(3rem, 7vw, 5.5rem); margin-bottom: 1.25rem; background: linear-gradient(135deg, #f5a623, #e67e22); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1.05; }
         .hero .pitch { font-size: 1.35rem; color: #eeeeee; line-height: 1.7; max-width: 640px; margin: 0 auto 2.5rem; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
         .hero-tags { display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center; }
+        .hero-roles { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 1rem; }
+        .roles-label { color: #aaaaaa; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-right: 0.25rem; }
+        .role { padding: 0.35rem 0.9rem; border-radius: 50px; background: linear-gradient(135deg, #f5a623, #e67e22); color: #1a1a1a; font-size: 0.82rem; font-weight: 700; }
+        .about-text a { color: #f5a623; }
+        .pitch-quote { margin: 0 0 1.5rem; padding: 1rem 1.25rem; border-left: 3px solid #f5a623; background: #1f1f1f; color: #e6e6e6; font-style: italic; font-size: 1.1rem; line-height: 1.7; border-radius: 0 10px 10px 0; }
         .hero-tag { background-color: #333333; padding: 0.4rem 1rem; border-radius: 15px; font-size: 0.85rem; color: #f5a623; border: 1px solid #444444; }
         .hero-scroll-btn { display: inline-block; padding: 0.9rem 2.5rem; background: linear-gradient(135deg, #f5a623, #e67e22); color: white; border: none; border-radius: 50px; font-weight: 600; font-size: 1rem; font-family: inherit; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; }
         .hero-scroll-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(245,166,35,0.4); }
@@ -123,6 +128,61 @@
         .cta-button.secondary { background: transparent; border: 2px solid #f5a623; color: #f5a623; }
         .cta-button.secondary:hover { background: rgba(245,166,35,0.1); }
 
+
+        /* ── Page layout: cinematic header, big quote, theater gallery, play banner ── */
+        .mm.layout-2 { display: flex; flex-direction: column; }
+        .mm.layout-2 #hero { min-height: calc(100vh - 120px); align-items: flex-end; justify-content: flex-start; text-align: left; padding: 3rem 6vw 4rem; }
+        .mm.layout-2 .hero-bg img { filter: brightness(0.55); }
+        .mm.layout-2 .hero-overlay { background: linear-gradient(to top, rgba(18,18,18,0.95) 0%, rgba(18,18,18,0.3) 55%, rgba(18,18,18,0.1) 100%); }
+        .mm.layout-2 .hero .pitch { margin-left: 0; }
+        .mm.layout-2 .hero-roles { justify-content: flex-start; }
+        .mm.layout-2 #about { order: 1; background: #1a1a1a; }
+        .mm.layout-2 #about h2 { display: none; }
+        .mm.layout-2 .pitch-quote { background: none; border: none; padding: 0; margin: 0 0 2.5rem; font-size: clamp(1.4rem, 2.4vw, 1.9rem); line-height: 1.5; color: #ffffff; text-align: center; }
+        .mm.layout-2 .pitch-quote::before { content: "“"; display: block; font-size: 4rem; line-height: 0.6; color: #f5a623; font-style: normal; margin-bottom: 0.5rem; }
+        .mm.layout-2 #gallery { order: 2; background: #141414; padding: 3rem 0; }
+        .mm.layout-2 #gallery h2 { font-size: 1.6rem; text-align: left; padding: 0 6vw; margin-bottom: 1.25rem; }
+        .mm.layout-2 #gallery .section-inner { max-width: none; }
+        .mm.layout-2 .gallery-grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; padding: 0 6vw 1rem; gap: 1rem; }
+        .mm.layout-2 .gallery-item { flex: 0 0 min(72vw, 640px); scroll-snap-align: start; }
+        .mm.layout-2 #download-section { order: 3; background: linear-gradient(135deg, #f5a623, #e67e22); padding: 3.5rem 2rem; }
+        .mm.layout-2 #download-section h2 { color: #1a1a1a; margin-bottom: 1.25rem; }
+        .mm.layout-2 #download-section .download-btn { background: #1a1a1a; color: #f5a623; }
+        .mm.layout-2 .download-btn-wrap { margin: 0; }
+
+        /* ── Theater gallery ── */
+        .theater { display: none; }
+        .mm.layout-3 .gallery-grid { display: none; }
+        .mm.layout-3 #gallery { padding: 4rem 0 4.5rem; background: #0f0f0f; }
+        .mm.layout-3 #gallery h2 { text-align: center; padding: 0; }
+        .mm.layout-3 .theater { display: block; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+        .th-stage { position: relative; aspect-ratio: 16/9; background: #080808; border-radius: 8px; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,0.7), 0 0 0 1px #262626; }
+        .th-stage .th-media { position: absolute; inset: 0; animation: thFade 0.45s ease both; }
+        .th-stage img, .th-stage video { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .th-stage .gallery-placeholder { position: absolute; inset: 0; font-size: 1rem; }
+        .th-stage .th-click { position: absolute; inset: 0; cursor: zoom-in; background: none; border: none; }
+        .th-play { position: absolute; left: 50%; top: 50%; width: 76px; height: 76px; margin: -38px 0 0 -38px; border-radius: 50%; background: rgba(245,166,35,0.92); color: #1a1a1a; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; pointer-events: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        @keyframes thFade { from { opacity: 0; transform: scale(1.015); } to { opacity: 1; transform: none; } }
+        .th-nav { position: absolute; top: 50%; z-index: 2; width: 48px; height: 48px; margin-top: -24px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.25); background: rgba(10,10,10,0.55); color: #ffffff; font-size: 1.3rem; cursor: pointer; backdrop-filter: blur(6px); transition: background 0.2s, border-color 0.2s; }
+        .th-nav:hover { background: rgba(245,166,35,0.35); border-color: #f5a623; }
+        .th-prev { left: 1rem; } .th-next { right: 1rem; }
+        .th-count { position: absolute; right: 1.1rem; bottom: 0.9rem; z-index: 2; padding: 0.25rem 0.7rem; border-radius: 50px; background: rgba(10,10,10,0.6); color: #dddddd; font-size: 0.8rem; letter-spacing: 0.08em; font-variant-numeric: tabular-nums; }
+        .th-stage::after { content: ""; position: absolute; inset: 0; pointer-events: none; box-shadow: inset 0 0 120px rgba(0,0,0,0.55); }
+        .th-thumbs { display: flex; justify-content: flex-start; gap: 0.7rem; margin-top: 1.1rem; overflow-x: auto; padding: 0.3rem; }
+        .th-thumb { position: relative; flex: 0 0 150px; aspect-ratio: 16/9; border-radius: 6px; overflow: hidden; border: 2px solid transparent; background: #1c1c1c; padding: 0; cursor: pointer; opacity: 0.5; transition: opacity 0.25s, border-color 0.25s, transform 0.25s; }
+        .th-thumb:first-child { margin-left: auto; }
+        .th-thumb:last-child { margin-right: auto; }
+        .th-thumb:hover { opacity: 0.85; transform: translateY(-2px); }
+        .th-thumb[aria-current="true"] { opacity: 1; border-color: #f5a623; }
+        .th-thumb img, .th-thumb video { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .th-thumb .gallery-placeholder { font-size: 0.7rem; }
+        .th-thumb .gallery-placeholder span { font-size: 1.1rem; }
+        .th-thumb.is-video::after { content: "▶"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 1.1rem; background: rgba(0,0,0,0.3); }
+        @media (max-width: 600px) {
+            .th-thumb { flex-basis: 96px; }
+            .th-nav { width: 38px; height: 38px; margin-top: -19px; }
+        }
+        @media (prefers-reduced-motion: reduce) { .th-stage .th-media { animation: none; } }
         /* ── FOOTER ── */
         .footer { padding: 2rem; background-color: #1a1a1a; text-align: center; color: #666666; }
 
@@ -146,8 +206,10 @@
     <a href="index.html#projects" class="nav-back">← Portfolio</a>
 </nav>
 
+<main class="mm layout-2 layout-3" id="mm">
+
 <!-- HERO -->
-<section class="hero">
+<section class="hero" id="hero">
     <div class="hero-bg">
         <!-- ░░ CHANGE: key art (currently the project card image) ░░ -->
         <img src="Content/games/MonsterMines.png" alt="Monster Mines key art">
@@ -156,25 +218,27 @@
     <div class="hero-content">
         <span class="hero-status">Game Jam · 04/2026</span>
         <h1>Monster Mines</h1>
-        <!-- ░░ CHANGE: one-sentence pitch ░░ -->
-        <p class="pitch">Description coming soon.</p>
-        <div class="hero-tags">
-            <span class="hero-tag">Game Jam</span>
-            <span class="hero-tag">Unity</span>
-            <span class="hero-tag">Horror</span>
+        <p class="pitch">Horror-puzzle game where players navigate a haunted mine, solving environmental puzzles while avoiding a relentless monster.</p>
+        <div class="hero-roles" aria-label="My role">
+            <span class="roles-label">My role</span>
+            <span class="role">Team Lead</span>
+            <span class="role">Game Designer</span>
+            <span class="role">Level Designer</span>
+            <span class="role">3D Artist</span>
         </div>
         <div style="margin-top:2rem;">
             <button onclick="document.getElementById('download-section').scrollIntoView({behavior:'smooth',block:'start'})" class="hero-scroll-btn">
-                ↓ Download
+                ↓ Play
             </button>
         </div>
     </div>
 </section>
 
 <!-- GALLERY -->
-<section class="section">
+<section class="section" id="gallery">
     <div class="section-inner">
         <h2>Gallery</h2>
+        <div class="theater" id="theater" aria-label="Gallery viewer"></div>
         <div class="gallery-grid" id="gallery-grid">
             <div class="gallery-item" onclick="openLightbox(0)">
                 <div class="gallery-placeholder"><span>🖼</span>Screenshot coming soon</div>
@@ -191,62 +255,32 @@
 
 
 <!-- ABOUT -->
-<section class="section">
+<section class="section" id="about">
     <div class="section-inner">
         <h2>About the Game</h2>
         <div class="about-text" style="max-width:720px; margin:0 auto;">
-            <!-- ░░ CHANGE: full description ░░ -->
-            <p>Coming soon.</p>
+            <blockquote class="pitch-quote">The year 2067. You are one of the few survivors of a nuclear war, hiding in a dark, creepy bunker riddled with mines. To survive, you’d better sweep all of them. But beware… some of them might be breathing.</blockquote>
+            <p>That was our pitch at the project presentations after <a href="https://itch.io/jam/dae-gamejam-2026" target="_blank" rel="noopener">Xbox Game Camp Belgium</a> 2026, a two-day game jam. The theme of the jam was “Minesweeper”. Our team of six managed to build a pretty solid game in that short time.</p>
+            <p>The goal is to clear the bunker of mines, some of which are mimics. Mimics are easy to spot, because they twitch quite a lot. But over time the bunker fills with toxic gas, which cuts visibility and makes the player’s job much harder. The player has to defuse the real mines and take out the mimics with a stun gun. Mix them up… and you’ll have to deal with the consequences. Defused mines can also be used to your advantage, to keep disturbed mimics at a distance.</p>
+            <p>This project was the first game I worked on as a team lead. It was a very important experience for me, because combining game design with team leadership is exactly what I’m aiming for.</p>
         </div>
     </div>
 </section>
-
-<!-- CURRENT STATE -->
-<section class="section">
-    <div class="section-inner">
-        <h2>Current State</h2>
-        <div class="about-grid">
-            <div class="about-text">
-                <!-- ░░ CHANGE: current state, your role, what you learned ░░ -->
-                <p>Coming soon.</p>
-
-                <!-- ░░ CHANGE: tech list, e.g.
-                <h3>Tech</h3>
-                <ul>
-                    <li>Engine: Unity</li>
-                </ul>
-                ░░ -->
-            </div>
-            <div>
-                <!-- ░░ CHANGE: highlights, one <li> per point ░░ -->
-                <ul class="feature-list"></ul>
-            </div>
-        </div>
-    </div>
-</section>
-
-
 
 <!-- DOWNLOAD -->
 <section class="section download-section" id="download-section">
     <div class="section-inner">
-        <h2>Download</h2>
+        <h2>Play</h2>
         <div class="download-btn-wrap">
-            <!-- ░░ CHANGE: path to the build (or a link to the itch.io page) ░░ -->
-            <a href="Content/builds/MonsterMines.zip" class="download-btn" download>
-                <svg viewBox="0 0 24 24" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
-                Download Build
+            <a href="https://alice-vasilenko.itch.io/monstermines" class="download-btn" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" stroke-width="2"><polygon points="7 4 20 12 7 20 7 4" /></svg>
+                Itch.io
             </a>
-        </div>
-        <div class="install-card">
-            <h3>How to install (when available)</h3>
-            <!-- ░░ CHANGE: install steps, one <li> per step ░░ -->
-            <ol class="install-steps">
-                <li>Coming soon.</li>
-            </ol>
         </div>
     </div>
 </section>
+
+</main>
 
 <!-- MORE ABOUT -->
 <section class="more-section">
@@ -310,6 +344,118 @@ document.addEventListener('keydown', e => {
     if (e.key === 'ArrowLeft') shiftLightbox(-1);
     if (e.key === 'ArrowRight') shiftLightbox(1);
 });
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// ░░ Pictures for this page — no code changes needed ░░
+// Save files in PROJECT_FOLDER with these names (.jpg, .png or .webp):
+//   keyart.jpg        → big picture at the top
+//   screenshot-1.jpg, screenshot-2.jpg, screenshot-3.jpg … → gallery, in that order
+//   gameplay.mp4      → gameplay video (or set YOUTUBE_ID below instead)
+// ═══════════════════════════════════════════════════════════════════════════
+const PROJECT_FOLDER = 'Content/monster-mines/';
+const PROJECT_TITLE  = 'Monster Mines';
+const YOUTUBE_ID     = '';   // e.g. 'dQw4w9WgXcQ' from https://www.youtube.com/watch?v=dQw4w9WgXcQ
+const MAX_SCREENSHOTS = 12;
+
+function firstImageThatLoads(urls) {
+    return new Promise(resolve => {
+        let i = 0;
+        const next = () => {
+            if (i >= urls.length) return resolve(null);
+            const url = urls[i++], img = new Image();
+            img.onload = () => resolve(url);
+            img.onerror = next;
+            img.src = url;
+        };
+        next();
+    });
+}
+function videoExists(url) {
+    return new Promise(resolve => {
+        const v = document.createElement('video');
+        v.preload = 'metadata';
+        v.onloadedmetadata = () => resolve(true);
+        v.onerror = () => resolve(false);
+        v.src = url;
+    });
+}
+const withExt = name => ['jpg', 'png', 'webp'].map(ext => `${PROJECT_FOLDER}${name}.${ext}`);
+
+(async function loadProjectMedia() {
+    // key art
+    const key = await firstImageThatLoads(withExt('keyart'));
+    if (key) document.querySelectorAll('.hero-bg img').forEach(img => img.src = key);
+
+    // screenshots, numbered from 1 until the first missing one
+    const shots = [];
+    for (let n = 1; n <= MAX_SCREENSHOTS; n++) {
+        const url = await firstImageThatLoads(withExt(`screenshot-${n}`));
+        if (!url) break;
+        shots.push(url);
+    }
+
+    // video: YouTube first, then a local file
+    let video = null;
+    if (YOUTUBE_ID) video = { type: 'youtube', id: YOUTUBE_ID, thumb: `https://img.youtube.com/vi/${YOUTUBE_ID}/hqdefault.jpg` };
+    else if (await videoExists(`${PROJECT_FOLDER}gameplay.mp4`)) video = { type: 'video', src: `${PROJECT_FOLDER}gameplay.mp4` };
+
+    if (!shots.length && !video) return;   // nothing saved yet: keep the placeholders
+
+    galleryMedia.length = 0;
+    shots.forEach((src, i) => galleryMedia.push({ type: 'image', src, alt: `${PROJECT_TITLE} screenshot ${i + 1}` }));
+    if (video) galleryMedia.push(video);
+
+    const grid = document.getElementById('gallery-grid');
+    grid.innerHTML = galleryMedia.map((m, i) => {
+        if (m.type === 'image') return `<div class="gallery-item" onclick="openLightbox(${i})"><img src="${m.src}" alt="${m.alt}" loading="lazy"></div>`;
+        if (m.type === 'youtube') return `<div class="gallery-item video-item" onclick="openLightbox(${i})"><img src="${m.thumb}" alt="${PROJECT_TITLE} gameplay video" loading="lazy"></div>`;
+        return `<div class="gallery-item video-item" onclick="openLightbox(${i})"><video src="${m.src}#t=1" muted preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block;"></video></div>`;
+    }).join('') + (video ? '' : `<div class="gallery-item video-item" style="cursor:default;"><div class="gallery-placeholder"><span>▶</span>Gameplay video coming soon</div></div>`);
+    hasVideo = !!video;
+    renderTheater();
+})();
+
+// ── Theater gallery (layout 3): one big picture, thumbnails below ──────────
+var hasVideo = false, theaterIndex = 0;
+function theaterItems() {
+    const items = galleryMedia.filter(m => m.src || m.type === 'youtube').map(m => ({ ...m }));
+    if (!items.length) {
+        return [{ ph: 'Screenshot coming soon', icon: '🖼' }, { ph: 'Screenshot coming soon', icon: '🖼' }, { ph: 'Gameplay video coming soon', icon: '▶', isVideo: true }];
+    }
+    if (!hasVideo) items.push({ ph: 'Gameplay video coming soon', icon: '▶', isVideo: true });
+    return items;
+}
+function mediaHTML(m, small) {
+    if (m.ph) return `<div class="gallery-placeholder"><span>${m.icon}</span>${small ? '' : m.ph}</div>`;
+    if (m.type === 'image') return `<img src="${m.src}" alt="${m.alt || ''}"${small ? ' loading="lazy"' : ''}>`;
+    if (m.type === 'youtube') return `<img src="${m.thumb}" alt="Gameplay video">`;
+    return `<video src="${m.src}#t=1" muted preload="metadata"></video>`;
+}
+function renderTheater() {
+    const box = document.getElementById('theater');
+    if (!box) return;
+    const items = theaterItems();
+    theaterIndex = Math.min(theaterIndex, items.length - 1);
+    const m = items[theaterIndex];
+    const realIndex = m.ph ? -1 : galleryMedia.findIndex(g => g.type === m.type && (g.src || g.id) === (m.src || m.id));
+    const isVideo = m.isVideo || m.type === 'youtube' || m.type === 'video';
+    box.innerHTML = `
+        <div class="th-stage">
+            <div class="th-media">${mediaHTML(m, false)}${isVideo && !m.ph ? '<span class="th-play">▶</span>' : ''}</div>
+            ${realIndex >= 0 ? `<button type="button" class="th-click" aria-label="Open full size" onclick="openLightbox(${realIndex})"></button>` : ''}
+            ${items.length > 1 ? `<button type="button" class="th-nav th-prev" aria-label="Previous" onclick="stepTheater(-1)">‹</button>
+            <button type="button" class="th-nav th-next" aria-label="Next" onclick="stepTheater(1)">›</button>` : ''}
+            <span class="th-count">${String(theaterIndex + 1).padStart(2, '0')} / ${String(items.length).padStart(2, '0')}</span>
+        </div>
+        <div class="th-thumbs">${items.map((it, i) => `
+            <button type="button" class="th-thumb${(it.isVideo || it.type === 'youtube' || it.type === 'video') ? ' is-video' : ''}" aria-current="${i === theaterIndex}" aria-label="Show item ${i + 1}" onclick="showTheater(${i})">${mediaHTML(it, true)}</button>`).join('')}
+        </div>`;
+}
+function showTheater(i) { theaterIndex = i; renderTheater(); }
+function stepTheater(d) { const n = theaterItems().length; theaterIndex = (theaterIndex + d + n) % n; renderTheater(); }
+renderTheater();
+
 </script>
 </body>
 </html>

@@ -24,6 +24,11 @@
         .hero h1 { font-size: clamp(3rem, 7vw, 5.5rem); margin-bottom: 1.25rem; background: linear-gradient(135deg, #f5a623, #e67e22); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1.05; }
         .hero .pitch { font-size: 1.35rem; color: #eeeeee; line-height: 1.7; max-width: 640px; margin: 0 auto 2.5rem; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
         .hero-tags { display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center; }
+        .hero-roles { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 1rem; }
+        .roles-label { color: #aaaaaa; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-right: 0.25rem; }
+        .role { padding: 0.35rem 0.9rem; border-radius: 50px; background: linear-gradient(135deg, #f5a623, #e67e22); color: #1a1a1a; font-size: 0.82rem; font-weight: 700; }
+        .about-text a { color: #f5a623; }
+        .pitch-quote { margin: 0 0 1.5rem; padding: 1rem 1.25rem; border-left: 3px solid #f5a623; background: #1f1f1f; color: #e6e6e6; font-style: italic; font-size: 1.1rem; line-height: 1.7; border-radius: 0 10px 10px 0; }
         .hero-tag { background-color: #333333; padding: 0.4rem 1rem; border-radius: 15px; font-size: 0.85rem; color: #f5a623; border: 1px solid #444444; }
         .hero-scroll-btn { display: inline-block; padding: 0.9rem 2.5rem; background: linear-gradient(135deg, #f5a623, #e67e22); color: white; border: none; border-radius: 50px; font-weight: 600; font-size: 1rem; font-family: inherit; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; }
         .hero-scroll-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(245,166,35,0.4); }
@@ -123,6 +128,86 @@
         .cta-button.secondary { background: transparent; border: 2px solid #f5a623; color: #f5a623; }
         .cta-button.secondary:hover { background: rgba(245,166,35,0.1); }
 
+
+        /* ── Page layout: cinematic header, big quote, theater gallery, play banner ── */
+        .mm.layout-2 { display: flex; flex-direction: column; }
+        .mm.layout-2 #hero { min-height: calc(100vh - 120px); align-items: flex-end; justify-content: flex-start; text-align: left; padding: 3rem 6vw 4rem; }
+        .mm.layout-2 .hero-bg img { filter: brightness(0.55); }
+        .mm.layout-2 .hero-overlay { background: linear-gradient(to top, rgba(18,18,18,0.95) 0%, rgba(18,18,18,0.3) 55%, rgba(18,18,18,0.1) 100%); }
+        .mm.layout-2 .hero .pitch { margin-left: 0; }
+        .mm.layout-2 .hero-roles { justify-content: flex-start; }
+        .mm.layout-2 #about { order: 1; background: #1a1a1a; }
+        .mm.layout-2 #about h2 { display: none; }
+        .mm.layout-2 .pitch-quote { background: none; border: none; padding: 0; margin: 0 0 2.5rem; font-size: clamp(1.4rem, 2.4vw, 1.9rem); line-height: 1.5; color: #ffffff; text-align: center; }
+        .mm.layout-2 .pitch-quote::before { content: "“"; display: block; font-size: 4rem; line-height: 0.6; color: #f5a623; font-style: normal; margin-bottom: 0.5rem; }
+        .mm.layout-2 #gallery { order: 2; background: #141414; padding: 3rem 0; }
+        .mm.layout-2 #gallery h2 { font-size: 1.6rem; text-align: left; padding: 0 6vw; margin-bottom: 1.25rem; }
+        .mm.layout-2 #gallery .section-inner { max-width: none; }
+        .mm.layout-2 .gallery-grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; padding: 0 6vw 1rem; gap: 1rem; }
+        .mm.layout-2 .gallery-item { flex: 0 0 min(72vw, 640px); scroll-snap-align: start; }
+        .mm.layout-2 #download-section { order: 3; background: linear-gradient(135deg, #f5a623, #e67e22); padding: 3.5rem 2rem; }
+        .mm.layout-2 #download-section h2 { color: #1a1a1a; margin-bottom: 1.25rem; }
+        .mm.layout-2 #download-section .download-btn { background: #1a1a1a; color: #f5a623; }
+        .mm.layout-2 .download-btn-wrap { margin: 0; }
+
+        /* ── Gallery: portrait (phone) screenshots ── */
+        .theater { display: none; }
+        .mm.layout-3 .gallery-grid { display: none; }
+        .mm.layout-3 #gallery { padding: 4rem 0 4.5rem; background: #0f0f0f; }
+        .mm.layout-3 #gallery h2 { text-align: center; padding: 0; }
+        .mm.layout-3 .theater { display: block; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+        .th-stage { position: relative; aspect-ratio: 16/9; background: #080808; border-radius: 8px; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,0.7), 0 0 0 1px #262626; }
+        .th-stage::after { content: ""; position: absolute; inset: 0; pointer-events: none; box-shadow: inset 0 0 120px rgba(0,0,0,0.55); }
+        .th-backdrop { position: absolute; inset: -40px; background-size: cover; background-position: center; filter: blur(34px) brightness(0.32) saturate(1.2); transform: scale(1.1); transition: background-image 0.4s; }
+        .th-backdrop.empty { background: radial-gradient(ellipse at 50% 40%, #2a2618, #0b0b0b 70%); filter: none; }
+        .th-nav { position: absolute; top: 50%; z-index: 4; width: 48px; height: 48px; margin-top: -24px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.25); background: rgba(10,10,10,0.55); color: #ffffff; font-size: 1.3rem; cursor: pointer; backdrop-filter: blur(6px); transition: background 0.2s, border-color 0.2s; }
+        .th-nav:hover { background: rgba(245,166,35,0.35); border-color: #f5a623; }
+        .th-prev { left: 1rem; } .th-next { right: 1rem; }
+        .th-count { position: absolute; right: 1.1rem; bottom: 0.9rem; z-index: 4; padding: 0.25rem 0.7rem; border-radius: 50px; background: rgba(10,10,10,0.6); color: #dddddd; font-size: 0.8rem; letter-spacing: 0.08em; font-variant-numeric: tabular-nums; }
+
+        /* phone frame */
+        .phone { position: relative; height: 88%; aspect-ratio: 9 / 19.5; border-radius: 34px; padding: 9px; background: linear-gradient(145deg, #2c2c2c, #0d0d0d); box-shadow: 0 0 0 1px #3a3a3a, 0 25px 60px rgba(0,0,0,0.75); }
+        .phone::before { content: ""; position: absolute; top: 15px; left: 50%; width: 22%; height: 14px; margin-left: -11%; border-radius: 10px; background: #0a0a0a; z-index: 2; }
+        .phone-screen { position: relative; width: 100%; height: 100%; border-radius: 26px; overflow: hidden; background: #1b1b1b; }
+        .phone-screen img, .phone-screen video { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .phone-screen .gallery-placeholder { position: absolute; inset: 0; font-size: 0.8rem; text-align: center; padding: 1rem; }
+        .phone .th-play { position: absolute; left: 50%; top: 50%; width: 60px; height: 60px; margin: -30px 0 0 -30px; border-radius: 50%; background: rgba(245,166,35,0.92); color: #1a1a1a; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; z-index: 3; pointer-events: none; }
+        .phone.clickable { cursor: zoom-in; }
+        @keyframes thFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+        /* phone + caption */
+        .g-captions .th-split { position: absolute; inset: 0; z-index: 2; display: grid; grid-template-columns: 42% 1fr; grid-template-rows: 100%; align-items: center; animation: thFade 0.45s ease both; }
+        .g-captions .th-split .phone { justify-self: center; }
+        .th-caption { padding: 0 3.5rem 0 1rem; }
+        .th-caption .num { font-size: 3.6rem; font-weight: 800; line-height: 1; color: transparent; -webkit-text-stroke: 1.5px #f5a623; }
+        .th-caption h3 { font-size: 1.7rem; color: #ffffff; margin: 0.6rem 0 0.6rem; }
+        .th-caption p { color: #cccccc; font-size: 1.05rem; line-height: 1.7; max-width: 440px; }
+
+        /* thumbnails (portrait) */
+        .th-thumbs { display: flex; justify-content: flex-start; gap: 0.6rem; margin-top: 1.1rem; overflow-x: auto; padding: 0.3rem; }
+        .th-thumb { position: relative; flex: 0 0 62px; aspect-ratio: 9 / 19.5; border-radius: 10px; overflow: hidden; border: 2px solid transparent; background: #1c1c1c; padding: 0; cursor: pointer; opacity: 0.5; transition: opacity 0.25s, border-color 0.25s, transform 0.25s; }
+        .th-thumb:first-child { margin-left: auto; }
+        .th-thumb:last-child { margin-right: auto; }
+        .th-thumb:hover { opacity: 0.85; transform: translateY(-2px); }
+        .th-thumb[aria-current="true"] { opacity: 1; border-color: #f5a623; }
+        .th-thumb img, .th-thumb video { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .th-thumb .gallery-placeholder span { font-size: 1rem; }
+        .th-thumb.is-video::after { content: "▶"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 0.9rem; background: rgba(0,0,0,0.3); }
+        .lightbox-inner video { display: block; margin: 0 auto; max-height: 82vh; max-width: 100%; border-radius: 10px; }
+
+        @media (max-width: 700px) {
+            .th-stage { aspect-ratio: 4 / 5; }
+            .th-nav { width: 38px; height: 38px; margin-top: -19px; }
+            .g-captions .th-split { grid-template-columns: 1fr; grid-template-rows: 62% 1fr; }
+            .g-captions .th-split .phone { height: 92%; align-self: end; }
+            .th-caption { padding: 0.75rem 1.25rem 1rem; text-align: center; }
+            .th-caption .num { display: none; }
+            .th-caption h3 { font-size: 1.15rem; margin: 0 0 0.3rem; }
+            .th-caption p { font-size: 0.9rem; margin: 0 auto; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .g-captions .th-split { animation: none; }
+        }
         /* ── FOOTER ── */
         .footer { padding: 2rem; background-color: #1a1a1a; text-align: center; color: #666666; }
 
@@ -146,8 +231,10 @@
     <a href="index.html#projects" class="nav-back">← Portfolio</a>
 </nav>
 
+<main class="mm layout-2 layout-3" id="mm">
+
 <!-- HERO -->
-<section class="hero">
+<section class="hero" id="hero">
     <div class="hero-bg">
         <!-- ░░ CHANGE: key art (currently the project card image) ░░ -->
         <img src="Content/games/Bloxiz.png" alt="Bloxiz key art">
@@ -157,24 +244,26 @@
         <span class="hero-status">02/2025 – 05/2025</span>
         <h1>Bloxiz</h1>
         <!-- ░░ CHANGE: one-sentence pitch ░░ -->
-        <p class="pitch">Description coming soon.</p>
-        <div class="hero-tags">
-            <span class="hero-tag">Unity</span>
-            <span class="hero-tag">Mobile</span>
-            <span class="hero-tag">Strategy</span>
+        <p class="pitch">Mobile creature collection game.</p>
+        <div class="hero-roles" aria-label="My role">
+            <span class="roles-label">My role</span>
+            <span class="role">3D Artist</span>
+            <span class="role">UI Artist</span>
+            <span class="role">Sound Designer</span>
         </div>
         <div style="margin-top:2rem;">
             <button onclick="document.getElementById('download-section').scrollIntoView({behavior:'smooth',block:'start'})" class="hero-scroll-btn">
-                ↓ Download
+                ↓ Play
             </button>
         </div>
     </div>
 </section>
 
 <!-- GALLERY -->
-<section class="section">
+<section class="section" id="gallery">
     <div class="section-inner">
         <h2>Gallery</h2>
+        <div class="theater" id="theater" aria-label="Gallery viewer"></div>
         <div class="gallery-grid" id="gallery-grid">
             <div class="gallery-item" onclick="openLightbox(0)">
                 <div class="gallery-placeholder"><span>🖼</span>Screenshot coming soon</div>
@@ -191,62 +280,30 @@
 
 
 <!-- ABOUT -->
-<section class="section">
+<section class="section" id="about">
     <div class="section-inner">
         <h2>About the Game</h2>
         <div class="about-text" style="max-width:720px; margin:0 auto;">
-            <!-- ░░ CHANGE: full description ░░ -->
+            <!-- ░░ CHANGE: optional pitch quote, e.g. <blockquote class="pitch-quote">Your pitch…</blockquote> ░░ -->
+            <!-- ░░ CHANGE: about the game, one <p> per paragraph ░░ -->
             <p>Coming soon.</p>
         </div>
     </div>
 </section>
 
-<!-- CURRENT STATE -->
-<section class="section">
-    <div class="section-inner">
-        <h2>Current State</h2>
-        <div class="about-grid">
-            <div class="about-text">
-                <!-- ░░ CHANGE: current state, your role, what you learned ░░ -->
-                <p>Coming soon.</p>
-
-                <!-- ░░ CHANGE: tech list, e.g.
-                <h3>Tech</h3>
-                <ul>
-                    <li>Engine: Unity</li>
-                </ul>
-                ░░ -->
-            </div>
-            <div>
-                <!-- ░░ CHANGE: highlights, one <li> per point ░░ -->
-                <ul class="feature-list"></ul>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-
 <!-- DOWNLOAD -->
 <section class="section download-section" id="download-section">
     <div class="section-inner">
-        <h2>Download</h2>
+        <h2>Play</h2>
         <div class="download-btn-wrap">
-            <!-- ░░ CHANGE: path to the build (or a link to the itch.io page) ░░ -->
-            <a href="Content/builds/Bloxiz.zip" class="download-btn" download>
-                <svg viewBox="0 0 24 24" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
-                Download Build
-            </a>
-        </div>
-        <div class="install-card">
-            <h3>How to install (when available)</h3>
-            <!-- ░░ CHANGE: install steps, one <li> per step ░░ -->
-            <ol class="install-steps">
-                <li>Coming soon.</li>
-            </ol>
+            <!-- ░░ CHANGE: replace with the store / itch.io link, e.g.
+            <a href="https://…" class="download-btn" target="_blank" rel="noopener">…</a> ░░ -->
+            <span class="download-btn" aria-disabled="true" style="opacity:0.6;cursor:default;">Link coming soon</span>
         </div>
     </div>
 </section>
+
+</main>
 
 <!-- MORE ABOUT -->
 <section class="more-section">
@@ -300,7 +357,7 @@ function renderLightboxContent() {
     } else if (m.type === 'youtube') {
         box.innerHTML = `<div style="position:relative;padding-bottom:56.25%;height:0;"><iframe src="https://www.youtube.com/embed/${m.id}?autoplay=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:10px;"></iframe></div>`;
     } else if (m.type === 'video') {
-        box.innerHTML = `<video src="${m.src}" controls autoplay style="border-radius:10px;width:100%;"></video>`;
+        box.innerHTML = `<video src="${m.src}" controls autoplay playsinline></video>`;
     }
 }
 document.getElementById('lightbox').addEventListener('click', e => { if (e.target === document.getElementById('lightbox')) closeLightbox(); });
@@ -310,6 +367,143 @@ document.addEventListener('keydown', e => {
     if (e.key === 'ArrowLeft') shiftLightbox(-1);
     if (e.key === 'ArrowRight') shiftLightbox(1);
 });
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// ░░ Pictures for this page — no code changes needed ░░
+// Save files in PROJECT_FOLDER with these names (.jpg, .png or .webp):
+//   keyart.jpg        → big picture at the top
+//   screenshot-1.jpg, screenshot-2.jpg, screenshot-3.jpg … → gallery (vertical phone screenshots), in that order
+//   gameplay.mp4      → gameplay video (or set YOUTUBE_ID below instead)
+// ═══════════════════════════════════════════════════════════════════════════
+const PROJECT_FOLDER = 'Content/bloxiz/';
+const PROJECT_TITLE  = 'Bloxiz';
+const YOUTUBE_ID     = '';   // e.g. 'dQw4w9WgXcQ' from https://www.youtube.com/watch?v=dQw4w9WgXcQ
+const MAX_SCREENSHOTS = 12;
+
+function firstImageThatLoads(urls) {
+    return new Promise(resolve => {
+        let i = 0;
+        const next = () => {
+            if (i >= urls.length) return resolve(null);
+            const url = urls[i++], img = new Image();
+            img.onload = () => resolve(url);
+            img.onerror = next;
+            img.src = url;
+        };
+        next();
+    });
+}
+function videoExists(url) {
+    return new Promise(resolve => {
+        const v = document.createElement('video');
+        v.preload = 'metadata';
+        v.onloadedmetadata = () => resolve(true);
+        v.onerror = () => resolve(false);
+        v.src = url;
+    });
+}
+const withExt = name => ['jpg', 'png', 'webp'].map(ext => `${PROJECT_FOLDER}${name}.${ext}`);
+
+(async function loadProjectMedia() {
+    // key art
+    const key = await firstImageThatLoads(withExt('keyart'));
+    if (key) document.querySelectorAll('.hero-bg img').forEach(img => img.src = key);
+
+    // screenshots, numbered from 1 until the first missing one
+    const shots = [];
+    for (let n = 1; n <= MAX_SCREENSHOTS; n++) {
+        const url = await firstImageThatLoads(withExt(`screenshot-${n}`));
+        if (!url) break;
+        shots.push(url);
+    }
+
+    // video: YouTube first, then a local file
+    let video = null;
+    if (YOUTUBE_ID) video = { type: 'youtube', id: YOUTUBE_ID, thumb: `https://img.youtube.com/vi/${YOUTUBE_ID}/hqdefault.jpg` };
+    else if (await videoExists(`${PROJECT_FOLDER}gameplay.mp4`)) video = { type: 'video', src: `${PROJECT_FOLDER}gameplay.mp4` };
+
+    if (!shots.length && !video) return;   // nothing saved yet: keep the placeholders
+
+    galleryMedia.length = 0;
+    shots.forEach((src, i) => galleryMedia.push({ type: 'image', src, alt: `${PROJECT_TITLE} screenshot ${i + 1}` }));
+    if (video) galleryMedia.push(video);
+
+    const grid = document.getElementById('gallery-grid');
+    grid.innerHTML = galleryMedia.map((m, i) => {
+        if (m.type === 'image') return `<div class="gallery-item" onclick="openLightbox(${i})"><img src="${m.src}" alt="${m.alt}" loading="lazy"></div>`;
+        if (m.type === 'youtube') return `<div class="gallery-item video-item" onclick="openLightbox(${i})"><img src="${m.thumb}" alt="${PROJECT_TITLE} gameplay video" loading="lazy"></div>`;
+        return `<div class="gallery-item video-item" onclick="openLightbox(${i})"><video src="${m.src}#t=1" muted preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block;"></video></div>`;
+    }).join('') + (video ? '' : `<div class="gallery-item video-item" style="cursor:default;"><div class="gallery-placeholder"><span>▶</span>Gameplay video coming soon</div></div>`);
+    hasVideo = !!video;
+    renderTheater();
+})();
+
+// ── Phone gallery: phone on the left, caption on the right ─────────────────
+// ░░ CHANGE: one caption per screenshot, in the same order as screenshot-1, screenshot-2, … ░░
+const CAPTIONS = [
+    { title: 'Caption for screenshot 1', text: 'A sentence about what this screen shows and what you made for it.' },
+    { title: 'Caption for screenshot 2', text: 'A sentence about what this screen shows and what you made for it.' },
+    { title: 'Caption for screenshot 3', text: 'A sentence about what this screen shows and what you made for it.' },
+];
+var hasVideo = false, theaterIndex = 0;
+const PLACEHOLDER_SHOTS = 3;
+
+function theaterItems() {
+    const items = galleryMedia.filter(m => m.src || m.type === 'youtube').map(m => ({ ...m }));
+    if (!items.length) {
+        for (let i = 0; i < PLACEHOLDER_SHOTS; i++) items.push({ ph: 'Screenshot coming soon', icon: '📱' });
+        items.push({ ph: 'Gameplay video coming soon', icon: '▶', isVideo: true });
+        return items;
+    }
+    if (!hasVideo) items.push({ ph: 'Gameplay video coming soon', icon: '▶', isVideo: true });
+    return items;
+}
+const isVid = m => m.isVideo || m.type === 'youtube' || m.type === 'video';
+const realIndexOf = m => m.ph ? -1 : galleryMedia.findIndex(g => g.type === m.type && (g.src || g.id) === (m.src || m.id));
+function screenHTML(m, small) {
+    if (m.ph) return `<div class="gallery-placeholder"><span>${m.icon}</span>${small ? '' : m.ph}</div>`;
+    if (m.type === 'image') return `<img src="${m.src}" alt="${m.alt || ''}"${small ? ' loading="lazy"' : ''}>`;
+    if (m.type === 'youtube') return `<img src="${m.thumb}" alt="Gameplay video">`;
+    return `<video src="${m.src}#t=1" muted playsinline preload="metadata"></video>`;
+}
+function phoneHTML(m, extraClass, onclick) {
+    const ri = realIndexOf(m);
+    const click = onclick || (ri >= 0 ? `openLightbox(${ri})` : '');
+    return `<div class="phone ${extraClass || ''}${click ? ' clickable' : ''}"${click ? ` onclick="${click}"` : ''}>
+        <div class="phone-screen">${screenHTML(m, false)}</div>${isVid(m) && !m.ph ? '<span class="th-play">▶</span>' : ''}
+    </div>`;
+}
+function backdropHTML(m) {
+    const src = m.ph ? '' : (m.type === 'image' ? m.src : m.type === 'youtube' ? m.thumb : '');
+    return src ? `<div class="th-backdrop" style="background-image:url('${src}')"></div>` : `<div class="th-backdrop empty"></div>`;
+}
+function renderTheater() {
+    const box = document.getElementById('theater');
+    if (!box) return;
+    const items = theaterItems(), n = items.length;
+    theaterIndex = Math.min(theaterIndex, n - 1);
+    const m = items[theaterIndex];
+    const shotNo = items.slice(0, theaterIndex + 1).filter(it => !isVid(it)).length;
+    const cap = isVid(m) ? { title: 'Gameplay', text: 'Watch the game in motion.' } : (CAPTIONS[shotNo - 1] || { title: `Screenshot ${shotNo}`, text: '' });
+    const inner = `<div class="th-split">${phoneHTML(m)}<div class="th-caption"><div class="num">${String(theaterIndex + 1).padStart(2, '0')}</div><h3>${cap.title}</h3><p>${cap.text}</p></div></div>`;
+    box.innerHTML = `
+        <div class="th-stage g-captions">
+            ${backdropHTML(m)}
+            ${inner}
+            ${n > 1 ? `<button type="button" class="th-nav th-prev" aria-label="Previous" onclick="stepTheater(-1)">‹</button>
+            <button type="button" class="th-nav th-next" aria-label="Next" onclick="stepTheater(1)">›</button>` : ''}
+            <span class="th-count">${String(theaterIndex + 1).padStart(2, '0')} / ${String(n).padStart(2, '0')}</span>
+        </div>
+        <div class="th-thumbs">${items.map((it, i) => `
+            <button type="button" class="th-thumb${isVid(it) ? ' is-video' : ''}" aria-current="${i === theaterIndex}" aria-label="Show item ${i + 1}" onclick="showTheater(${i})">${screenHTML(it, true)}</button>`).join('')}
+        </div>`;
+}
+function showTheater(i) { theaterIndex = i; renderTheater(); }
+function stepTheater(d) { const n = theaterItems().length; theaterIndex = (theaterIndex + d + n) % n; renderTheater(); }
+
+renderTheater();
+
 </script>
 </body>
 </html>

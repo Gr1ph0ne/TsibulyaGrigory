@@ -875,6 +875,56 @@
                 transform: translate(-50%, 0);
             }
 
+        /* ── Art cards with a gallery ── */
+        .art-has-gallery { cursor: pointer; }
+        .art-has-gallery:hover .project-image img { transform: none; }
+        .art-has-gallery .project-image { position: relative; }
+        .art-has-gallery .project-image img:not([src]) { visibility: hidden; }
+        .art-media-badge { position: absolute; top: 0.75rem; right: 0.75rem; z-index: 1; padding: 0.3rem 0.75rem; border-radius: 50px; background: rgba(15, 15, 15, 0.75); color: #f5a623; font-size: 0.78rem; font-weight: 700; backdrop-filter: blur(4px); }
+        .art-open-hint { position: absolute; left: 50%; bottom: 0.75rem; z-index: 2; transform: translate(-50%, 6px); padding: 0.35rem 0.9rem; border-radius: 50px; background: rgba(10, 10, 10, 0.7); color: #ffffff; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.04em; white-space: nowrap; opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; backdrop-filter: blur(4px); }
+        .art-has-gallery:hover .art-open-hint, .art-has-gallery:focus-visible .art-open-hint { opacity: 1; transform: translate(-50%, 0); }
+        .art-media-badge { z-index: 2; }
+        /* video preview that plays in place of the photo on hover */
+        .art-hover-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.35s ease; pointer-events: none; z-index: 1; }
+        .art-has-gallery.previewing .art-hover-video { opacity: 1; }
+        /* any text laid over the picture stays above the video */
+        .art-has-gallery .project-info { position: relative; z-index: 3; }
+        #art-grid.layout-4 .art-has-gallery .project-info { position: absolute; }
+        #art-grid.layout-4 .art-has-gallery .art-open-hint,
+        #art-grid.layout-4 .art-has-gallery:hover .art-open-hint,
+        #art-grid.layout-4 .art-has-gallery:focus-visible .art-open-hint { left: 0.75rem; top: 0.75rem; bottom: auto; transform: none; z-index: 4; }
+        .art-has-gallery:focus-visible { outline: 2px solid #f5a623; outline-offset: 3px; }
+
+        .art-viewer { position: fixed; inset: 0; z-index: 400; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; background: rgba(8, 8, 8, 0.96); padding: calc(1rem + env(safe-area-inset-top, 0px)) 1.25rem calc(1rem + env(safe-area-inset-bottom, 0px)); animation: avIn 0.25s ease; }
+        .art-viewer[hidden] { display: none; }
+        @keyframes avIn { from { opacity: 0; } to { opacity: 1; } }
+        .av-top { display: flex; align-items: center; gap: 1rem; padding: 0 0.5rem 0.75rem; }
+        .av-top h3 { color: #f5a623; font-size: 1.2rem; }
+        .av-count { color: #888888; font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+        .av-close { margin-left: auto; width: 42px; height: 42px; border-radius: 50%; border: 1px solid #444444; background: #1e1e1e; color: #dddddd; font-size: 1.5rem; line-height: 1; cursor: pointer; }
+        .av-close:hover { border-color: #f5a623; color: #f5a623; }
+        .av-stage { position: relative; display: flex; align-items: center; justify-content: center; min-height: 0; }
+        .av-stage img, .av-stage video { max-width: min(100%, 1400px); max-height: 100%; border-radius: 8px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6); animation: avIn 0.3s ease; }
+        .av-missing { color: #777777; text-align: center; font-size: 0.95rem; line-height: 1.6; }
+        .av-missing code { color: #f5a623; }
+        .av-nav { position: absolute; top: 50%; width: 52px; height: 52px; margin-top: -26px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(20, 20, 20, 0.7); color: #ffffff; font-size: 1.5rem; cursor: pointer; z-index: 2; }
+        .av-nav:hover { border-color: #f5a623; background: rgba(245, 166, 35, 0.25); }
+        .av-prev { left: 1.25rem; }
+        .av-next { right: 1.25rem; }
+        .av-thumbs { display: flex; justify-content: center; gap: 0.6rem; padding-top: 0.9rem; overflow-x: auto; }
+        .av-thumb { position: relative; flex: 0 0 120px; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden; border: 2px solid transparent; background: #1c1c1c; padding: 0; cursor: pointer; opacity: 0.5; transition: opacity 0.25s, border-color 0.25s; }
+        .av-thumb:hover { opacity: 0.85; }
+        .av-thumb[aria-current="true"] { opacity: 1; border-color: #f5a623; }
+        .av-thumb img, .av-thumb video { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+        .av-thumb.is-video::after { content: "▶"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 1rem; background: rgba(0, 0, 0, 0.3); }
+        .av-focus:focus-visible { outline: 2px solid #f5a623; outline-offset: 3px; }
+        @media (max-width: 600px) {
+            .av-nav { width: 40px; height: 40px; margin-top: -20px; }
+            .av-prev { left: 0.4rem; }
+            .av-next { right: 0.4rem; }
+            .av-thumb { flex-basis: 84px; }
+        }
+
         /* Footer */
         .footer {
             padding: 2rem;
@@ -1137,9 +1187,6 @@
                 <div class="project-info">
                     <h3>Plane</h3>
                     <p>Technical demo showcasing advanced shader techniques...</p>
-                    <div class="project-tags">
-                        <span class="project-tag">Shader Graph</span>
-                    </div>
                 </div>
             </div>
             <!-- Art 2 -->
@@ -1150,24 +1197,48 @@
                 <div class="project-info">
                     <h3>Kart</h3>
                     <p>Technical demo showcasing advanced shader techniques...</p>
-                    <div class="project-tags">
-                        <span class="project-tag">Shader Graph</span>
-                    </div>
                 </div>
             </div>
             <!-- Art 3 -->
-            <div class="project-card">
+            <div class="project-card art-has-gallery" data-gallery="fluffy-windmill" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Fluffy Windmill, open gallery">
                 <div class="project-image">
-                    <img src="Content/art/FluffyAlienPlanet.png" alt="FluffyAlienPlanet">
+                    <img data-art-src="Content/art/fluffy-windmill" alt="Fluffy Windmill">
+                    <span class="art-media-badge"></span>
+                    <span class="art-open-hint">View gallery</span>
                 </div>
                 <div class="project-info">
-                    <h3>Fluffy Alien Planet</h3>
+                    <h3>Fluffy Windmill</h3>
                     <p>Technical demo showcasing advanced shader techniques...</p>
-                    <div class="project-tags">
-                        <span class="project-tag">Shader Graph</span>
-                    </div>
                 </div>
             </div>
+            <!-- Ferris Wheel -->
+            <div class="project-card art-has-gallery" data-gallery="ferris-wheel" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Ferris Wheel, open gallery">
+                <div class="project-image">
+                    <img data-art-src="Content/art/ferris-wheel" alt="Ferris Wheel">
+                    <span class="art-media-badge"></span>
+                    <span class="art-open-hint">View gallery</span>
+                </div>
+                <div class="project-info">
+                    <h3>Ferris Wheel</h3>
+                    <!-- ░░ CHANGE: description ░░ -->
+                    <p>Description coming soon.</p>
+                </div>
+            </div>
+
+            <!-- Research Station -->
+            <div class="project-card art-has-gallery" data-gallery="research-station" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Research Station, open gallery">
+                <div class="project-image">
+                    <img data-art-src="Content/art/research-station" alt="Research Station">
+                    <span class="art-media-badge"></span>
+                    <span class="art-open-hint">View gallery</span>
+                </div>
+                <div class="project-info">
+                    <h3>Research Station</h3>
+                    <!-- ░░ CHANGE: description ░░ -->
+                    <p>Description coming soon.</p>
+                </div>
+            </div>
+
             <!-- Art 4 -->
             <div class="project-card">
                 <div class="project-image">
@@ -1176,9 +1247,6 @@
                 <div class="project-info">
                     <h3>Artisans Desk</h3>
                     <p>Technical demo showcasing advanced shader techniques...</p>
-                    <div class="project-tags">
-                        <span class="project-tag">Shader Graph</span>
-                    </div>
                 </div>
             </div>
             <!-- Art 5 -->
@@ -1189,9 +1257,6 @@
                 <div class="project-info">
                     <h3>Simple Scene</h3>
                     <p>Technical demo showcasing advanced shader techniques...</p>
-                    <div class="project-tags">
-                        <span class="project-tag">Shader Graph</span>
-                    </div>
                 </div>
             </div>
             <!-- Art 6 -->
@@ -1202,9 +1267,6 @@
                 <div class="project-info">
                     <h3>Stylized Level</h3>
                     <p>Technical demo showcasing advanced shader techniques...</p>
-                    <div class="project-tags">
-                        <span class="project-tag">Shader Graph</span>
-                    </div>
                 </div>
             </div>
         </div>
@@ -1238,6 +1300,19 @@
     </section>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <!-- Art gallery viewer -->
+    <div class="art-viewer" id="art-viewer" role="dialog" aria-modal="true" aria-labelledby="av-title" hidden>
+        <div class="av-top">
+            <h3 id="av-title"></h3>
+            <span class="av-count" id="av-count"></span>
+            <button type="button" class="av-close" id="av-close" aria-label="Close">×</button>
+        </div>
+        <div class="av-stage" id="av-stage"></div>
+        <button type="button" class="av-nav av-prev" id="av-prev" aria-label="Previous">‹</button>
+        <button type="button" class="av-nav av-next" id="av-next" aria-label="Next">›</button>
+        <div class="av-thumbs" id="av-thumbs"></div>
+    </div>
 
     <!-- Footer -->
     <footer class="footer">
@@ -1472,6 +1547,145 @@
                 }
             });
         }
+
+        // ── Art galleries ──────────────────────────────────────────────────────
+        // ░░ CHANGE: add more galleries here; the card needs data-gallery="<key>" ░░
+        // Paths are written without the extension: .jpg, .png or .webp are tried for photos.
+        const ART_GALLERIES = {
+            'fluffy-windmill': {
+                title: 'Fluffy Windmill',
+                items: [
+                    { type: 'image', src: 'Content/art/fluffy-windmill' },
+                    { type: 'video', src: 'Content/art/fluffy-windmill-video-1.mp4' },
+                    { type: 'video', src: 'Content/art/fluffy-windmill-video-2.mp4' },
+                ],
+            },
+            'ferris-wheel': {
+                title: 'Ferris Wheel',
+                items: [
+                    { type: 'image', src: 'Content/art/ferris-wheel' },
+                    { type: 'video', src: 'Content/art/ferris-wheel-video-1.mp4' },
+                ],
+            },
+            'research-station': {
+                title: 'Research Station',
+                items: [
+                    { type: 'image', src: 'Content/art/research-station' },
+                    { type: 'video', src: 'Content/art/research-station-video-1.mp4' },
+                ],
+            },
+        };
+
+        // photos: try .jpg, then .png, then .webp
+        function loadImageWithExt(img, base) {
+            const exts = ['jpg', 'png', 'webp'];
+            let i = 0;
+            const tryNext = () => {
+                if (i >= exts.length) { img.removeAttribute('src'); img.dataset.missing = '1'; return; }
+                img.src = `${base}.${exts[i++]}`;
+            };
+            img.onerror = tryNext;
+            tryNext();
+        }
+        document.querySelectorAll('img[data-art-src]').forEach(img => loadImageWithExt(img, img.dataset.artSrc));
+
+        const viewer = document.getElementById('art-viewer');
+        let avGallery = null, avIndex = 0, avOpener = null;
+
+        function avMediaHTML(item, thumb) {
+            if (item.type === 'video') {
+                return thumb
+                    ? `<video src="${item.src}#t=0.5" muted preload="metadata"></video>`
+                    : `<video src="${item.src}" controls autoplay muted loop playsinline class="av-focus"></video>`;
+            }
+            return `<img data-art-src="${item.src}" alt="${avGallery.title}">`;
+        }
+        function avRender() {
+            const items = avGallery.items, item = items[avIndex];
+            document.getElementById('av-title').textContent = avGallery.title;
+            document.getElementById('av-count').textContent = `${avIndex + 1} / ${items.length}`;
+            const stage = document.getElementById('av-stage');
+            stage.querySelectorAll('video').forEach(v => v.pause());
+            stage.innerHTML = avMediaHTML(item, false);
+            const media = stage.firstElementChild;
+            const missing = () => { stage.innerHTML = `<p class="av-missing">${item.type === 'video' ? 'Video' : 'Photo'} not found.<br>Expected file: <code>${item.src}${item.type === 'image' ? '.jpg' : ''}</code></p>`; };
+            if (item.type === 'image') { loadImageWithExt(media, item.src); media.addEventListener('error', () => { if (media.dataset.missing) missing(); }); setTimeout(() => { if (media.dataset.missing) missing(); }, 1500); }
+            else media.addEventListener('error', missing);
+            document.getElementById('av-thumbs').innerHTML = items.map((it, i) =>
+                `<button type="button" class="av-thumb${it.type === 'video' ? ' is-video' : ''}" aria-current="${i === avIndex}" aria-label="Show item ${i + 1}" data-i="${i}">${avMediaHTML(it, true)}</button>`).join('');
+            document.querySelectorAll('#av-thumbs img[data-art-src]').forEach(img => loadImageWithExt(img, img.dataset.artSrc));
+            const multi = items.length > 1;
+            document.getElementById('av-prev').hidden = !multi;
+            document.getElementById('av-next').hidden = !multi;
+        }
+        function avOpen(key, opener) {
+            avGallery = ART_GALLERIES[key];
+            if (!avGallery) return;
+            avIndex = 0; avOpener = opener;
+            if (opener) { opener.classList.remove('previewing'); opener.querySelectorAll('.art-hover-video').forEach(v => v.pause()); }
+            viewer.hidden = false;
+            document.body.style.overflow = 'hidden';
+            avRender();
+            document.getElementById('av-close').focus();
+        }
+        function avClose() {
+            viewer.querySelectorAll('video').forEach(v => v.pause());
+            viewer.hidden = true;
+            document.getElementById('av-stage').innerHTML = '';
+            document.body.style.overflow = '';
+            if (avOpener) avOpener.focus();
+        }
+        function avStep(d) { const n = avGallery.items.length; avIndex = (avIndex + d + n) % n; avRender(); }
+
+        // badge: "▶ 1 video" / "▶ 2 videos", counted from the gallery
+        document.querySelectorAll('[data-gallery]').forEach(card => {
+            const g = ART_GALLERIES[card.dataset.gallery], badge = card.querySelector('.art-media-badge');
+            if (!g || !badge) return;
+            const n = g.items.filter(it => it.type === 'video').length;
+            if (n) badge.textContent = `▶ ${n} ${n === 1 ? 'video' : 'videos'}`; else badge.remove();
+        });
+
+        // hover preview: the gallery's first video plays in place of the photo
+        // (mouse / trackpad only; touch screens just open the gallery on tap)
+        const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        document.querySelectorAll('[data-gallery]').forEach(card => {
+            const g = ART_GALLERIES[card.dataset.gallery];
+            const first = g && g.items.find(it => it.type === 'video');
+            if (!first || !canHover || reduceMotion) return;
+            const v = document.createElement('video');
+            v.className = 'art-hover-video';
+            v.src = first.src;
+            v.muted = true; v.loop = true; v.playsInline = true; v.preload = 'metadata';
+            v.setAttribute('aria-hidden', 'true');
+            card.querySelector('.project-image').appendChild(v);
+            let broken = false;
+            v.addEventListener('error', () => { broken = true; card.classList.remove('previewing'); });
+            card.addEventListener('mouseenter', () => {
+                if (broken) return;
+                v.currentTime = 0;                       // always start from the beginning
+                const p = v.play();
+                if (p && p.then) p.then(() => card.classList.add('previewing')).catch(() => {});
+                else card.classList.add('previewing');
+            });
+            card.addEventListener('mouseleave', () => { card.classList.remove('previewing'); v.pause(); v.currentTime = 0; });
+        });
+
+        document.querySelectorAll('[data-gallery]').forEach(card => {
+            card.addEventListener('click', () => avOpen(card.dataset.gallery, card));
+            card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); avOpen(card.dataset.gallery, card); } });
+        });
+        document.getElementById('av-close').addEventListener('click', avClose);
+        document.getElementById('av-prev').addEventListener('click', () => avStep(-1));
+        document.getElementById('av-next').addEventListener('click', () => avStep(1));
+        document.getElementById('av-thumbs').addEventListener('click', e => { const b = e.target.closest('[data-i]'); if (b) { avIndex = Number(b.dataset.i); avRender(); } });
+        viewer.addEventListener('click', e => { if (e.target === viewer || e.target.id === 'av-stage') avClose(); });
+        document.addEventListener('keydown', e => {
+            if (viewer.hidden) return;
+            if (e.key === 'Escape') avClose();
+            else if (e.key === 'ArrowRight') avStep(1);
+            else if (e.key === 'ArrowLeft') avStep(-1);
+        });
     </script>
 </body>
 </html>
