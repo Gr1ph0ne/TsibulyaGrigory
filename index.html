@@ -575,187 +575,105 @@
             background-color: #222222;
         }
 
-        /* ── Art Gallery layout preview ── */
-        .layout-switcher {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            gap: 0.5rem;
-            margin: -1.5rem auto 2.5rem;
+        /* ── Art Gallery: gallery wall ── */
+        .art-wall {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
             max-width: 1400px;
+            margin: 0 auto;
+            align-items: start;
         }
 
-        .layout-switcher-label {
-            color: #888888;
-            font-size: 0.9rem;
-            margin-right: 0.5rem;
+        .wall-col {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
         }
 
-        .layout-btn {
-            background-color: #333333;
-            border: 1px solid #444444;
-            color: #aaaaaa;
-            border-radius: 50px;
-            padding: 0.45rem 1.1rem;
-            font-size: 0.85rem;
-            font-family: inherit;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-            .layout-btn:hover,
-            .layout-btn.active {
-                background-color: #f5a623;
-                border-color: #f5a623;
-                color: #1a1a1a;
-                font-weight: 600;
-            }
-
-            .layout-btn:focus-visible {
-                outline: 2px solid #f5a623;
-                outline-offset: 2px;
-            }
-
-        /* keeps "More" working in every layout */
-        #art-grid.art-grid .project-card.hidden {
+        /* pieces added by "More" appear at the bottom of each column; the top ones never move */
+        .art-wall .project-card.art-extra[hidden] {
             display: none;
         }
 
-        /* Layout 1 · two per row */
-        #art-grid.layout-1 {
-            grid-template-columns: repeat(2, 1fr);
+        .art-extra.reveal {
+            animation: artReveal 0.5s ease both;
         }
 
-        /* Layout 2 · showcase: one large piece per row, text beside it, sides alternate */
-        #art-grid.layout-2 {
-            grid-template-columns: 1fr;
-            max-width: 1200px;
+        @keyframes artReveal {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: none; }
         }
 
-            #art-grid.layout-2 .project-card {
-                display: grid;
-                grid-template-columns: 3fr 1fr;
-                align-items: center;
-            }
-
-                #art-grid.layout-2 .project-card:hover {
-                    transform: translateY(-5px);
-                }
-
-                #art-grid.layout-2 .project-card:nth-child(even) {
-                    grid-template-columns: 1fr 3fr;
-                }
-
-                    #art-grid.layout-2 .project-card:nth-child(even) .project-image {
-                        order: 2;
-                    }
-
-            #art-grid.layout-2 .project-info {
-                padding: 2rem;
-            }
-
-                #art-grid.layout-2 .project-info h3 {
-                    font-size: 1.8rem;
-                }
-
-        /* Layout 3 · featured: every third piece spans the full width */
-        #art-grid.layout-3 {
-            grid-template-columns: repeat(2, 1fr);
-        }
-
-            #art-grid.layout-3 .project-card:nth-child(3n+1) {
-                grid-column: 1 / -1;
-            }
-
-                #art-grid.layout-3 .project-card:nth-child(3n+1) .project-image {
-                    aspect-ratio: 21/9;
-                }
-
-        /* Layout 4 · gallery wall: uncropped images, captions over the image */
-        #art-grid.layout-4 {
+        .art-wall .project-card {
+            position: relative;
             display: block;
-            column-count: 2;
-            column-gap: 2rem;
+            overflow: hidden;
         }
 
-            #art-grid.layout-4 .project-card {
+            .art-wall .project-card:hover {
+                transform: none;
+            }
+
+        .art-wall .project-image {
+            aspect-ratio: auto;
+            height: auto;
+            display: block;
+        }
+
+            .art-wall .project-image img {
+                height: auto;
                 display: block;
-                position: relative;
-                break-inside: avoid;
-                margin-bottom: 2rem;
             }
 
-                #art-grid.layout-4 .project-card:hover {
-                    transform: none;
-                }
+        /* title appears over the picture on hover */
+        .art-wall .project-info {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 3;
+            padding: 3rem 1.5rem 1.1rem;
+            background: linear-gradient(to top, rgba(10, 10, 10, 0.92), rgba(10, 10, 10, 0));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
 
-            #art-grid.layout-4 .project-image {
-                aspect-ratio: auto;
-                display: block;
-            }
-
-                #art-grid.layout-4 .project-image img {
-                    height: auto;
-                    display: block;
-                }
-
-            #art-grid.layout-4 .project-info {
-                position: absolute;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                padding: 3rem 1.5rem 1.25rem;
-                background: linear-gradient(to top, rgba(10, 10, 10, 0.92), rgba(10, 10, 10, 0));
-                opacity: 0;
-                transition: opacity 0.3s ease;
-            }
-
-                #art-grid.layout-4 .project-info p {
-                    color: #dddddd;
-                }
-
-            #art-grid.layout-4 .project-card:hover .project-info,
-            #art-grid.layout-4 .project-card:focus-within .project-info {
-                opacity: 1;
-            }
+        .art-wall .project-card:hover .project-info,
+        .art-wall .project-card:focus-within .project-info,
+        .art-wall .project-card:focus-visible .project-info {
+            opacity: 1;
+        }
 
         @media (hover: none) {
-            #art-grid.layout-4 .project-info {
+            .art-wall .project-info {
                 opacity: 1;
             }
         }
 
         @media (max-width: 768px) {
-            #art-grid.layout-1,
-            #art-grid.layout-3 {
+            .art-wall {
                 grid-template-columns: 1fr;
             }
 
-            #art-grid.layout-3 .project-card:nth-child(3n+1) .project-image {
-                aspect-ratio: 16/9;
+            /* one column on phones: extra pieces always come last */
+            .art-wall {
+                display: flex;
+                flex-direction: column;
             }
 
-            #art-grid.layout-2 .project-card,
-            #art-grid.layout-2 .project-card:nth-child(even) {
-                grid-template-columns: 1fr;
+            .wall-col {
+                display: contents;
             }
 
-                #art-grid.layout-2 .project-card:nth-child(even) .project-image {
-                    order: 0;
-                }
-
-            #art-grid.layout-4 {
-                column-count: 1;
+            .art-extra {
+                order: 1;
             }
         }
 
         @media (prefers-reduced-motion: reduce) {
-            #art-grid .project-card,
-            #art-grid .project-card.reveal,
-            #art-grid .project-card.fade-out {
+            .art-extra.reveal {
                 animation: none;
-                transition: none;
             }
         }
 
@@ -889,10 +807,10 @@
         .art-has-gallery.previewing .art-hover-video { opacity: 1; }
         /* any text laid over the picture stays above the video */
         .art-has-gallery .project-info { position: relative; z-index: 3; }
-        #art-grid.layout-4 .art-has-gallery .project-info { position: absolute; }
-        #art-grid.layout-4 .art-has-gallery .art-open-hint,
-        #art-grid.layout-4 .art-has-gallery:hover .art-open-hint,
-        #art-grid.layout-4 .art-has-gallery:focus-visible .art-open-hint { left: 0.75rem; top: 0.75rem; bottom: auto; transform: none; z-index: 4; }
+        .art-wall .art-has-gallery .project-info { position: absolute; }
+        .art-wall .art-has-gallery .art-open-hint,
+        .art-wall .art-has-gallery:hover .art-open-hint,
+        .art-wall .art-has-gallery:focus-visible .art-open-hint { left: 0.75rem; top: 0.75rem; bottom: auto; transform: none; z-index: 4; }
         .art-has-gallery:focus-visible { outline: 2px solid #f5a623; outline-offset: 3px; }
 
         .art-viewer { position: fixed; inset: 0; z-index: 400; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; background: rgba(8, 8, 8, 0.96); padding: calc(1rem + env(safe-area-inset-top, 0px)) 1.25rem calc(1rem + env(safe-area-inset-bottom, 0px)); animation: avIn 0.25s ease; }
@@ -911,6 +829,7 @@
         .av-nav:hover { border-color: #f5a623; background: rgba(245, 166, 35, 0.25); }
         .av-prev { left: 1.25rem; }
         .av-next { right: 1.25rem; }
+        .av-thumbs[hidden], .av-count[hidden] { display: none; }
         .av-thumbs { display: flex; justify-content: center; gap: 0.6rem; padding-top: 0.9rem; overflow-x: auto; }
         .av-thumb { position: relative; flex: 0 0 120px; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden; border: 2px solid transparent; background: #1c1c1c; padding: 0; cursor: pointer; opacity: 0.5; transition: opacity 0.25s, border-color 0.25s; }
         .av-thumb:hover { opacity: 0.85; }
@@ -1169,109 +1088,94 @@
     <!-- Art Gallery Section -->
     <section class="projects art-gallery" id="art-gallery">
         <h2>Art Gallery</h2>
-        <!-- Layout preview switcher: temporary, remove once a layout is chosen -->
-        <div class="layout-switcher" role="group" aria-label="Art gallery layout preview">
-            <span class="layout-switcher-label">Layout preview</span>
-            <button type="button" class="layout-btn" data-layout="0">0 · Current</button>
-            <button type="button" class="layout-btn" data-layout="1">1 · Two per row</button>
-            <button type="button" class="layout-btn" data-layout="2">2 · Showcase</button>
-            <button type="button" class="layout-btn" data-layout="3">3 · Featured</button>
-            <button type="button" class="layout-btn" data-layout="4">4 · Gallery wall</button>
-        </div>
-        <div class="projects-grid art-grid layout-0" id="art-grid">
-            <!-- Art 1 -->
-            <div class="project-card">
-                <div class="project-image">
-                    <img src="Content/art/Plane.png" alt="Plane">
+        <div class="art-wall" id="art-grid">
+            <div class="wall-col">
+                <!-- Art 1 -->
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="Content/art/Plane.png" alt="Plane">
+                    </div>
+                    <div class="project-info">
+                        <h3>Plane</h3>
+                    </div>
                 </div>
-                <div class="project-info">
-                    <h3>Plane</h3>
-                    <p>Technical demo showcasing advanced shader techniques...</p>
+                <!-- Art 2 -->
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="Content/art/Kart.png" alt="Kart">
+                    </div>
+                    <div class="project-info">
+                        <h3>Kart</h3>
+                    </div>
                 </div>
-            </div>
-            <!-- Art 2 -->
-            <div class="project-card">
-                <div class="project-image">
-                    <img src="Content/art/Kart.png" alt="Kart">
+                <!-- added by "More" -->
+                <!-- Art 4 -->
+                <div class="project-card art-extra" hidden>
+                    <div class="project-image">
+                        <img src="Content/art/ArtisansDesk.png" alt="Artisans Desk">
+                    </div>
+                    <div class="project-info">
+                        <h3>Artisans Desk</h3>
+                    </div>
                 </div>
-                <div class="project-info">
-                    <h3>Kart</h3>
-                    <p>Technical demo showcasing advanced shader techniques...</p>
-                </div>
-            </div>
-            <!-- Art 3 -->
-            <div class="project-card art-has-gallery" data-gallery="fluffy-windmill" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Fluffy Windmill, open gallery">
-                <div class="project-image">
-                    <img data-art-src="Content/art/fluffy-windmill" alt="Fluffy Windmill">
-                    <span class="art-media-badge"></span>
-                    <span class="art-open-hint">View gallery</span>
-                </div>
-                <div class="project-info">
-                    <h3>Fluffy Windmill</h3>
-                    <p>Technical demo showcasing advanced shader techniques...</p>
+                <!-- Art 6 -->
+                <div class="project-card art-extra" hidden>
+                    <div class="project-image">
+                        <img src="Content/art/StylizedLevel.png" alt="Stylized Level">
+                    </div>
+                    <div class="project-info">
+                        <h3>Stylized Level</h3>
+                    </div>
                 </div>
             </div>
-            <!-- Ferris Wheel -->
-            <div class="project-card art-has-gallery" data-gallery="ferris-wheel" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Ferris Wheel, open gallery">
-                <div class="project-image">
-                    <img data-art-src="Content/art/ferris-wheel" alt="Ferris Wheel">
-                    <span class="art-media-badge"></span>
-                    <span class="art-open-hint">View gallery</span>
+            <div class="wall-col">
+                <!-- Art 3 -->
+                <div class="project-card art-has-gallery" data-gallery="fluffy-windmill" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Fluffy Windmill, open gallery">
+                    <div class="project-image">
+                        <img data-art-src="Content/art/fluffy-windmill" alt="Fluffy Windmill">
+                        <span class="art-media-badge"></span>
+                        <span class="art-open-hint">View gallery</span>
+                    </div>
+                    <div class="project-info">
+                        <h3>Fluffy Windmill</h3>
+                    </div>
                 </div>
-                <div class="project-info">
-                    <h3>Ferris Wheel</h3>
-                    <!-- ░░ CHANGE: description ░░ -->
-                    <p>Description coming soon.</p>
+                <!-- Ferris Wheel -->
+                <div class="project-card art-has-gallery" data-gallery="ferris-wheel" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Ferris Wheel, open gallery">
+                    <div class="project-image">
+                        <img data-art-src="Content/art/ferris-wheel" alt="Ferris Wheel">
+                        <span class="art-media-badge"></span>
+                        <span class="art-open-hint">View gallery</span>
+                    </div>
+                    <div class="project-info">
+                        <h3>Ferris Wheel</h3>
+                    </div>
                 </div>
-            </div>
-
-            <!-- Research Station -->
-            <div class="project-card art-has-gallery" data-gallery="research-station" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Research Station, open gallery">
-                <div class="project-image">
-                    <img data-art-src="Content/art/research-station" alt="Research Station">
-                    <span class="art-media-badge"></span>
-                    <span class="art-open-hint">View gallery</span>
+                <!-- Research Station -->
+                <div class="project-card art-has-gallery" data-gallery="research-station" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Research Station, open gallery">
+                    <div class="project-image">
+                        <img data-art-src="Content/art/research-station" alt="Research Station">
+                        <span class="art-media-badge"></span>
+                        <span class="art-open-hint">View gallery</span>
+                    </div>
+                    <div class="project-info">
+                        <h3>Research Station</h3>
+                    </div>
                 </div>
-                <div class="project-info">
-                    <h3>Research Station</h3>
-                    <!-- ░░ CHANGE: description ░░ -->
-                    <p>Description coming soon.</p>
-                </div>
-            </div>
-
-            <!-- Art 4 -->
-            <div class="project-card">
-                <div class="project-image">
-                    <img src="Content/art/ArtisansDesk.png" alt="Artisans Desk">
-                </div>
-                <div class="project-info">
-                    <h3>Artisans Desk</h3>
-                    <p>Technical demo showcasing advanced shader techniques...</p>
-                </div>
-            </div>
-            <!-- Art 5 -->
-            <div class="project-card">
-                <div class="project-image">
-                    <img src="Content/art/SimpleScene.png" alt="Simple Scene">
-                </div>
-                <div class="project-info">
-                    <h3>Simple Scene</h3>
-                    <p>Technical demo showcasing advanced shader techniques...</p>
-                </div>
-            </div>
-            <!-- Art 6 -->
-            <div class="project-card">
-                <div class="project-image">
-                    <img src="Content/art/StylizedLevel.png" alt="Stylized Level">
-                </div>
-                <div class="project-info">
-                    <h3>Stylized Level</h3>
-                    <p>Technical demo showcasing advanced shader techniques...</p>
+                <!-- added by "More" -->
+                <!-- Art 5 -->
+                <div class="project-card art-extra" hidden>
+                    <div class="project-image">
+                        <img src="Content/art/SimpleScene.png" alt="Simple Scene">
+                    </div>
+                    <div class="project-info">
+                        <h3>Simple Scene</h3>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="show-more-container">
-            <button class="show-more-btn" id="toggle-art">
+            <button class="show-more-btn" id="toggle-art" aria-expanded="false" aria-controls="art-grid">
                 <span class="show-text">More</span>
                 <span class="hide-text hidden">Less</span>
             </button>
@@ -1440,111 +1344,26 @@
             });
         }
 
-        // ── Art Gallery: layout preview + "More/Less" ──
-        // Layouts: 0 current, 1 two per row, 2 showcase, 3 featured, 4 gallery wall.
-        // Preview a layout directly with index.html?artLayout=2
-        const artGrid = document.getElementById('art-grid');
+        // ── Art Gallery: "More" / "Less" ──
+        // "More" adds the extra pieces at the bottom of each column; the pieces already shown stay in place.
+        const artExtras = document.querySelectorAll('.art-extra');
         const toggleArtBtn = document.getElementById('toggle-art');
-        const artVisibleCount = { 0: 3, 1: 4, 2: 2, 3: 3, 4: 4 }; // pieces shown before "More"
-        let artExpanded = false;
-        let artLayoutRun = 0; // cancels pending animations when the layout changes
-
-        function applyArtLayout(layout) {
-            if (!(layout in artVisibleCount)) layout = 0;
-            artLayoutRun++;
-            artExpanded = false;
-            artGrid.className = 'projects-grid art-grid layout-' + layout;
-
-            const cards = artGrid.querySelectorAll('.project-card');
-            const visible = artVisibleCount[layout];
-            cards.forEach((card, i) => {
-                card.classList.remove('reveal', 'fade-out');
-                card.classList.toggle('hidden', i >= visible);
-            });
-
-            if (toggleArtBtn) {
-                toggleArtBtn.querySelector('.show-text').classList.remove('hidden');
-                toggleArtBtn.querySelector('.hide-text').classList.add('hidden');
-                toggleArtBtn.parentElement.style.display = cards.length > visible ? '' : 'none';
-            }
-
-            document.querySelectorAll('.layout-btn').forEach(btn => {
-                const isActive = Number(btn.dataset.layout) === layout;
-                btn.classList.toggle('active', isActive);
-                btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-            });
-
-            try { localStorage.setItem('artLayout', String(layout)); } catch (e) {}
-        }
-
-        document.querySelectorAll('.layout-btn').forEach(btn => {
-            btn.addEventListener('click', () => applyArtLayout(Number(btn.dataset.layout)));
-        });
-
-        (function initArtLayout() {
-            let layout = 0;
-            const fromUrl = new URLSearchParams(window.location.search).get('artLayout');
-            let saved = null;
-            try { saved = localStorage.getItem('artLayout'); } catch (e) {}
-            if (fromUrl !== null) layout = Number(fromUrl);
-            else if (saved !== null) layout = Number(saved);
-            applyArtLayout(layout);
-        })();
-
-        if (toggleArtBtn) {
-            toggleArtBtn.addEventListener('click', function () {
-                const run = artLayoutRun;
-                const hiddenCards = artGrid.querySelectorAll('.project-card.hidden');
-                const visibleExtraCards = artGrid.querySelectorAll('.project-card.reveal');
-                const showText = this.querySelector('.show-text');
-                const hideText = this.querySelector('.hide-text');
-
-                if (!artExpanded) {
-                    // EXPAND - Show hidden cards
-                    hiddenCards.forEach((card, index) => {
-                        setTimeout(() => {
-                            if (run !== artLayoutRun) return;
-                            card.classList.remove('hidden');
-                            card.classList.add('reveal');
-                        }, index * 150);
-                    });
-
-                    setTimeout(() => {
-                        if (run !== artLayoutRun) return;
-                        showText.classList.add('hidden');
-                        hideText.classList.remove('hidden');
-                        artExpanded = true;
-                    }, hiddenCards.length * 150);
-
-                } else {
-                    // COLLAPSE - Hide extra cards
-                    const cardsArray = Array.from(visibleExtraCards);
-                    cardsArray.reverse().forEach((card, index) => {
-                        setTimeout(() => {
-                            if (run !== artLayoutRun) return;
-                            card.classList.add('fade-out');
-                            setTimeout(() => {
-                                if (run !== artLayoutRun) return;
-                                card.classList.remove('reveal', 'fade-out');
-                                card.classList.add('hidden');
-                            }, 400);
-                        }, index * 100);
-                    });
-
-                    setTimeout(() => {
-                        if (run !== artLayoutRun) return;
-                        showText.classList.remove('hidden');
-                        hideText.classList.add('hidden');
-                        artExpanded = false;
-                    }, cardsArray.length * 100);
-
-                    setTimeout(() => {
-                        document.getElementById('art-gallery').scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }, 200);
-                }
+        if (toggleArtBtn && artExtras.length) {
+            toggleArtBtn.addEventListener('click', () => {
+                const open = artExtras[0].hidden;
+                artExtras.forEach((card, i) => {
+                    card.hidden = !open;
+                    card.classList.remove('reveal');
+                    if (open) {
+                        void card.offsetWidth;               // restart the fade-in
+                        card.style.animationDelay = (i * 0.08) + 's';
+                        card.classList.add('reveal');
+                    }
+                });
+                toggleArtBtn.querySelector('.show-text').classList.toggle('hidden', open);
+                toggleArtBtn.querySelector('.hide-text').classList.toggle('hidden', !open);
+                toggleArtBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+                if (!open) document.getElementById('art-gallery').scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
         }
 
@@ -1598,6 +1417,7 @@
                     ? `<video src="${item.src}#t=0.5" muted preload="metadata"></video>`
                     : `<video src="${item.src}" controls autoplay muted loop playsinline class="av-focus"></video>`;
             }
+            if (item.file) return `<img src="${item.file}" alt="${avGallery.title}">`;
             return `<img data-art-src="${item.src}" alt="${avGallery.title}">`;
         }
         function avRender() {
@@ -1608,8 +1428,9 @@
             stage.querySelectorAll('video').forEach(v => v.pause());
             stage.innerHTML = avMediaHTML(item, false);
             const media = stage.firstElementChild;
-            const missing = () => { stage.innerHTML = `<p class="av-missing">${item.type === 'video' ? 'Video' : 'Photo'} not found.<br>Expected file: <code>${item.src}${item.type === 'image' ? '.jpg' : ''}</code></p>`; };
-            if (item.type === 'image') { loadImageWithExt(media, item.src); media.addEventListener('error', () => { if (media.dataset.missing) missing(); }); setTimeout(() => { if (media.dataset.missing) missing(); }, 1500); }
+            const missing = () => { stage.innerHTML = `<p class="av-missing">${item.type === 'video' ? 'Video' : 'Photo'} not found.<br>Expected file: <code>${item.file || item.src}${item.type === 'image' && !item.file ? '.jpg' : ''}</code></p>`; };
+            if (item.type === 'image' && item.file) { media.addEventListener('error', missing); }
+            else if (item.type === 'image') { loadImageWithExt(media, item.src); media.addEventListener('error', () => { if (media.dataset.missing) missing(); }); setTimeout(() => { if (media.dataset.missing) missing(); }, 1500); }
             else media.addEventListener('error', missing);
             document.getElementById('av-thumbs').innerHTML = items.map((it, i) =>
                 `<button type="button" class="av-thumb${it.type === 'video' ? ' is-video' : ''}" aria-current="${i === avIndex}" aria-label="Show item ${i + 1}" data-i="${i}">${avMediaHTML(it, true)}</button>`).join('');
@@ -1617,6 +1438,8 @@
             const multi = items.length > 1;
             document.getElementById('av-prev').hidden = !multi;
             document.getElementById('av-next').hidden = !multi;
+            document.getElementById('av-thumbs').hidden = !multi;
+            document.getElementById('av-count').hidden = !multi;
         }
         function avOpen(key, opener) {
             avGallery = ART_GALLERIES[key];
@@ -1636,6 +1459,25 @@
             if (avOpener) avOpener.focus();
         }
         function avStep(d) { const n = avGallery.items.length; avIndex = (avIndex + d + n) % n; avRender(); }
+
+        // single pictures: every other art card opens its picture full screen
+        document.querySelectorAll('#art-gallery .project-card:not([data-gallery])').forEach((card, i) => {
+            const img = card.querySelector('.project-image img');
+            if (!img) return;
+            const key = 'single-' + i;
+            const title = (card.querySelector('h3') || {}).textContent || '';
+            ART_GALLERIES[key] = { title, items: [{ type: 'image', file: img.getAttribute('src') }] };
+            card.dataset.gallery = key;
+            card.classList.add('art-has-gallery');
+            card.setAttribute('role', 'button');
+            card.setAttribute('tabindex', '0');
+            card.setAttribute('aria-haspopup', 'dialog');
+            card.setAttribute('aria-label', `${title}, open full size`);
+            const hint = document.createElement('span');
+            hint.className = 'art-open-hint';
+            hint.textContent = 'View full size';
+            card.querySelector('.project-image').appendChild(hint);
+        });
 
         // badge: "▶ 1 video" / "▶ 2 videos", counted from the gallery
         document.querySelectorAll('[data-gallery]').forEach(card => {
