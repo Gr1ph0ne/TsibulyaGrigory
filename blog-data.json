@@ -56,35 +56,40 @@
       "status": "",
       "description": "",
       "pageUrl": "unnamed-evolution-board-game.html",
-      "image": ""
+      "image": "",
+      "clickable": false
     },
     {
       "title": "Unnamed Strategy Game",
       "status": "",
       "description": "",
       "pageUrl": "unnamed-strategy-game.html",
-      "image": ""
+      "image": "",
+      "clickable": false
     },
     {
       "title": "Warehouse Manager Simulator",
       "status": "",
       "description": "",
       "pageUrl": "warehouse-manager-simulator.html",
-      "image": ""
+      "image": "",
+      "clickable": false
     },
     {
       "title": "Gravitational Waves Detector Game",
       "status": "",
       "description": "",
       "pageUrl": "gravitational-waves-detector-game.html",
-      "image": ""
+      "image": "",
+      "clickable": false
     },
     {
       "title": "Unnamed Social Game",
       "status": "",
       "description": "",
       "pageUrl": "unnamed-social-game.html",
-      "image": ""
+      "image": "",
+      "clickable": false
     }
   ]
 }

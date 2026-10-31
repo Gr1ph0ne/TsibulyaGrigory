@@ -28,6 +28,10 @@
         .upcoming-card:hover .click-hint { color: #f5a623; }
         .upcoming-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(135deg, #f5a623, #e67e22); }
         .upcoming-card:hover { transform: translateY(-8px); box-shadow: 0 15px 40px rgba(0,0,0,0.5); }
+        /* cards without a link: no pointer, no lift */
+        #upcoming-grid .upcoming-card.is-static { cursor: default; }
+        #upcoming-grid .upcoming-card.is-static:hover { transform: none; box-shadow: none; }
+        #upcoming-grid .upcoming-card.is-static:hover .uc-cover { transform: none; }
         .upcoming-status { display: inline-block; background-color: #333333; color: #f5a623; padding: 0.3rem 0.9rem; border-radius: 15px; font-size: 0.8rem; font-weight: 600; margin-bottom: 1rem; }
         .upcoming-card h3 { font-size: 1.4rem; margin-bottom: 0.75rem; color: #ffffff; }
         .upcoming-card p  { color: #aaaaaa; line-height: 1.6; }
@@ -323,8 +327,14 @@ function renderUpcoming() {
         }
 
         const cover = coverFor(p);
+        // "clickable": false in blog-data.json shows the card without a link
+        const clickable = p.clickable !== false;
+        if (!clickable) hint = '';
+        const attrs = clickable
+            ? `role="link" tabindex="0" onclick="${onclick}" onkeydown="if(event.key==='Enter'){${onclick}}"`
+            : '';
         return `
-        <div class="upcoming-card" role="link" tabindex="0" onclick="${onclick}" onkeydown="if(event.key==='Enter'){${onclick}}">
+        <div class="upcoming-card${clickable ? '' : ' is-static'}" ${attrs}>
             <div class="uc-cover" style="--cover-color:${cover.color}; background:${cover.bg};"></div>
             <div class="uc-body">
                 <div class="uc-text">

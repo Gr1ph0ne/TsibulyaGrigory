@@ -285,8 +285,9 @@
         <h2>About the Game</h2>
         <div class="about-text" style="max-width:720px; margin:0 auto;">
             <!-- ░░ CHANGE: optional pitch quote, e.g. <blockquote class="pitch-quote">Your pitch…</blockquote> ░░ -->
-            <!-- ░░ CHANGE: about the game, one <p> per paragraph ░░ -->
-            <p>Coming soon.</p>
+            <p><strong>Bloxiz</strong> is a game we made for a client project in the first semester of 2025.</p>
+            <p>You play as a farmer whose farm is surrounded by a cursed forest. Every day you find a couple of wounded creatures and bring them back to your farm to help them recover. In return for your care, the creatures help out around the farm until they are strong enough to go back to the wild.</p>
+            <p>When a creature leaves, it gives you a goodbye card. The goal is to collect every type of goodbye card.</p>
         </div>
     </div>
 </section>
@@ -296,9 +297,10 @@
     <div class="section-inner">
         <h2>Play</h2>
         <div class="download-btn-wrap">
-            <!-- ░░ CHANGE: replace with the store / itch.io link, e.g.
-            <a href="https://…" class="download-btn" target="_blank" rel="noopener">…</a> ░░ -->
-            <span class="download-btn" aria-disabled="true" style="opacity:0.6;cursor:default;">Link coming soon</span>
+            <a href="https://tytder.itch.io/applied-games-project-2025" class="download-btn" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" stroke-width="2"><polygon points="7 4 20 12 7 20 7 4" /></svg>
+                Itch.io
+            </a>
         </div>
     </div>
 </section>
@@ -442,9 +444,9 @@ const withExt = name => ['jpg', 'png', 'webp'].map(ext => `${PROJECT_FOLDER}${na
 // ── Phone gallery: phone on the left, caption on the right ─────────────────
 // ░░ CHANGE: one caption per screenshot, in the same order as screenshot-1, screenshot-2, … ░░
 const CAPTIONS = [
-    { title: 'Caption for screenshot 1', text: 'A sentence about what this screen shows and what you made for it.' },
-    { title: 'Caption for screenshot 2', text: 'A sentence about what this screen shows and what you made for it.' },
-    { title: 'Caption for screenshot 3', text: 'A sentence about what this screen shows and what you made for it.' },
+    { title: 'Find the wounded', text: 'Explore the cursed forest and rescue the creatures that need your help.' },
+    { title: 'Grow their food',  text: 'Plant and harvest crops to keep your recovering guests fed and happy.' },
+    { title: 'Care and set free', text: 'Nurse them back to health, then let them return to the wild, with a goodbye card to remember them by.' },
 ];
 var hasVideo = false, theaterIndex = 0;
 const PLACEHOLDER_SHOTS = 3;
