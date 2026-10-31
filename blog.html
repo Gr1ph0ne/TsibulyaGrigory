@@ -42,51 +42,17 @@
         .uc-body { position: relative; }
         .upcoming-card h3, .upcoming-card p { overflow-wrap: anywhere; }
 
-        .layout-switcher { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0.5rem; margin: -1.5rem auto 2.5rem; max-width: 1200px; }
-        .layout-switcher-label { color: #888888; font-size: 0.9rem; margin-right: 0.5rem; }
-        .layout-btn { background-color: #333333; border: 1px solid #444444; color: #aaaaaa; border-radius: 50px; padding: 0.45rem 1.1rem; font-size: 0.85rem; font-family: inherit; cursor: pointer; transition: all 0.3s; }
-        .layout-btn:hover, .layout-btn.active { background-color: #f5a623; border-color: #f5a623; color: #1a1a1a; font-weight: 600; }
-        .layout-btn:focus-visible, .upcoming-card:focus-visible { outline: 2px solid #f5a623; outline-offset: 3px; }
+        .upcoming-card:focus-visible { outline: 2px solid #f5a623; outline-offset: 3px; }
 
         /* layouts 1–4 show the cover instead of the orange top bar */
-        #upcoming-grid:not(.layout-0) .upcoming-card { padding: 0; }
-        #upcoming-grid:not(.layout-0) .upcoming-card::before { display: none; }
-        #upcoming-grid:not(.layout-0) .uc-cover { display: block; }
+        #upcoming-grid.layout-4 .upcoming-card { padding: 0; }
+        #upcoming-grid.layout-4 .upcoming-card::before { display: none; }
+        #upcoming-grid.layout-4 .uc-cover { display: block; }
 
-        /* Layout 1 · banners and Layout 2 · staggered share the banner base */
-        #upcoming-grid.layout-1, #upcoming-grid.layout-2 { grid-template-columns: 1fr; max-width: 1100px; gap: 1.25rem; }
-        #upcoming-grid.layout-1 .upcoming-card, #upcoming-grid.layout-2 .upcoming-card { min-height: 150px; display: flex; }
-        #upcoming-grid.layout-1 .upcoming-card:hover, #upcoming-grid.layout-2 .upcoming-card:hover { transform: translateY(-4px); }
-        #upcoming-grid.layout-1 .uc-cover, #upcoming-grid.layout-2 .uc-cover { position: absolute; inset: 0; transition: transform 0.4s; }
-        #upcoming-grid.layout-1 .upcoming-card:hover .uc-cover, #upcoming-grid.layout-2 .upcoming-card:hover .uc-cover { transform: scale(1.03); }
-        #upcoming-grid.layout-1 .uc-body, #upcoming-grid.layout-2 .uc-body { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 2rem; padding: 1.5rem 2rem; background: linear-gradient(90deg, rgba(18,18,18,0.88) 0%, rgba(18,18,18,0.55) 55%, rgba(18,18,18,0.15) 100%); }
-        #upcoming-grid.layout-1 .uc-text, #upcoming-grid.layout-2 .uc-text { grid-column: 1; grid-row: 1; }
-        #upcoming-grid.layout-1 .upcoming-card p, #upcoming-grid.layout-2 .upcoming-card p { color: #dddddd; max-width: 640px; }
-        #upcoming-grid.layout-1 .click-hint, #upcoming-grid.layout-2 .click-hint { grid-column: 2; grid-row: 1; margin: 0; color: #cccccc; white-space: nowrap; }
-        #upcoming-grid.layout-1 .upcoming-status, #upcoming-grid.layout-2 .upcoming-status { background-color: rgba(20,20,20,0.7); margin-bottom: 0.6rem; }
-        #upcoming-grid.layout-1 h3, #upcoming-grid.layout-2 h3 { font-size: 1.6rem; margin-bottom: 0.35rem; }
 
-        /* Layout 2 · staggered: shorter banners, odd ones on the left, even ones on the right */
-        #upcoming-grid.layout-2 .upcoming-card { width: 80%; }
-        #upcoming-grid.layout-2 .upcoming-card:nth-child(odd) { justify-self: start; }
-        #upcoming-grid.layout-2 .upcoming-card:nth-child(even) { justify-self: end; text-align: right; }
-        #upcoming-grid.layout-2 .upcoming-card:nth-child(even) .uc-body { grid-template-columns: auto minmax(0, 1fr); background: linear-gradient(270deg, rgba(18,18,18,0.88) 0%, rgba(18,18,18,0.55) 55%, rgba(18,18,18,0.15) 100%); }
-        #upcoming-grid.layout-2 .upcoming-card:nth-child(even) .uc-text { grid-column: 2; }
-        #upcoming-grid.layout-2 .upcoming-card:nth-child(even) .click-hint { grid-column: 1; }
-        #upcoming-grid.layout-2 .upcoming-card:nth-child(even) p { margin-left: auto; }
 
-        /* Layout 3 · posters: tall covers, text over the bottom */
-        #upcoming-grid.layout-3 { grid-template-columns: repeat(3, 1fr); max-width: 1000px; gap: 1.5rem; }
-        #upcoming-grid.layout-3 .upcoming-card { aspect-ratio: 3/4; display: flex; align-items: flex-end; }
-        #upcoming-grid.layout-3 .uc-cover { position: absolute; inset: 0; transition: transform 0.4s; }
-        #upcoming-grid.layout-3 .upcoming-card:hover .uc-cover { transform: scale(1.04); }
-        #upcoming-grid.layout-3 .uc-body { width: 100%; padding: 4rem 1.25rem 1.25rem; background: linear-gradient(to top, rgba(14,14,14,0.95) 0%, rgba(14,14,14,0.7) 55%, rgba(14,14,14,0) 100%); }
-        #upcoming-grid.layout-3 .upcoming-status { background-color: rgba(20,20,20,0.75); }
-        #upcoming-grid.layout-3 h3 { font-size: 1.25rem; }
-        #upcoming-grid.layout-3 .upcoming-card p { color: #cccccc; font-size: 0.9rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-        #upcoming-grid.layout-3 .click-hint { color: #999999; }
 
-        /* Layout 4 · split zigzag: picture panel with a slanted edge, text beside it; sides alternate.
+        /* Split zigzag: picture panel with a slanted edge, text beside it; sides alternate.
            On hover the slanted edge straightens. */
         #upcoming-grid.layout-4 { grid-template-columns: 1fr; max-width: 1100px; gap: 1.5rem; }
         #upcoming-grid.layout-4 .upcoming-card { display: grid; grid-template-columns: 2fr 3fr; min-height: 180px; }
@@ -100,19 +66,15 @@
         #upcoming-grid.layout-4 .upcoming-card:nth-child(even) .uc-cover { grid-column: 2; clip-path: polygon(18% 0, 100% 0, 100% 100%, 0 100%); }
         #upcoming-grid.layout-4 .upcoming-card:nth-child(even):hover .uc-cover { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
         #upcoming-grid.layout-4 .upcoming-card:nth-child(even) .uc-body { grid-column: 1; padding: 1.75rem 1rem 1.75rem 2.25rem; }
+        /* cards without a link don't react to hover */
+        #upcoming-grid.layout-4 .upcoming-card.is-static:hover { transform: none; box-shadow: none; }
+        #upcoming-grid.layout-4 .upcoming-card.is-static:hover .uc-cover { clip-path: polygon(0 0, 100% 0, 82% 100%, 0 100%); }
+        #upcoming-grid.layout-4 .upcoming-card.is-static:nth-child(even):hover .uc-cover { clip-path: polygon(18% 0, 100% 0, 100% 100%, 0 100%); }
 
         @media (max-width: 768px) {
-            #upcoming-grid.layout-1 .uc-body, #upcoming-grid.layout-2 .uc-body, #upcoming-grid.layout-2 .upcoming-card:nth-child(even) .uc-body { grid-template-columns: 1fr; padding: 1.25rem; background: linear-gradient(90deg, rgba(18,18,18,0.88), rgba(18,18,18,0.6)); }
-            #upcoming-grid.layout-1 .uc-text, #upcoming-grid.layout-2 .uc-text, #upcoming-grid.layout-2 .upcoming-card:nth-child(even) .uc-text { grid-column: 1; }
-            #upcoming-grid.layout-1 .click-hint, #upcoming-grid.layout-2 .click-hint, #upcoming-grid.layout-2 .upcoming-card:nth-child(even) .click-hint { grid-column: 1; grid-row: auto; margin-top: 0.75rem; }
-            #upcoming-grid.layout-2 .upcoming-card { width: 92%; }
-            #upcoming-grid.layout-3 { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
             #upcoming-grid.layout-4 .upcoming-card, #upcoming-grid.layout-4 .upcoming-card:nth-child(even) { grid-template-columns: 1fr; text-align: left; }
             #upcoming-grid.layout-4 .uc-cover, #upcoming-grid.layout-4 .upcoming-card:nth-child(even) .uc-cover { grid-column: 1; grid-row: 1; aspect-ratio: 16/7; clip-path: none; }
             #upcoming-grid.layout-4 .uc-body, #upcoming-grid.layout-4 .upcoming-card:nth-child(even) .uc-body { grid-column: 1; grid-row: 2; padding: 1.25rem; }
-        }
-        @media (max-width: 480px) {
-            #upcoming-grid.layout-3 { grid-template-columns: 1fr; }
         }
         @media (prefers-reduced-motion: reduce) {
             .upcoming-card, .uc-cover { transition: none !important; }
@@ -184,16 +146,7 @@
 
 <section class="upcoming">
     <h2>Current Projects</h2>
-    <!-- Layout preview switcher: temporary, remove once a layout is chosen -->
-    <div class="layout-switcher" role="group" aria-label="Current projects layout preview">
-        <span class="layout-switcher-label">Layout preview</span>
-        <button type="button" class="layout-btn" data-layout="0">0 · Current</button>
-        <button type="button" class="layout-btn" data-layout="1">1 · Banners</button>
-        <button type="button" class="layout-btn" data-layout="2">2 · Staggered</button>
-        <button type="button" class="layout-btn" data-layout="3">3 · Posters</button>
-        <button type="button" class="layout-btn" data-layout="4">4 · Split zigzag</button>
-    </div>
-    <div class="upcoming-grid layout-0" id="upcoming-grid"></div>
+    <div class="upcoming-grid layout-4" id="upcoming-grid"></div>
 </section>
 
 <section class="posts-section" id="posts-section">
@@ -287,24 +240,6 @@ function coverFor(p) {
     for (const ch of p.title || '') h = (h * 31 + ch.charCodeAt(0)) % 360;
     return { color: `hsl(${h},45%,35%)`, bg: `linear-gradient(135deg, hsl(${h},45%,18%), hsl(${(h + 30) % 360},50%,42%))` };
 }
-
-const PROJECT_LAYOUTS = [0, 1, 2, 3, 4];
-let projectsLayout = 0;
-
-function applyProjectsLayout(layout) {
-    projectsLayout = PROJECT_LAYOUTS.includes(layout) ? layout : 0;
-    document.getElementById('upcoming-grid').className = 'upcoming-grid layout-' + projectsLayout;
-    document.querySelectorAll('.layout-btn').forEach(btn => {
-        const isActive = Number(btn.dataset.layout) === projectsLayout;
-        btn.classList.toggle('active', isActive);
-        btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-    });
-    try { localStorage.setItem('projectsLayout', String(projectsLayout)); } catch (e) {}
-}
-
-document.querySelectorAll('.layout-btn').forEach(btn => {
-    btn.addEventListener('click', () => applyProjectsLayout(Number(btn.dataset.layout)));
-});
 
 function renderUpcoming() {
     const list    = loadUpcoming();
@@ -432,10 +367,6 @@ function toggleBody(id, btn) {
     const _urlTag = new URLSearchParams(window.location.search).get('tag');
     if (_urlTag) activeFilter = _urlTag;
 
-    const _urlLayout = new URLSearchParams(window.location.search).get('projectsLayout');
-    let _savedLayout = null;
-    try { _savedLayout = localStorage.getItem('projectsLayout'); } catch (e) {}
-    applyProjectsLayout(Number(_urlLayout ?? _savedLayout ?? 0));
 
     await loadData();
 
