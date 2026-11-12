@@ -64,6 +64,8 @@
         .spot { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 2.5rem; align-items: center; max-width: 1000px; margin: 0 auto 2.5rem; min-height: 347px; }
         .spot .poster-sm { box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
         .spot .row-text .quote { font-size: 1.9rem; }
+        .spot .row-text .quote.medium { font-size: 1.5rem; line-height: 1.5; }
+        .spot .row-text .quote.long { font-size: 1.22rem; line-height: 1.6; }
         .spot.swap > * { animation: fadeInUp 0.35s ease-out both; }
         .spot-shelf { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 92px)); justify-content: center; gap: 0.75rem; max-width: 1040px; margin: 0 auto; }
         .spot-pick { position: relative; aspect-ratio: 3/4; border-radius: 12px; overflow: hidden; display: flex; align-items: flex-end; border: 2px solid #333333; padding: 0; cursor: pointer; font-family: inherit; color: #ffffff; text-align: left; background: #252525; transition: transform 0.3s, border-color 0.3s, opacity 0.3s; opacity: 0.65; }
@@ -83,6 +85,8 @@
         @media (max-width: 900px) {
             .spot { grid-template-columns: 140px minmax(0, 1fr); gap: 1.25rem; min-height: 0; }
             .spot .row-text .quote, .row-text .quote { font-size: 1.25rem; }
+            .spot .row-text .quote.medium { font-size: 1.1rem; }
+            .spot .row-text .quote.long { font-size: 0.98rem; }
             .spot-shelf { grid-template-columns: repeat(3, 1fr); }
         }
 
@@ -155,8 +159,8 @@
 // Your own pictures: save them in Content/favorite-games/ named after the title, e.g. Content/favorite-games/rimworld.jpg
 const COVER_FOLDER = 'Content/favorite-games/';
 
-// ░░ CHANGE: your Steam profile link (leave empty '' to hide the button) ░░
-const STEAM_URL = 'https://steamcommunity.com/id/YOUR-PROFILE/';
+// Your Steam profile link (leave empty '' to hide the button)
+const STEAM_URL = 'https://steamcommunity.com/profiles/76561198889169819/';
 
 // inspiration: what you take from the game into your own designs. Order = order on the page.
 // studio: shown under the game's name
@@ -167,48 +171,48 @@ const STEAM_URL = 'https://steamcommunity.com/id/YOUR-PROFILE/';
 const GAMES = {
     video: [
         { title: 'Civilization VI', studio: 'Firaxis Games',  year: 2016, genre: '4X strategy',           color: '#2c5f7a', steam: 289070, image: '',
-          inspiration: 'Districts turn the map into a puzzle: where you build matters as much as what you build.' },
+          inspiration: 'Civilization V was my very first game. This one is VI, but still. There’s never a moment when you have nothing to do, and the game never gives you a chance to stop. You always have dozens of processes running in parallel, and they flow smoothly into dozens of new ones. You simply can’t quit until you see the victory screen.' },
         { title: 'Among Us', studio: 'Innersloth',         year: 2018, genre: 'Social deduction',      color: '#a8433f', steam: 945360, image: '',
-          inspiration: 'Hidden information between players can carry a whole game with very little content.' },
+          inspiration: 'I love the social side of games. That’s when a game stops relying only on its mechanics: the whole experience changes depending on the people you play with.' },
         { title: 'RimWorld', studio: 'Ludeon Studios',         year: 2018, genre: 'Colony sim',            color: '#8a5a2b', steam: 294100, image: '',
-          inspiration: 'A storyteller that paces events turns a simulation into stories players want to retell.' },
+          inspiration: 'The feeling of a constant, seamless story. Every time you create a new world, you create a new story, with its own triumphs and dramas.' },
         { title: 'The Finals', studio: 'Embark Studios',       year: 2023, genre: 'Team shooter',          color: '#c2456b', steam: 2073850, image: '',
-          inspiration: 'When the arena can be destroyed, the map itself becomes a tool every team can use.' },
+          inspiration: 'I simply love how bold Embark is. I’d call this game a sandbox shooter. How they balance that much player freedom with structured gameplay is a mystery to me. And from a technical point of view, the game is mind-blowing.' },
         { title: 'Lethal Company', studio: 'Zeekerss',   year: 2023, genre: 'Co-op horror',          color: '#4f5a2f', steam: 1966720, image: '',
-          inspiration: 'Proximity voice chat turns simple scares into the funniest moments of the night.' },
+          inspiration: 'Fun. Pure fun. The game creates an incredible number of memorable moments while staying very simple mechanically. One day I want to make a game that people make reels about, the kind that make me laugh this hard.' },
         { title: 'Minecraft', studio: 'Mojang Studios',        year: 2011, genre: 'Sandbox',               color: '#3c7a35', image: '',
-          inspiration: 'A few simple blocks and rules are enough for players to set their own goals.' },
+          inspiration: 'My favorite part of Minecraft is playing multiplayer with friends. Surviving together in such a free sandbox raises strategic, economic and even political questions.' },
         { title: 'ARC Raiders', studio: 'Embark Studios',      year: 2025, genre: 'Extraction shooter',    color: '#a85a1f', steam: 1808500, image: '',
           imageFallbacks: ['https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1808500/04baafaf64a5aa5f46ecda5d71889a4848dc0628/header.jpg'],
-          inspiration: 'Every raid is a risk you choose: what you are willing to lose shapes how you play.' },
+          inspiration: 'Embark again, and they amaze me again. But in this game I value the social side most: you aren’t playing against mindless bots running around the map, you’re playing against people with their own thoughts, plans and needs. The constant clash between them is what makes the game so gripping for me.' },
         { title: 'Dead by Daylight', studio: 'Behaviour Interactive', year: 2016, genre: 'Asymmetric horror',     color: '#5e1a1a', steam: 381210, image: '',
-          inspiration: 'One against four, with different rules for each side, keeps both roles tense for different reasons.' },
+          inspiration: 'Such a simple concept, but the gameplay is designed masterfully. A game of tag turns into mind games, and the mind games are my favorite part. Bluff on bluff on bluff. I love it.' },
         { title: 'Victoria 3', studio: 'Paradox Development Studio',       year: 2022, genre: 'Grand strategy',        color: '#2c4170', steam: 529340, image: '',
-          inspiration: 'Simulating people, markets and politics lets big outcomes grow from many small, readable causes.' },
+          inspiration: 'To me, Paradox is something incredible. I don’t know how they make games this complex while keeping them structured, understandable and incredibly addictive. I chose Victoria 3 because I really enjoy its internal politics and markets.' },
         { title: 'Overwatch', studio: 'Blizzard Entertainment', year: 2016, genre: 'Hero shooter', color: '#c8762b', steam: 2357570, image: '',
-          inspiration: 'Each hero is a clear role with a few readable abilities, so a team’s line-up tells you its plan at a glance.' },
+          inspiration: 'The characters. Definitely the characters. I love a wide variety of characters and abilities, and here character design is at its best: balanced abilities, readable silhouettes, varied gameplay. Pure joy.' },
     ],
     board: [
         { title: 'Cosmic Encounter', year: 1977, genre: 'Negotiation, sci-fi',     color: '#3a2470', image: '',
           imageFallbacks: ['https://meeplescorner.co.uk/cdn/shop/files/CosmicEncounterRevisedEdition.jpg?v=1719666281'],
-          inspiration: 'Every alien breaks one rule in its own way, so each game becomes a new puzzle of how those exceptions collide.' },
+          inspiration: 'The core mechanics are very simple, and that makes the game incredibly flexible. Which aliens are in play changes the gameplay completely. There are 50 aliens in the box, so the number of different games is literally 50 to the power of the number of players.' },
         { title: 'Furnace',          year: 2020, genre: 'Auction, engine building', color: '#8c3b2b', image: '',
           imageFallbacks: ['https://meeplescorner.co.uk/cdn/shop/files/pic5620926_9568db02-aadf-4cf2-b44e-4595a450a12a.jpg?v=1769676887'],
-          inspiration: 'When losing bids still pay out, no move is wasted and every bid becomes a real choice.' },
+          inspiration: 'Here I’m completely biased, because the game was made by people from my home country. A wonderful engine builder. The mechanics are simple, but the room for calculation and optimization is huge. There’s no place for luck here, only planning.' },
         { title: 'Catan',            year: 1995, genre: 'Trading, resource management', color: '#c8913f', steam: 544730, image: '',
-          inspiration: 'Dice decide what is scarce, and scarcity turns every trade into a conversation.' },
+          inspiration: 'My first and most played board game. I’ve played it with my family since I was a kid. Today Catan is my perfect gateway for people who aren’t into board games. Strategic planning, the luck of the dice, the social side of trading and negotiating: all the key ingredients of board games come together in one box.' },
         { title: 'Mycelia',          year: 2024, genre: 'Tactical area control',   color: '#4a5a2b', image: '',
           imageFallbacks: ['https://images.boardgamematcher.com/unsafe/fit-in/600x700/filters:quality(90)/mycelia.jpg'],
-          inspiration: 'When a mushroom decays it unlocks a new ability, so even an ending pushes your network forward.' },
+          inspiration: 'I love biology, and the designer of this game clearly loves biology too, mushrooms in particular. What I value most here is the attempt to bring biological processes into a board game while keeping it fun. The designer pulled it off beautifully.' },
         { title: 'Scythe',           year: 2016, genre: 'Engine building, area control', color: '#5a4a2b', steam: 718560, image: '',
           imageFallbacks: ['https://images.boardgamematcher.com/unsafe/fit-in/600x700/filters:quality(90)/scythe.jpg'],
-          inspiration: 'The threat of mechs on the border often shapes the game more than the fights themselves.' },
+          inspiration: 'Here it’s the art, of course. What makes the game memorable first and foremost is its aesthetic and illustrations. Every time I see Scythe’s art online, I want to go back to that atmosphere and play another round.' },
         { title: 'Nemesis',          year: 2018, genre: 'Semi-cooperative horror', color: '#1d1446', image: '',
           imageFallbacks: ['https://www.boardgamebliss.com/cdn/shop/products/pic3756288.jpg?v=1569322344&width=800'],
-          inspiration: 'Secret personal objectives turn a co-op survival story into one where you never fully trust your crew.' },
+          inspiration: 'It always creates new stories. The game is as cinematic as a box of cardboard can possibly be, and every playthrough deserves a film adaptation. The chance of having a traitor on board only makes that feeling stronger.' },
         { title: 'Codenames',        year: 2015, genre: 'Party word game',         color: '#2c4170', image: '',
           imageFallbacks: ['https://www.boardgamebliss.com/cdn/shop/products/pic2582929_lg.jpg?v=1578609033&width=800'],
-          inspiration: 'One clue, many readings: the conversation it sparks at the table is the real mechanic.' },
+          inspiration: 'In my opinion, the best game in its genre. Very simple, yet very engaging. It makes you think hard and try to follow your teammate’s train of thought. That part, stepping into your teammate’s mind and seeing the world through their eyes, is what makes the game so interesting.' },
     ],
 };
 const TABS = [
@@ -283,7 +287,7 @@ function spotInner(g) {
         <div class="poster-sm cover" data-uid="${uid(g)}" style="${coverStyle(g)}">${initial(g)}</div>
         <div class="row-text">
             ${label()}
-            <p class="quote">${esc(g.inspiration)}</p>
+            <p class="quote${g.inspiration.length > 260 ? ' long' : g.inspiration.length > 150 ? ' medium' : ''}">${esc(g.inspiration)}</p>
             <div class="who">${esc(g.title)}<span class="meta">${meta(g)}</span></div>
             ${g.studio ? `<div class="studio">${esc(g.studio)}</div>` : ''}
         </div>`;
