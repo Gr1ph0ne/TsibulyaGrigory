@@ -95,8 +95,8 @@
         .post-card { background-color: #252525; border-radius: 15px; overflow: hidden; margin-bottom: 1.5rem; border: 1px solid #333333; transition: transform 0.3s, box-shadow 0.3s; cursor: pointer; }
         .post-card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.5); }
 
-        .post-cover { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; transition: transform 0.3s; }
-        .post-card:hover .post-cover { transform: scale(1.03); }
+        /* show the whole picture: full card width, height follows the image's own proportions */
+        .post-cover { width: 100%; height: auto; display: block; }
         .post-cover-wrap { overflow: hidden; }
 
         .post-card-body { padding: 2rem; }
